@@ -208,14 +208,14 @@ function Submit()
              var tmp = new Array;
              tmp = start.split("/");
              tmp[2] = (tmp[2]-0)+7;
-             alert(tmp[2]);
+             //alert(tmp[2]);
              if (tmp[2] > 30)
              {
                  tmp[1]++
                  tmp[2] -= 30;
              }
-             if (tmp[2] < 10 ){tmp[2] = '0'+tmp[2];}
-             if (tmp[1] < 10 ){tmp[2] = '0'+tmp[1];}
+             //if (tmp[2] < 10 ){tmp[2] = '0'+tmp[2];}
+             //if (tmp[1] < 10 ){tmp[1] = '0'+tmp[1];}
              \$("#datepicker_1").val(tmp[0] + "/" + tmp[1] + "/" + tmp[2]);
          break;
          
@@ -228,8 +228,8 @@ function Submit()
                  tmp[0]++;
                  tmp[1] -= 12;
              }    
-             if (tmp[2] < 10 ){tmp[2] = '0'+tmp[2];}
-             if (tmp[1] < 10 ){tmp[2] = '0'+tmp[1];}
+             //if (tmp[2] < 10 ){tmp[2] = '0'+tmp[2];}
+             if (tmp[1] < 10 ){tmp[1] = '0'+tmp[1];}
              \$("#datepicker_1").val(tmp[0] + "/" + tmp[1] + "/" + tmp[2]);
          break;
          
@@ -248,8 +248,8 @@ function Submit()
              {
                  tmp[0]++;
                  tmp[1] -= 12;
-             }    
-             if (tmp[1] < 10 ){tmp[2] = '0'+tmp[1];}
+             }
+             if (tmp[1] < 10 ){tmp[1] = '0'+tmp[1];}
              \$("#datepicker_1").val(tmp[0] + "/" + tmp[1] + "/" + tmp[2]);
          break;
          
@@ -307,15 +307,18 @@ function Submit()
      });
 }
 
-function search_flow(ip,time,option,symd)
+function search_flow(ip,time,option,symd,type,net)
 {
 	\$("#load_gif").css('display','block'); 
 	var ip = ip;
 	var time = time;
+	var time = time;
 	var option = option;
 	var symd = symd;
+	var type = type;
+	var net = net;
     var url = "search_flow.pl";
-    \$.get(url,{ip:ip,time:time,option:option,symd:symd},function fno(data){
+    \$.get(url,{ip:ip,time:time,option:option,symd:symd,tm_type:type,tm_net:net},function fno(data){
 	\$("#table").html(data);
 	var oTable =  \$('#tables').dataTable({
 	    "bPaginate": false,

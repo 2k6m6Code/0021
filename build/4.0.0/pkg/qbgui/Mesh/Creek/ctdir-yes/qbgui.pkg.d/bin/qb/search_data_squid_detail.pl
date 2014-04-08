@@ -54,25 +54,25 @@ foreach my $database (<FILE>)
 	system("/usr/local/apache/qb/setuid/run /sbin/arp -an | awk \"/$traffic[5]/\" > /tmp/tmp_arp");
 	system("/usr/local/apache/qb/setuid/run /bin/chmod 777 /tmp/tmp_arp");
 	open(FILE,'</tmp/tmp_arp');
-	foreach my $line (<FILE>)
-	{
-		my @macref=split(/\s/,$line);
-		if("($traffic[5])" eq $macref[1])
-		{
-			$mystatus="MAC: $macref[3]&#10;";
-		}
-	}
+#	foreach my $line (<FILE>)
+#	{
+#		my @macref=split(/\s/,$line);
+#		if("($traffic[5])" eq $macref[1])
+#		{
+#			$mystatus="MAC: $macref[3]&#10;";
+#		}
+#	}
 	close(FILE);
-	foreach my $userlist (@$auser)
-	{
-		if ($userlist->{schname} eq 'system'){next;}
-		my $menber = $userlist->{member};
-		foreach my $user (@$menber)
-		{
-			if($user->{iip} eq $traffic[5]){$mystatus=$mystatus."Auth: $user->{idd}";}
-		}
-	}
-	$mytitle="title=\"$mystatus\"";
+#	foreach my $userlist (@$auser)
+#	{
+#		if ($userlist->{schname} eq 'system'){next;}
+#		my $menber = $userlist->{member};
+#		foreach my $user (@$menber)
+#		{
+#			if($user->{iip} eq $traffic[5]){$mystatus=$mystatus."Auth: $user->{idd}";}
+#		}
+#	}
+#	$mytitle="title=\"$mystatus\"";
 	
 	my $iii=$traffic[1];
 	$iii=~s/\s+//g;

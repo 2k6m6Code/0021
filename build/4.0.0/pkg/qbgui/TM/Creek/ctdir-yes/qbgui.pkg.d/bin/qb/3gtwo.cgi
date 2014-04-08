@@ -1,22 +1,33 @@
 #!/usr/bin/perl
 use CGI;
 use Data::Dumper;
-require ("qbmod.cgi");
+#require ("qbmod.cgi");
+use XML::Simple;
 
 print "Content-type:text/html\n\n";
 
     my $interface=$ENV{'QUERY_STRING'};
+    my $ublox_U200_dev;
     $interface=~s/interface=//;
     my @intname=split(/&/,$interface);
     my $action=$intname[2];
     $interface=$intname[0];
     $action=~s/action=//;
     
-     
-    my $Info_3G=XMLread($gACTIVEPATH."basic.xml");
+    my $AP_Port_NO;
+    
+    
+    if ( grep(/ttyACM/ , $interface) )
+    {
+    	$ublox_U200_dev=1;
+    	$AP_Port_NO=$interface;
+    	$AP_Port_NO=~s/ttyACM//;
+    	$AP_Port_NO=$AP_Port_NO+2;
+    } 
+    my $Info_3G=XMLin("/usr/local/apache/active/basic.xml");
     my $List_3G=$Info_3G->{isp};
 
-    foreach $isp ( @$List_3G ) 
+    foreach $isp ( @$List_3G )
     {
        # if ( $isp->{alive} eq "0" && $isp->{flag_3g} eq "1" && $isp->{pppoeportdev} eq $interface ) 
        # {
@@ -33,10 +44,20 @@ print "Content-type:text/html\n\n";
 
 	if ($action eq "signal")
 	{
-	    my $signal=runCommand(command=>'/opt/qb/hsdpa/get3gsignal.sh', params=>qq($isp->{pppoeportdev} signal));
+	    #my $signal=runCommand(command=>'/opt/qb/hsdpa/get3gsignal.sh', params=>qq($isp->{pppoeportdev} signal));
+	    my $signal;
+	    if ( $ublox_U200_dev eq '1' )
+	    {
+	        #$signal=`catty -r 0 -d /dev/ttyACM$AP_Port_NO -b 460800 -w "AT+CSQ\r\n"|grep ^+CSQ|awk '{print $2}'|sed -e "s/,99//"`;
+	        $signal=`/usr/local/apache/qb/setuid/run catty -r 0 -d /dev/ttyACM$AP_Port_NO -b 460800 -w \"AT+CSQ\\r\\n\" | grep ^+CSQ|awk '{print \$2}'|awk -F\",\" '{print \$1}'`;
+	    }
+	    else
+	    {
+	        $signal=`/opt/qb/hsdpa/get3gsignal.sh $isp->{pppoeportdev} signal`;
+	    }
             $signal=~s/\n//g;
             if ( $signal eq "99" ){ $signal="0"; }
-            if ( $signal eq "100" ){ $signal=runCommand(command=>'cat', params=>qq(/tmp/Sierra_signal.$isp->{pppoeportdev})); }
+            if ( $signal eq "100" ){ $signal=`cat /tmp/Sierra_signal.$isp->{pppoeportdev}`; }
             my $signalfree = 31 - $signal;
             my $usage_3g=int $signal/31*100;
             my $RSSI=113-($signal*2);
@@ -53,10 +74,26 @@ print "Content-type:text/html\n\n";
          
 	if ($action eq "isp")
 	{
-	    my $isp_3G=runCommand(command=>'/opt/qb/hsdpa/get3gsignal.sh', params=>qq($isp->{pppoeportdev} isp));
-	    $isp_3G=~s/\n//g;
-            if ( $isp_3G eq "100" ){ $isp_3G=runCommand(command=>'cat', params=>qq(/tmp/Sierra_isp.$isp->{pppoeportdev})); $isp_3G=~s/\n//g;}
+	    my $isp_3G;	
+	    if ( $ublox_U200_dev eq '1' )
+	    {
+	        #$isp_3G=`/usr/local/apache/qb/setuid/run catty -r 0 -d /dev/ttyACM$AP_Port_NO -b 460800 -w \"AT+COPS?\\r\\n\" | grep ^+CSQ|awk '{print \$2}'`;
+	        #$isp_3G=`/usr/local/apache/qb/setuid/run catty -r 0 -d /dev/ttyACM$AP_Port_NO -b 460800 -w "AT+COPS?\r\n" | head -n 2 |tail -n 1 |awk -F"," '{print $3}'`;
+	        #$isp_3G=`/usr/local/apache/qb/setuid/run catty -r 0 -d /dev/ttyACM$AP_Port_NO -b 460800 -w \"AT+COPS?\\r\\n\"`;
+	         $isp_3G=`/usr/local/apache/qb/setuid/run catty -r 0 -d /dev/ttyACM$AP_Port_NO -b 460800 -w \"AT+COPS\?\\r\\n\" | head -n 2 |tail -n 1 |awk -F"," \'\{print \$3\}\'`;
+	         $isp_3G=~s/"//g;
+	    }
+	    else
+	    {
+	        $isp_3G=`/opt/qb/hsdpa/get3gsignal.sh $isp->{pppoeportdev} isp`;
+	    }
+            if ( $isp_3G eq "100" ){ $isp_3G=`cat /tmp/Sierra_isp.$isp->{pppoeportdev}`; $isp_3G=~s/\n//g;}
             if($isp->{usbmodemtype} eq "H20"){
+	      if ( $isp_3G eq "0" ){ $isp_3G="None"; }
+              print qq ($action,);
+              print qq ($interface,);
+	      print qq ($isp_3G,);
+	    }elsif($isp->{usbmodemtype} eq "U200"){
 	      if ( $isp_3G eq "0" ){ $isp_3G="None"; }
               print qq ($action,);
               print qq ($interface,);
@@ -75,27 +112,39 @@ print "Content-type:text/html\n\n";
          
 	if ($action eq "cell")
 	{
-	    my $cell_id=runCommand(command=>'/opt/qb/hsdpa/get3gsignal.sh', params=>qq($isp->{pppoeportdev} cell));
+	    my $cell_id;
+	    if ( $ublox_U200_dev eq '1' )
+	    {
+	        $cell_id=`/usr/local/apache/qb/setuid/run catty -r 0 -d /dev/ttyACM$AP_Port_NO -b 460800 -w \"AT+UCELLINFO\?\\r\\n\" | head -n 2 |tail -n 1 |awk -F\",\" \'\{print \$6\}\'`;
+	    }
+	    else
+	    {
+	    	$cell_id=`/opt/qb/hsdpa/get3gsignal.sh $isp->{pppoeportdev} cell`;
+	    }
 	    if ( $cell_id eq "" ){ $cell_id="None"; }
 	    if($isp->{usbmodemtype} eq "H20"){
-	    print qq ($action,);
-	    print qq ($interface,);
-	    print qq ($cell_id,);
-		}else{
+	    	print qq ($action,);
+	    	print qq ($interface,);
+	    	print qq ($cell_id,);
+	    }elsif($isp->{usbmodemtype} eq "U200"){
+	    	print qq ($action,);
+	    	print qq ($interface,);
+	    	print qq ($cell_id,);
+	    }else{
 		@outact = split(',',$cell_id);
 		print qq ($action,);
-	    print qq ($interface,);
+	    	print qq ($interface,);
 		$outact[3] =~s/ //g;
 		$outact[3] =~s/\r\n//g;
-	    print $outact[3].',';
-		}
+	    	print $outact[3].',';
+	    }
 	}
 	
         #===================================================================      
 
 	if ($action eq "band")
 	{
-            my $band=runCommand(command=>'/opt/qb/hsdpa/get3gsignal.sh', params=>qq($isp->{pppoeportdev} band));
+            my $band=`/opt/qb/hsdpa/get3gsignal.sh $isp->{pppoeportdev} band`;
             if ( $band eq "" ){ $band="None"; }
 			if($isp->{usbmodemtype} eq "H20"){
             print qq ($action,);
@@ -125,7 +174,7 @@ print "Content-type:text/html\n\n";
 
 	if ($action eq "ecio" || $action eq "rscp")
 	{
-            my $eciorscp=runCommand(command=>'/opt/qb/hsdpa/get3gsignal.sh', params=>qq($isp->{pppoeportdev} eciorscp));
+            my $eciorscp=`/opt/qb/hsdpa/get3gsignal.sh $isp->{pppoeportdev} eciorscp`;
             my @tmp=split(' ',$eciorscp);
             my @tmp1=split(',',$tmp[0]);
             my $ecio=$tmp1[0];
@@ -146,7 +195,17 @@ print "Content-type:text/html\n\n";
 
 	if ($action eq "tx" || $action eq "rx")
 	{
-	    my $txrx=runCommand(command=>'/opt/qb/hsdpa/get3gsignal.sh', params=>qq($isp->{pppoeportdev} txrx));
+	    my $txrx;
+	    if ( $ublox_U200_dev eq '1' ){
+	    
+	        #$txrx=`/opt/qb/hsdpa/get3gsignal.sh $isp->{pppoeportdev} txrx`;
+	        $txrx=`cat /proc/qbalancer/qbreport | grep $isp->{nic} | awk \'\{print \$7 \",\" \$8\}\'`;
+	    }
+	    else{
+	    
+	        $txrx=`/opt/qb/hsdpa/get3gsignal.sh $isp->{pppoeportdev} txrx`;
+	    }
+#	        $txrx=`cat /proc/qbalancer/qbreport | grep $isp->{nic} | awk \'\{print \$7 \",\" \$8\}\'`;
 	    my @temp=split(' ',$txrx);
 	    my @temp1=split(',',$temp[0]);
 		if($isp->{usbmodemtype} eq "H20"){
@@ -173,7 +232,13 @@ print "Content-type:text/html\n\n";
         #===================================================================      
         my $imgsrc = ( $isp->{alive} ) ? ( 'alive.png' ) : ( 'dead.png' );
 	print qq ($imgsrc,);
-	print qq ($action);
-
+	print qq ($action,);
+	
+	
+	if ( $ublox_U200_dev eq '1' && $action ne "tx" && $action ne "rx" )
+	{
+	    my $txrx=`cat /proc/qbalancer/qbreport | grep $isp->{nic} | awk \'\{print \$7 \",\" \$8\}\'`;
+	    print qq ($txrx);	
+	}
         
     }

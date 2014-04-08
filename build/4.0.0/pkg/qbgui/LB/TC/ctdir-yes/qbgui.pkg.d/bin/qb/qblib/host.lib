@@ -39,7 +39,11 @@ sub showHost
     }
     else
     {
-    print qq (<tr><td class="bigtitle">$qblang[160] <input class="qb" type="button" width="100" value="$qblang[162]" onclick="Newhost(0);"></td></tr>);
+    my $title = 'IPv4';
+    if($action{type} eq '6'){$title='IPv6'};
+    if($action{type} eq 'mac'){$title='MAC'};
+    if($action{type} eq 'fqdn'){$title='FQDN'};
+    print qq (<tr><td class="bigtitle">$title <input class="qb" type="button" width="100" value="$qblang[162]" onclick="Newhost(0);"></td></tr>);
         if ($action{type} eq 'fqdn')
         {
 	    print qq (<input class="qb" type="button" width="100" value="Import Default FQDN" onclick="MM_openBrWindow('object_link.php?action=host_import','Host',650,600);">);

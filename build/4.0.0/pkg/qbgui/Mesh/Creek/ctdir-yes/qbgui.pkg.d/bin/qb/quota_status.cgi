@@ -148,6 +148,10 @@ function refresh()
 					else
 					{
 						\$("."+asd[0]).html(xx[1]+"/"+zz[1]);
+						if(xx[1]=='0.00KB'||zz[1]=='0.00KB')
+						{
+						\$('#'+asd[0]).css("background-color", "#FF0000");
+						}
 					}
 				}
 			}

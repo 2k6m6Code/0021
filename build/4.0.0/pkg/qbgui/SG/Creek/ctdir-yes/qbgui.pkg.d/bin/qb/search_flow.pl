@@ -13,6 +13,8 @@ my $tm_option = $cgi->param("option");
 my $tm_symd = $cgi->param("symd");
 my $tm_proto = $cgi->param("proto");
 my $tm_cd = $cgi->param("tm_ip");
+my $tm_type = $cgi->param("tm_type");
+my $tm_net = $cgi->param("tm_net");
 my @limit = split(/,/,$tm_limit);
 my $search='';
 my $service=XMLread('/usr/local/apache/qbconf/flow.xml');
@@ -27,7 +29,12 @@ print "Content-type: text/html\n\n";
 system("/usr/local/apache/qb/setuid/run /bin/chmod 777 /tmp");
 if(grep(/srcip/,$tm_option))
 {
+	if(grep(/local/,$tm_type)){
+#	print qq("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time '$tm_proto src ip $tm_ip && dst $tm_net' -o long -o \"fmt:%ts %td  %pr %sap %dap %pkt %byt  %fl\" > /tmp/test_nfdump");
+	system("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time '$tm_proto src ip $tm_ip && dst $tm_net' -o long -o \"fmt:%ts %td  %pr %sap %dap %pkt %byt  %fl\" > /tmp/test_nfdump");}
+	else{
 	system("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time '$tm_proto dst ip $tm_ip' -o long -o \"fmt:%ts %td  %pr %sap %dap %pkt %byt  %fl\" > /tmp/test_nfdump");
+	}
 	#print qq("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time '$tm_proto dst ip $tm_ip' -o long -o \"fmt:%ts %td  %pr %sap %dap %pkt %byt  %fl\" > /tmp/test_nfdump");
 }
 elsif(grep(/dstip/,$tm_option))

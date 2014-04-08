@@ -69,7 +69,7 @@ foreach my $group (@$list)
 	print qq (<tr bgcolor="$bgcolor" originalColor="$originalColor" onmouseover="focusedColor(this)" onmouseout="blurColor(this)">);
 	my $ip;
 	if ($user->{ip}){$ip= "*".$user->{iip};}
-	else{$ip= $user->{ip};}
+	else{$ip= $user->{iip};}
 	print qq (<td width="200" align="center" id="$nb">$ip</td>);
 	print qq (<td width="200" align="center" >$user->{idd}</td>);
 	my $oot=($user->{time})?($user->{time}):($user->{old_time});

@@ -13,9 +13,9 @@ print qq (<form name="info_3G_form" method="post" action="3gone.cgi">);
     #runCommand(command=>'/usr/bin/killall ', params=>'-9 3ginfo_realtime.cgi');
     #runCommand(command=>'/usr/bin/killall ', params=>'-9 3gtwo.cgi');
     #runCommand(command=>'/usr/bin/killall ', params=>'-9 get3gsignal.sh');
-    `/usr/bin/killall -9 3ginfo_realtime.cgi`;
-    `/usr/bin/killall -9 3gtwo.cgi`;
-    `/usr/bin/killall -9 get3gsignal.sh`;
+    `/usr/bin/killall -9 3ginfo_realtime.cgi > /dev/null`;
+    `/usr/bin/killall -9 3gtwo.cgi > /dev/null`;
+    `/usr/bin/killall -9 get3gsignal.sh > /dev/null`;
 
     my $interface=$ENV{'QUERY_STRING'};
     my $It_is_MC8090;
@@ -24,7 +24,7 @@ print qq (<form name="info_3G_form" method="post" action="3gone.cgi">);
     #print qq ($interface,);
     print qq (<input type="hidden" id="interface_name" value=$interface>);
     #my $Info_3G=XMLread($gACTIVEPATH."basic.xml");
-    my $Info_3G=XMLin("/usr/local/apache/qbconf/basic.xml",forcearray=>1);
+    my $Info_3G=XMLin("/usr/local/apache/active/basic.xml");
     my $List_3G=$Info_3G->{isp};
     my %titleWidth=(Interface=>'40', IMEI=>'120', IP=>'120', Model=>'150', Signal=>'62', ISP=>'150', "Cell ID"=>'50', Band=>'70', RSSI=>'70', RSCP=>'70', ecio=>'70', Tx=>'120', Rx=>'120', Status=>'20' );
     #my @titleList=('Interface', 'IMEI', 'IP', 'Model', 'Signal', "ISP", 'Cell ID', 'Band', 'RSSI', 'RSCP', 'Ec/Io', 'Tx', 'Rx', 'Status');
@@ -104,28 +104,37 @@ print qq (<form name="info_3G_form" method="post" action="3gone.cgi">);
         my $RSSI;
 	if ( $It_is_MC8090 eq '1' )
 	{
-        print qq (<input type="hidden" id="this_is_MC8090_modules" value="this_is_MC8090_modules">);
-        print qq (<input type="hidden" id="MC8090_nic" value="$isp->{nic}">);
-#	my $signal=runCommand(command=>'/opt/qb/hsdpa/get3gsignal.sh', params=>qq($isp->{pppoeportdev} signal));
-	#my $signal=runCommand(command=>'cat', params=>' /tmp/MC8090_3G_info.$interface |grep Signal | awk -F\':\' \'{print $2}\' ');
-	#my $signal=runCommand(command=>'cat', params=>'/tmp/MC8090_3G_info.'.$interface.'|grep Signal | awk -F\':\' \'{print $2}\' ');
-	my $signal=`cat /tmp/MC8090_3G_info.$interface |grep Signal | awk -F\':\' \'\{print \$2\}\' `;
-	#print qq ( Signal: $signal );
-        $signal=~s/\n//g;
-        if ( $signal eq "99" ){ $signal="0"; }
-        my $signalfree = 31 - $signal;
-        my $usage_3g=int $signal/31*100;
-        $RSSI=113-($signal*2);
-        print qq (<td class="body" width="62" align="center">);
-        print qq (<span id="signal$isp->{pppoeportdev}" ><table width=100% border=0 cellpadding=0 cellspacing=0 >);
-        print qq (<td width="$signal" height="18" background="../image/usage.gif" title="signal strength : $usage_3g% RSSI:-$RSSI dBm">);
-        print qq (</td>);
-        print qq (<td width="$signalfree" height="18" background="../image/free.gif">);
-        print qq (</td>);
-	}
+            print qq (<input type="hidden" id="this_is_MC8090_modules" value="this_is_MC8090_modules">);
+            print qq (<input type="hidden" id="MC8090_nic" value="$isp->{nic}">);
+#	    my $signal=runCommand(command=>'/opt/qb/hsdpa/get3gsignal.sh', params=>qq($isp->{pppoeportdev} signal));
+	    #my $signal=runCommand(command=>'cat', params=>' /tmp/MC8090_3G_info.$interface |grep Signal | awk -F\':\' \'{print $2}\' ');
+	    #my $signal=runCommand(command=>'cat', params=>'/tmp/MC8090_3G_info.'.$interface.'|grep Signal | awk -F\':\' \'{print $2}\' ');
+	    my $signal=`cat /tmp/MC8090_3G_info.$interface |grep Signal | awk -F\':\' \'\{print \$2\}\' `;
+	    #print qq ( Signal: $signal );
+            $signal=~s/\n//g;
+            if ( $signal eq "99" ){ $signal="0"; }
+            my $signalfree = 31 - $signal;
+            my $usage_3g=int $signal/31*100;
+            $RSSI=113-($signal*2);
+            print qq (<td class="body" width="62" align="center">);
+            print qq (<span id="signal$isp->{pppoeportdev}" ><table width=100% border=0 cellpadding=0 cellspacing=0 >);
+            print qq (<td width="$signal" height="18" background="../image/usage.gif" title="signal strength : $usage_3g% RSSI:-$RSSI dBm">);
+            print qq (</td>);
+            print qq (<td width="$signalfree" height="18" background="../image/free.gif">);
+            print qq (</td>);
 	
-        print qq (</table></span>);
-        print qq (</td>);
+            print qq (</table></span>);
+            print qq (</td>);
+	}
+	else
+	{
+            print qq (<input type="hidden" id="this_is_MC8090_modules" value="0">);
+            print qq (<td class="body" width="62" align="center">);
+            print qq (<span id="signal$isp->{pppoeportdev}" ><table width=100% border=0 cellpadding=0 cellspacing=0 >);
+	
+            print qq (</table></span>);
+            print qq (</td>);
+        }
                                 
         #===================================================================      
         # ISP Name
@@ -247,8 +256,8 @@ print qq(</body></html> );
 	if( (queryReqHandler.readyState == 4) && (queryReqHandler.status == 200) )
 	{
 	    var msg=queryReqHandler.responseText;
+//	    alert (msg);
 	    msg=msg.slice(0,msg.length-1);
-	    //alert(msg);
 	    msg=msg.split(",");
 //	    var n=0;
 	    if ( msg[0] == "alive" )
@@ -259,7 +268,7 @@ print qq(</body></html> );
 	    {
 	       	    document.getElementById("signal"+msg[1]).innerHTML="<table width='100%' border='0' cellpadding='0' cellspacing='0' ><td width='"+msg[2]+"' height='18' background='../image/usage.gif' title='signal strengtn : "+msg[4]+"% RSSI:-"+msg[5]+" dBm'></td>"+
         		"<td width="+msg[3]+" height='18' background='../image/free.gif'></td></table>";
-       	    document.getElementById("RSSI"+msg[1]).innerHTML="-"+msg[5]+" dbm";
+       	    	    document.getElementById("RSSI"+msg[1]).innerHTML="-"+msg[5]+" dbm";
 		    document.getElementById("img"+msg[1]).innerHTML="<img src='image/"+msg[6]+"' width='14 height='14' border='0' />";
 	    }
 	    if ( msg[0] == "tx" || msg[0] == "rx" )
@@ -364,9 +373,9 @@ print qq(</body></html> );
 
     
     function cgi_dep_onload() { myform=window.document.forms[0]; }
-    if ( ! this_is_MC8090_modules == "this_is_MC8090_modules" ) { ajax();}
+    if (  this_is_MC8090_modules == "this_is_MC8090_modules" ) { get_MC8090_tx_rx(); }
     else
-      get_MC8090_tx_rx();
+      ajax();
    
     </script>
 ISPSCRIPT

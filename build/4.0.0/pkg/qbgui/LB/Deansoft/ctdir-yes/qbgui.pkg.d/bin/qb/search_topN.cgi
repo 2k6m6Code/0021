@@ -200,14 +200,13 @@ function Submit()
              var tmp = new Array;
              tmp = start.split("/");
              tmp[2] = (tmp[2]-0)+7;
-             alert(tmp[2]);
+             //alert(tmp[2]);
              if (tmp[2] > 30)
              {
                  tmp[1]++
                  tmp[2] -= 30;
              }
              if (tmp[2] < 10 ){tmp[2] = '0'+tmp[2];}
-             if (tmp[1] < 10 ){tmp[2] = '0'+tmp[1];}
              \$("#datepicker_1").val(tmp[0] + "/" + tmp[1] + "/" + tmp[2]);
          break;
          

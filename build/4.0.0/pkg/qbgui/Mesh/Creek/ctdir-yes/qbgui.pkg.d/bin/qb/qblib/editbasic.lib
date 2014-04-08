@@ -4823,9 +4823,17 @@ sub maintainISP
                  $device_3g=runCommand(command=>'cat ', params=>qq(/tmp/usbdev.tab \|grep $imei\|awk \'\{print \$3\}\') );
                  $device_3g=~s/\n//g; 
                  runCommand(command=>'/usr/bin/wvdialsetup ', params=>$action{ispname}.' '.$device_3g.' '.$action{apn_name}.' '.$action{iid}.' '.$action{dial_num}.' '.$action{pppoename}.' '.$action{pppoepasswd}.' '.$action{mode_2G3G}.' '.$action{band_2G3G});
+		 if ( $action{usbmodemtype} eq 'MC8090' )
+                 {
+                     runCommand(command=>'/usr/local/apache/qb/setuid/run', params=>'/opt/qb/hsdpa/MC8090_3G_info.sh '.$device_3g );
+                 }
                }else
                {
                  runCommand(command=>'/usr/bin/wvdialsetup ', params=>$action{ispname}.' '.$xnic.' '.$action{apn_name}.' '.$action{iid}.' '.$action{dial_num}.' '.$action{pppoename}.' '.$action{pppoepasswd}.' '.$action{mode_2G3G}.' '.$action{band_2G3G});
+		 if ( $action{usbmodemtype} eq 'MC8090' )
+                 {
+                     runCommand(command=>'/usr/local/apache/qb/setuid/run', params=>'/opt/qb/hsdpa/MC8090_3G_info.sh '.$xnic );
+                 }
                }
                
                #kill old process

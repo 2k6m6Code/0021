@@ -78,7 +78,8 @@ function Submit()
          return;
      }
      var ip = \$("#ip_search").val();
-     \$.get(url,{title:title,ip:ip,symd:start},function fno(data){
+     var domain = 'y';
+     \$.get(url,{title:title,ip:ip,symd:start,domain:domain},function fno(data){
 	\$("#table").html(data);
 	var oTable =  \$('#tables').dataTable({
 	    "bPaginate": false,
@@ -91,6 +92,31 @@ function Submit()
 	});
 	\$("#load_gif").css('display','none');
 	\$("#query").attr('disabled', false);
+     });
+}
+
+function search_squid(search_domain,title,ip,symd)
+{
+        \$("#load_gif").css('display','block');
+        \$("#query").attr('disabled', true);
+        var url = "search_data_squid.pl";
+        var title = title;
+        var ip = ip;
+        var symd = symd;
+        var search_domain = search_domain;
+        \$.get(url,{search_domain:search_domain,title:title,ip:ip,symd:symd},function fno(data){
+        \$("#table").html(data);
+        var oTable =  \$('#tables').dataTable({
+            "bPaginate": false,
+            "bInfo": false
+        });
+        \$("label").attr("style","display:none");
+        \$("#ip_search").keyup(function()
+        {
+            oTable.fnFilter(\$("#ip_search").val());
+        });
+        \$("#load_gif").css('display','none');
+        \$("#query").attr('disabled', false);
      });
 }
 

@@ -390,7 +390,7 @@ test1: foreach my $data (<FILE>)
 								#$tm_time=~s/nfcapd\.//g;
 								#my @YY=split(/(\d{2})/,$tm_time);
 								#print qq (<td width="200" align="center"><a href="query.php?ip=$iii&time_Y=$YY[1]$YY[3]/$YY[5]/$YY[7]&time_h=$YY[9]&time_X=$YY[13]$YY[15]/$YY[17]/$YY[19]&time_z=$YY">$db</a></td>);
-								print qq (<td width="200" align="center"><a href="javascript:search_flow('$iii','$tm_time','$tm_ip','$tm_symd','$traffic[2]')">$db</a></td>);
+								print qq (<td width="200" align="center" onclick="javascript:search_flow('$iii','$tm_time','$tm_ip','$tm_symd','$traffic[2]')">$db</td>);
 							}
 							elsif (grep(/\.(\d+)(\s+)(M)/,$db)||grep(/\.(\d+)(\s*)(G)(\s)/,$db))
 							{
@@ -525,7 +525,7 @@ test1: foreach my $data (<FILE>)
 								#$tm_time=~s/nfcapd\.//g;
 								#my @YY=split(/(\d{2})/,$tm_time);
 								#print qq (<td width="200" align="center"><a href="query.php?ip=$iii&time_Y=$YY[1]$YY[3]/$YY[5]/$YY[7]&time_h=$YY[9]&time_X=$YY[13]$YY[15]/$YY[17]/$YY[19]&time_z=$YY">$db</a></td>);
-								print qq (<td width="200" align="center"><a href="javascript:search_flow('$iii','$tm_time','$tm_ip','$tm_symd','$traffic[2]')">$db</a></td>);
+								print qq (<td width="200" align="center" onclick="javascript:search_flow('$iii','$tm_time','$tm_ip','$tm_symd','$traffic[2]')">$db</td>);
 							}
 							elsif (grep(/\.(\d+)(\s+)(M)/,$db)||grep(/\.(\d+)(\s*)(G)(\s)/,$db))
 							{
@@ -644,11 +644,11 @@ test1: foreach my $data (<FILE>)
 				#$tm_time=~s/nfcapd\.//g;
 				#my @YY=split(/(\d{2})/,$tm_time);
 				#print qq (<td width="200" align="center"><a href="query.php?ip=$iii&time_Y=$YY[1]$YY[3]/$YY[5]/$YY[7]&time_h=$YY[9]&time_X=$YY[13]$YY[15]/$YY[17]/$YY[19]&time_z=$YY">$db</a></td>);
-				#print qq (<td width="200" align="center"><a href="javascript:search_flow('$iii','$tm_time','$tm_ip')">$db</a></td>);
+				#print qq (<td width="200" align="center" onclick="javascript:search_flow('$iii','$tm_time','$tm_ip')">$db</td>);
 				if($tm_option eq 'bd_tr')
 				{
 					$iii = $testtraffic[4].','.$testtraffic[6];
-					print qq (<td width="200" align="center"><a href="javascript:search_flow('$iii','$tm_time','$tm_option','$tm_symd','$traffic[2]')">$db</a></td>);
+					print qq (<td width="200" align="center" onclick="javascript:search_flow('$iii','$tm_time','$tm_option','$tm_symd','$traffic[2]')">$db</td>);
 				}
 				elsif($tm_option eq 'realtime')
 				{
@@ -660,10 +660,10 @@ test1: foreach my $data (<FILE>)
 					{
 						$iii = $testtraffic[4].','.$testtraffic[6];
 					}
-					print qq (<td width="200" align="center"><a href="javascript:search_flow('$iii','$tm_time','$tm_option','$tm_symd','$tm_ip','$traffic[2]')">$db</a></td>);
+					print qq (<td width="200" align="center" onclick="javascript:search_flow('$iii','$tm_time','$tm_option','$tm_symd','$tm_ip','$traffic[2]')">$db</td>);
 				}
 				else
-				{print qq (<td width="200" align="center"><a href="javascript:search_flow('$iii','$tm_time','$tm_ip','$tm_symd','$traffic[2]')">$db</a></td>);}
+				{print qq (<td width="200" align="center" onclick="javascript:search_flow('$iii','$tm_time','$tm_ip','$tm_symd','$traffic[2]')">$db</td>);}
 			}
 			elsif (grep(/\.(\d+)(\s+)(M)/,$db)||grep(/\.(\d+)(\s*)(G)(\s)/,$db))
 			    {

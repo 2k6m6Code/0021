@@ -32,7 +32,6 @@ sub showQuotaInfo
 	foreach my $quota (@$quotalist)
 	{
 		my $originalColor=my $bgcolor=($lineCount%2) ? ( '#334455' ) : ( '#556677' );
-		print qq (<tr bgcolor="$bgcolor" originalColor="$originalColor">);
 		my $time = "--";
 		my $cycle = "--";
 		my $view_time ="--";
@@ -178,6 +177,7 @@ sub showQuotaInfo
 			$destination =~ s/host-//g;
 		}
 		
+		print qq (<tr id="$realtime" bgcolor="$bgcolor" originalColor="$originalColor">);
 		print qq (<td align="center" width="50" height="25">);
 		if ($enabled eq '1'){print qq (<input type="checkbox" id="enabled$lineCount" onclick="selenable('$quota->{name}','0','$viewtype')" checked value="1"></td>);}
 		if ($enabled eq '0'){print qq (<input type="checkbox" id="enabled$lineCount" onclick="selenable('$quota->{name}','1','$viewtype')" value="0"></td>);}

@@ -85,16 +85,17 @@ if ($limit[1] ne '')
 }        
 print "Content-type: text/html\n\n";
 system("/usr/local/apache/qb/setuid/run /bin/chmod 777 /tmp");
-#print qq("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip '$staticnet' -o \"fmt:%ts %td %sa %pkt %byt %bps %bpp  %fl\"");
-system("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip 'SRC $staticnet' -o \"fmt:%ts %td %sa %pkt %byt %bps %bpp  %fl\" > /tmp/test_nfdump");
+print qq("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip 'SRC $staticnet && DST $staticnet' -o \"fmt:%ts %td %sa %pkt %byt %bps %bpp  %fl\"");
+system("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip 'SRC $staticnet && DST $staticnet' -o \"fmt:%ts %td %sa %pkt %byt %bps %bpp  %fl\" > /tmp/test_nfdump");
 system("/usr/local/apache/qb/setuid/run /bin/chmod 777 /tmp/test_nfdump");
 
-my $file_check='0';
-open(CHECKFILE,"/tmp/test_nfdump");
-foreach my $rlt (<CHECKFILE>){$file_check=$rlt;}
-close(CHECKFILE);
-#my $file = -z "/tmp/test_nfdump";
-if(grep(/No matched flows/,$file_check)||$file_check eq ''){print qq (<FONT SIZE=4>Query Completed : No Data</FONT>);}
+#my $file_check='0';
+#open(CHECKFILE,"/tmp/test_nfdump");
+#foreach my $rlt (<CHECKFILE>){$file_check=$rlt;}
+#close(CHECKFILE);
+my $file_check = -s "/tmp/test_nfdump";
+#if(grep(/No matched flows/,$file_check)||$file_check eq ''){print qq (<FONT SIZE=4>Query Completed : No Data</FONT>);}
+if($file_check eq 0){print qq (<FONT SIZE=4>Query Completed : No Data</FONT>);}
 else
 {
 print qq (<table bgcolor="#332211" width="100%" border="0" id="tables">);
@@ -221,7 +222,7 @@ close(FILE);
 					#$tm_time=~s/nfcapd\.//g;
 					#my @YY=split(/(\d{2})/,$tm_time);
 					#print qq (<td width="200" align="center"><a href="query.php?ip=$iii&time_Y=$YY[1]$YY[3]/$YY[5]/$YY[7]&time_h=$YY[9]&time_X=$YY[13]$YY[15]/$YY[17]/$YY[19]&time_z=$YY">$traffic[6]</a></td></tr>); 
-					print qq (<td width="200" align="center"><a href="javascript:search_flow('$iii','$tm_time','$tm_ip','$tm_symd')">$traffic[6]</a></td>);
+					print qq (<td width="200" align="center"><a href="javascript:search_flow('$iii','$tm_time','$tm_ip','$tm_symd','local','$staticnet')">$traffic[6]</a></td>);
 					$top++;
                 }
             }

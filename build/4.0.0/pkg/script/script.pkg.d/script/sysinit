@@ -1052,7 +1052,7 @@ then
 30   2 * * *  root      sync|echo 3 > /proc/sys/vm/drop_caches
 31   2 * * *  root      sync|echo 0 > /proc/sys/vm/drop_caches
 5    0 * * *  root      /opt/qb/bin/script/trialnotice
-59  23 * * *  root      /etc/todo_at_2359
+0    0 * * *  root      /etc/todo_at_2359
 */1  * * * *  root      /usr/local/apache/qb/setuid/every_one.sh
 */30  * * * *  root      /usr/local/apache/qb/every_thirty_minute.pl
 

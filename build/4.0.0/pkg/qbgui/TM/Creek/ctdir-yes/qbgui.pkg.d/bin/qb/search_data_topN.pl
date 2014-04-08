@@ -35,6 +35,7 @@ print "Content-type: text/html\n\n";
 system("/usr/local/apache/qb/setuid/run /bin/chmod 777 /tmp");
 system("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip > /tmp/test_nfdump");
 system("/usr/local/apache/qb/setuid/run /bin/chmod 777 /tmp/test_nfdump");
+print qq("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip");
 
 print qq (<table bgcolor="#332211" width="100%" border="0" id="tables">);
 open(FILE,"/tmp/test_nfdump");

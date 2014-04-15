@@ -112,7 +112,7 @@ sub showISPList
             print qq (<td align="center" width="$titleWidth{ISPID}" height="25" >Wimax$isp->{iid}</td>);
         
         }
-        elsif ( $isp->{isptype} eq "pppoe" && !$isp->{flag_3g})
+        elsif ( $isp->{isptype} eq "pppoe" && !$isp->{flag_3g} && !$isp->{flag_4g})
         {
             my $onoff;
             if ( $isp->{enabled} eq '' | $isp->{enabled} eq '1' ) { $onoff = $lanBasic{off}; }
@@ -134,7 +134,7 @@ sub showISPList
         
             print qq (<td align="center" width="$titleWidth{ISPID}" height="25" >PPPoE$isp->{iid}</td>);
         }
-        elsif ( $isp->{isptype} eq "pppoe" && $isp->{flag_3g})
+        elsif ( $isp->{isptype} eq "pppoe" && ($isp->{flag_3g} || $isp->{flag_4g}))
         {
             my $onoff;
             if ( $isp->{enabled} eq '' | $isp->{enabled} eq '1' ) { $onoff = $lanBasic{off}; }
@@ -155,7 +155,10 @@ sub showISPList
 	     print qq (<span id=$isp->{systemip}><img src="image/$show_status" width="14" height="14" border="0"/></span></td>);
         
             print qq (<td align="center" width="$titleWidth{ISPID}" height="25" >);
+            if ( $isp->{flag_3g} )
             print qq (USB3G$isp->{iid}</td>);
+            else
+            print qq (LTE$isp->{iid}</td>);
         }
         elsif ( $isp->{isptype} eq "dhcp" )
         {
@@ -233,7 +236,7 @@ sub showISPList
      #***************************************************************************************
      # State Interface Name Gateway SystemIP HealthcheckIP Subnet Down/Up
      #***************************************************************************************   
-        if ( $isp->{isptype} eq "pppoe" && $isp->{flag_3g})
+        if ( $isp->{isptype} eq "pppoe" && ($isp->{flag_3g} || $isp->{flag_4g}))
         {
         print qq (<td align="center" width="$titleWidth{ThreeG}" height="25" >);
             print qq (<a href="../3gone.cgi?interface=$isp->{pppoeportdev}">);
@@ -502,6 +505,9 @@ sub basicScript_1
             case 12:
                 // 20110209 Brian DMV
                 myform.isptype.value="dtunnel";
+                break;
+            case 13:
+                window.top.mainFrame.location.href="editbasic.cgi?action=NEWISPp?isptype=pppoe?flag_4g=1";
                 break;
         }
     }

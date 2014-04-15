@@ -54,7 +54,7 @@ sub showISPInfo
                 elsif ( $isp->{isptype} eq "pppoe" )
                 {
 					$newisp{target}='8.8.8.8';
-					if ( $action{isptype} eq 'pppoe' || $action{flag_3g} eq "1" || $isp->{pppoeportdev} =~m/ttyACM/ || $isp->{pppoeportdev} =~m/ttyUSB/ && $total3gisp <=$gMAX3GISP)
+					if ( $action{isptype} eq 'pppoe' || $action{flag_3g} eq "1" || $action{flag_4g} eq "1" || $isp->{pppoeportdev} =~m/ttyACM/ || $isp->{pppoeportdev} =~m/ttyUSB/ && $total3gisp <=$gMAX3GISP)
 					{
 						$total3gisp++; 
 						$gMAXNORMALISP++;
@@ -183,6 +183,7 @@ sub showISPInfo
 		print qq(<input type="hidden" name="isp" value="$gNEWISPID">); #############iid
 		print qq(<input type="hidden" name="isptype" value="$action{isptype}">);
 		print qq(<input type="hidden" name="flag_3g" value="$action{flag_3g}">);
+		print qq(<input type="hidden" name="flag_4g" value="$action{flag_4g}">);
 		# 2005-0707 Hammer
 		print qq(<input type="hidden" name="basetunnel" value="0">);
 	 
@@ -206,7 +207,7 @@ sub showISPInfo
 			print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 450px">);
 			print qq ( ISP $gNEWISPID ); ######################iid
 		}
-		elsif ( $action{isptype} eq "pppoe" && !$action{flag_3g} )
+		elsif ( $action{isptype} eq "pppoe" && !$action{flag_3g} && !$action{flag_4g} )
 		{
 			print qq ( ISP ID : );
 			print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 450px">);
@@ -217,6 +218,12 @@ sub showISPInfo
 			print qq ( ISP ID : );
 			print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 450px">);
 			print qq ( USB3G $gNEWISPID );  #######################iid
+		}
+		elsif ( $action{isptype} eq "pppoe" && $action{flag_4g} )
+		{
+			print qq ( ISP ID : );
+			print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 450px">);
+			print qq ( LTE $gNEWISPID );  #######################iid
 		}
 		elsif ( $action{isptype} eq "wimax" )
 		{
@@ -308,6 +315,42 @@ sub showISPInfo
 		}
 		elsif ( $action{isptype} eq "pppoe")
 		{
+			if ( $action{flag_3g} || $action{flag_4g} || $showData->{usbmodemtype})
+			{
+          		   if ( $action{flag_4g} )
+          		   {
+				print qq (<tr>);
+				print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 20px">);
+				print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 220px">);
+				print qq ( Modem Model : );
+				print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 450px">);
+				print qq (<select class="qbopt" name="usbmodemtype" onchange="goSubmit('SWITCHMODEM')" style="width:120">\n);
+				foreach my $types ( sort keys %g4GUSBmodem , -1 ) 
+				{
+					#my $status=( $types eq $showData->{usbmodemtype} ) ? ('selected'):('');
+					my $status=( $types eq $action{usbmodemtype} ) ? ('selected'):('');
+					my $showvalue=( $types eq "-1" ) ? ('None') : ($g4GUSBmodem{$types});
+					print qq (<option $status value="$types" title="$g4GUSBmodem{$types}" >$showvalue</option>/n);
+				}
+				print qq (</select>);
+				print qq (</td></tr>);
+			    }else{
+				print qq (<tr>);
+				print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 20px">);
+				print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 220px">);
+				print qq ( Modem Model : );
+				print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 450px">);
+				print qq (<select class="qbopt" name="usbmodemtype" onchange="goSubmit('SWITCHMODEM')" style="width:120">\n);
+				foreach my $types ( sort keys %gUSBmodem , -1 ) 
+				{
+					my $status=( $types eq $action{usbmodemtype} ) ? ('selected'):('');
+					my $showvalue=( $types eq "-1" ) ? ('None') : ($gUSBmodem{$types});
+					print qq (<option $status value="$types" title="$gUSBmodem{$types}" >$showvalue</option>/n);
+				}
+				print qq (</select>);
+				print qq (</td></tr>);
+			    }
+			}
 			#****************************************************************************************
 			#-->2:NIC number
 			#******************************** List selection of NICs ********************************
@@ -410,7 +453,7 @@ sub showISPInfo
 	#        print qq (  <a href="../3ginfo.cgi"><image src="image/info.jpg" border="0" title="3G Device Information"></a></td></tr>);
 	#        }
 			print qq (</td></tr>);
-			if ( !$action{flag_3g} )
+			if ( !$action{flag_3g} && !$action{flag_4g} )
 			{
 				print qq (<tr>);
 				print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 20px">);
@@ -429,24 +472,8 @@ sub showISPInfo
 				print qq (</td></tr>);
 			}
 
-			if ( $action{flag_3g} || $showData->{usbmodemtype})
+			if ( $action{flag_3g} || $action{flag_4g} || $showData->{usbmodemtype})
 			{
-				print qq (<tr>);
-				print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 20px">);
-				print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 220px">);
-				print qq ( Modem Model : );
-				print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 450px">);
-				print qq (<select class="qbopt" name="usbmodemtype" onchange="goSubmit('SWITCHMODEM')" style="width:120">\n);
-				foreach my $types ( sort keys %gUSBmodem , -1 ) 
-				{
-					#my $status=( $types eq $showData->{usbmodemtype} ) ? ('selected'):('');
-					my $status=( $types eq $action{usbmodemtype} ) ? ('selected'):('');
-					my $showvalue=( $types eq "-1" ) ? ('None') : ($gUSBmodem{$types});
-					print qq (<option $status value="$types" title="$gUSBmodem{$types}" >$showvalue</option>/n);
-				}
-				print qq (</select>);
-				print qq (</td></tr>);
-			
 				print qq (<tr>);
 				print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 20px">);
 				print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 220px">);
@@ -470,17 +497,17 @@ sub showISPInfo
 					{
 						print qq (<option $status value="$actions" title="$gModemAction{$actions}" >$gModemAction{$actions}</option>/n);
 					}
-				}
+					}
 				}
 				else
-			{
+				{
 				print qq (<select class="qbopt" name="modemaction" onchange="goSubmit('MODEMRESET')" style="width:120">\n);
 				foreach my $actions ( -1 , Reset )
-					{
+				{
 					my $showvalue=( $actions eq "-1" ) ? ('None') : ('Reset this modem');
 					if ( $showvalue eq "None" )
 					{
-							print qq (<option $status value="$actions" title="Do nothing for the modem" >$showvalue</option>/n);
+						print qq (<option $status value="$actions" title="Do nothing for the modem" >$showvalue</option>/n);
 					}
 					else
 					{
@@ -509,6 +536,25 @@ sub showISPInfo
 				print qq (</td>);
 				print qq (</tr>);
 
+         			if ( $action{flag_4g} )
+				{
+				print qq (<tr>);
+				print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 20px">);
+				print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 220px">);
+				print qq ( Band : );
+				print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 450px">);
+				print qq (<select class="qbopt" name="lte_band" style="width:120">\n);
+				print qq (<option value="Auto" title="Auto Detect" selected >Auto</option>);
+				foreach my $actions ( sort { $gband_4G_hash{$a} cmp $gband_4G_hash{$b} } keys %gband_4G_hash )
+				{
+					my $showvalue=( $actions eq "-1" ) ? ('None') : ($gband_4G_hash{$actions});
+					my $status=( $actions eq $showData->{lte_band} ) ? ('selected'):('');
+					print qq (<option $status value="$actions" title="$gband_4G_hash{$actions}" >$showvalue</option>/n);
+				}
+				print qq (</select>);
+				print qq (</td>);
+				print qq (</tr>);
+				}
 				if ( $showData->{usbmodemtype} eq "H20" )
 				{
 				print qq (<tr>);
@@ -577,6 +623,25 @@ sub showISPInfo
 				else
 				{
 				print qq (<input class="qbtext" type=text name="apn_name" style="WIDTH:120px" value="$newapn_name"> (e.g.internet)\n);
+				}
+				print qq (<br></td></tr>);
+
+				#****************************************************************************************
+				#-->PIN Code
+				#****************************************************************************************
+				print qq (<tr>);
+				print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 20px">);
+				print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 220px">);
+				print qq ( PIN Code : );
+			
+				print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 450px">);
+				if ( $showData->{pin_code} eq "null" )
+				{
+				print qq (<input class="qbtext" type=text name="pin_code" style="WIDTH:120px" value=""> (e.g.0000)\n);
+				}
+				else
+				{
+				print qq (<input class="qbtext" type=text name="pin_code" style="WIDTH:120px" value="$newpin_code"> (e.g.0000)\n);
 				}
 				print qq (<br></td></tr>);
 			}
@@ -1715,7 +1780,7 @@ sub showISPInfo
         print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 450px">);
         print qq ( ISP $showData->{iid} );
     }
-    elsif ( $showData->{isptype} eq "pppoe" && !$showData->{flag_3g} )
+    elsif ( $showData->{isptype} eq "pppoe" && !$showData->{flag_3g} && !$showData->{flag_4g})
     {
         print qq ( ISP ID : );
         print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 450px">);
@@ -1726,6 +1791,12 @@ sub showISPInfo
         print qq ( ISP ID : );
         print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 450px">);
         print qq ( USB3G $showData->{iid} );
+    }
+    elsif ( $showData->{isptype} eq "pppoe" && $showData->{flag_4g} )
+    {
+        print qq ( ISP ID : );
+        print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 450px">);
+        print qq ( LTE $showData->{iid} );
     }
     elsif ( $showData->{isptype} eq "wimax" )
     {
@@ -1815,6 +1886,41 @@ sub showISPInfo
     }
     elsif ( $showData->{isptype} eq "pppoe")
     {
+        if ( $showData->{flag_3g} || $showData->{flag_4g} || $showData->{usbmodemtype})
+        {
+           if ( $showData->{flag_4g} )
+           {
+            print qq (<tr>);
+            print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 20px">);
+            print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 220px">);
+            print qq ( Modem Model : );
+            print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 450px">);
+            print qq (<select class="qbopt" name="usbmodemtype" onchange="goSubmit('SWITCHMODEM')" style="width:120">\n);
+            foreach my $types ( sort keys %g4GUSBmodem , -1 ) 
+            {
+                my $status=( $types eq $showData->{usbmodemtype} ) ? ('selected'):('');
+                my $showvalue=( $types eq "-1" ) ? ('None') : ($g4GUSBmodem{$types});
+                print qq (<option $status value="$types" title="$g4GUSBmodem{$types}" >$showvalue</option>/n);
+            }
+            print qq (</select>);
+            print qq (</td></tr>);
+           }else{
+            print qq (<tr>);
+            print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 20px">);
+            print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 220px">);
+            print qq ( Modem Model : );
+            print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 450px">);
+            print qq (<select class="qbopt" name="usbmodemtype" onchange="goSubmit('SWITCHMODEM')" style="width:120">\n);
+            foreach my $types ( sort keys %gUSBmodem , -1 ) 
+            {
+                my $status=( $types eq $showData->{usbmodemtype} ) ? ('selected'):('');
+                my $showvalue=( $types eq "-1" ) ? ('None') : ($gUSBmodem{$types});
+                print qq (<option $status value="$types" title="$gUSBmodem{$types}" >$showvalue</option>/n);
+            }
+            print qq (</select>);
+            print qq (</td></tr>);
+          }
+        }
         #****************************************************************************************
         #-->2:NIC number
         #******************************** List selection of NICs ********************************
@@ -1936,23 +2042,8 @@ sub showISPInfo
             print qq (</td></tr>);
         }
 
-        if ( $showData->{flag_3g} || $showData->{usbmodemtype})
+        if ( $showData->{flag_3g} || $showData->{flag_4g} || $showData->{usbmodemtype})
         {
-            print qq (<tr>);
-            print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 20px">);
-            print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 220px">);
-            print qq ( Modem Model : );
-            print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 450px">);
-            print qq (<select class="qbopt" name="usbmodemtype" onchange="goSubmit('SWITCHMODEM')" style="width:120">\n);
-            foreach my $types ( sort keys %gUSBmodem , -1 ) 
-            {
-                my $status=( $types eq $showData->{usbmodemtype} ) ? ('selected'):('');
-                my $showvalue=( $types eq "-1" ) ? ('None') : ($gUSBmodem{$types});
-                print qq (<option $status value="$types" title="$gUSBmodem{$types}" >$showvalue</option>/n);
-            }
-            print qq (</select>);
-            print qq (</td></tr>);
-        
             print qq (<tr>);
             print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 20px">);
             print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 220px">);
@@ -2015,6 +2106,25 @@ sub showISPInfo
             print qq (</td>);
             print qq (</tr>);
 
+            if ( $action{flag_4g} )
+            {
+          	print qq (<tr>);
+          	print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 20px">);
+          	print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 220px">);
+          	print qq ( Band : );
+          	print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 450px">);
+          	print qq (<select class="qbopt" name="lte_band" style="width:120">\n);
+          	print qq (<option value="Auto" title="Auto Detect" selected >Auto</option>);
+		foreach my $actions ( sort { $gband_4G_hash{$a} cmp $gband_4G_hash{$b} } keys %gband_4G_hash )
+		{
+		    my $showvalue=( $actions eq "-1" ) ? ('None') : ($gband_4G_hash{$actions});
+		    my $status=( $actions eq $showData->{lte_band} ) ? ('selected'):('');
+		    print qq (<option $status value="$actions" title="$gband_4G_hash{$actions}" >$showvalue</option>/n);
+		}
+          	print qq (</select>);
+          	print qq (</td>);
+          	print qq (</tr>);
+	    }
             if ( $showData->{usbmodemtype} eq "H20" )
             {
           	print qq (<tr>);
@@ -2065,8 +2175,6 @@ sub showISPInfo
             print qq (<input class="qbtext" type=text name="dial_num" style="WIDTH:120px" value="$showData->{dial_num}"> (e.g.*99#)\n);
             print qq (<br></td></tr>);
 
-        
-        
             #****************************************************************************************
             #-->Access Point Name
             #****************************************************************************************
@@ -2083,6 +2191,25 @@ sub showISPInfo
             else
             {
         	print qq (<input class="qbtext" type=text name="apn_name" style="WIDTH:120px" value="$showData->{apn_name}"> (e.g.internet)\n);
+            }
+            print qq (<br></td></tr>);
+
+            #****************************************************************************************
+            #-->PIN Code
+            #****************************************************************************************
+            print qq (<tr>);
+            print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 20px">);
+            print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 220px">);
+            print qq ( PIN Code : );
+        
+            print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 450px">);
+            if ( $showData->{pin_code} eq "null" )
+            {
+        	print qq (<input class="qbtext" type=text name="pin_code" style="WIDTH:120px" value=""> (e.g.0000)\n);
+            }
+            else
+            {
+        	print qq (<input class="qbtext" type=text name="pin_code" style="WIDTH:120px" value="$showData->{pin_code}"> (e.g.0000)\n);
             }
             print qq (<br></td></tr>);
         }
@@ -3339,6 +3466,10 @@ sub basicScript
                 // 20110209 Brian DMV
                 myform.isptype.value="dtunnel";
                 break;
+            case 13:
+                myform.isptype.value="pppoe";
+                myform.flag_4g.value="1";
+                break;
         }
 
         //goSubmit('NEWISP');
@@ -4539,7 +4670,7 @@ sub maintainISP
                 elsif ( $isp->{isptype} eq "pppoe" )
                 {
 					$newisp{target}='8.8.8.8';
-                  if ( $action{isptype} eq 'pppoe' || $action{flag_3g} eq "1" || $isp->{pppoeportdev} =~m/ttyACM/ || $isp->{pppoeportdev} =~m/ttyUSB/ && $total3gisp <=$gMAX3GISP)
+                  if ( $action{isptype} eq 'pppoe' || $action{flag_3g} eq "1" || $action{flag_4g} eq "1" || $isp->{pppoeportdev} =~m/ttyACM/ || $isp->{pppoeportdev} =~m/ttyUSB/ && $total3gisp <=$gMAX3GISP)
                   {
                     $total3gisp++; 
                     $gMAXNORMALISP++;
@@ -4637,6 +4768,7 @@ sub maintainISP
         $newisp{enabled}="0";
         $newisp{isptype}=$action{isptype};
         $newisp{flag_3g}=$action{flag_3g};
+        $newisp{flag_4g}=$action{flag_4g};
         $newisp{apn_name}="internet";
         $newisp{dial_num}="*99#";
         if ( $action{isptype} eq "tunnel" ) { $newisp{mtu}=$newisp{mss}=1; }
@@ -4813,26 +4945,40 @@ sub maintainISP
              {
                runCommand(command=>'rm ', params=>'-f /tmp/ppplog/.info');
                if (!$action{apn_name}){$action{apn_name}="null";}
+               if (!$action{pin_code}){$action{pin_code}="null";}
                if (!$action{pppoename}){$action{pppoename}="username";}
                if (!$action{pppoepasswd}){$action{pppoepasswd}="password";}
                if (!$action{mode_2G3G}){$action{mode_2G3G}="Auto";}
                if (!$action{band_2G3G}){$action{band_2G3G}="Auto";}
+               if (!$action{lte_band}){$action{lte_band}="Auto";}
                if ($xnic =~m/SIM/)
                {
                  $imei = editModules( action=>"GETIMEINOBYNAME", interface_name=>$xnic );
                  $device_3g=runCommand(command=>'cat ', params=>qq(/tmp/usbdev.tab \|grep $imei\|awk \'\{print \$3\}\') );
-                 $device_3g=~s/\n//g; 
-                 runCommand(command=>'/usr/bin/wvdialsetup ', params=>$action{ispname}.' '.$device_3g.' '.$action{apn_name}.' '.$action{iid}.' '.$action{dial_num}.' '.$action{pppoename}.' '.$action{pppoepasswd}.' '.$action{mode_2G3G}.' '.$action{band_2G3G});
-		 if ( $action{usbmodemtype} eq 'MC8090' )
+                 $device_3g=~s/\n//g;
+                 if ($action{flag_4g})
                  {
+                   runCommand(command=>'/opt/qb/hsdpa/setup_LTE ', params=>$device_3g.' band');
+                   runCommand(command=>'/usr/bin/wvdialsetup ', params=>$action{ispname}.' '.$device_3g.' '.$action{apn_name}.' '.$action{iid}.' '.$action{dial_num}.' '.$action{pppoename}.' '.$action{pppoepasswd}.' '.$action{mode_2G3G}.' '.$action{band_2G3G}.' '.$action{pin_code});
+                 }else{
+                   runCommand(command=>'/usr/bin/wvdialsetup ', params=>$action{ispname}.' '.$device_3g.' '.$action{apn_name}.' '.$action{iid}.' '.$action{dial_num}.' '.$action{pppoename}.' '.$action{pppoepasswd}.' '.$action{mode_2G3G}.' '.$action{band_2G3G}.' '.$action{pin_code});
+		   if ( $action{usbmodemtype} eq 'MC8090' )
+                   {
                      runCommand(command=>'/usr/local/apache/qb/setuid/run', params=>'/opt/qb/hsdpa/MC8090_3G_info.sh '.$device_3g );
+                   }
                  }
                }else
                {
-                 runCommand(command=>'/usr/bin/wvdialsetup ', params=>$action{ispname}.' '.$xnic.' '.$action{apn_name}.' '.$action{iid}.' '.$action{dial_num}.' '.$action{pppoename}.' '.$action{pppoepasswd}.' '.$action{mode_2G3G}.' '.$action{band_2G3G});
-		 if ( $action{usbmodemtype} eq 'MC8090' )
+                 if ($action{flag_4g})
                  {
+                   runCommand(command=>'/opt/qb/hsdpa/setup_LTE ', params=>$xnic.' band');
+                   runCommand(command=>'/usr/bin/wvdialsetup ', params=>$action{ispname}.' '.$xnic.' '.$action{apn_name}.' '.$action{iid}.' '.$action{dial_num}.' '.$action{pppoename}.' '.$action{pppoepasswd}.' '.$action{mode_2G3G}.' '.$action{band_2G3G}.' '.$action{pin_code});
+                 }else{
+                   runCommand(command=>'/usr/bin/wvdialsetup ', params=>$action{ispname}.' '.$xnic.' '.$action{apn_name}.' '.$action{iid}.' '.$action{dial_num}.' '.$action{pppoename}.' '.$action{pppoepasswd}.' '.$action{mode_2G3G}.' '.$action{band_2G3G}.' '.$action{pin_code});
+		   if ( $action{usbmodemtype} eq 'MC8090' )
+                   {
                      runCommand(command=>'/usr/local/apache/qb/setuid/run', params=>'/opt/qb/hsdpa/MC8090_3G_info.sh '.$xnic );
+                   }
                  }
                }
                
@@ -4874,11 +5020,21 @@ sub maintainISP
                {
                      runCommand(command=>'/usr/bin/wvdial ', params=>'-C /etc/wvdial.'.$device_3g.' Setmode\&');
                      runCommand(command=>'sleep', params=>'20');
-                     runCommand(command=>'/usr/bin/wvdial ', params=>'-C /etc/wvdial.'.$device_3g.' Setmode\&');
+                     if ($action{pin_code}=~m/null/)
+                     {
+                       runCommand(command=>'/usr/bin/wvdial ', params=>'-C /etc/wvdial.'.$device_3g.' Setmode\&');
+                     }else{
+                       runCommand(command=>'/usr/bin/wvdial ', params=>'-C /etc/wvdial.'.$device_3g.' Init\&');
+                     }
                }else{
                      runCommand(command=>'/usr/bin/wvdial ', params=>'-C /etc/wvdial.'.$xnic.' Setmode\&');
                      runCommand(command=>'sleep', params=>'20');
-                     runCommand(command=>'/usr/bin/wvdial ', params=>'-C /etc/wvdial.'.$xnic.' Setmode\&');
+                     if ($action{pin_code}=~m/null/)
+                     {
+                       runCommand(command=>'/usr/bin/wvdial ', params=>'-C /etc/wvdial.'.$xnic.' Setmode\&');
+                     }else{
+                       runCommand(command=>'/usr/bin/wvdial ', params=>'-C /etc/wvdial.'.$xnic.' Init\&');
+                     }
                }
                    exit();
                }
@@ -5732,11 +5888,19 @@ sub maintainISP
             $target->{band_2G3G}=$action{band_2G3G};
             $target->{daily_3greset}=$action{daily_3greset};
             $target->{flag_3g}=$action{flag_3g};
+            $target->{flag_4g}=$action{flag_4g};
+            $target->{lte_band}=$action{lte_band};
             if ( $action{apn_name} eq "" )
             {
             $target->{apn_name}="null";
             }else{
             $target->{apn_name}=$action{apn_name};
+            }
+            if ( $action{pin_code} eq "" )
+            {
+            $target->{pin_code}="null";
+            }else{
+            $target->{pin_code}=$action{pin_code};
             }
             $target->{dial_num}=$action{dial_num};
             $target->{interface_name}=$action{interface_name};
@@ -6386,11 +6550,19 @@ sub maintainISP
             $target->{band_2G3G}=$action{band_2G3G};
             $target->{daily_3greset}=$action{daily_3greset};
             $target->{flag_3g}=$action{flag_3g};
+            $target->{flag_4g}=$action{flag_4g};
+            $target->{lte_band}=$action{lte_band};
             if ( $action{apn_name} eq "" )
             {
             $target->{apn_name}="null";
             }else{
             $target->{apn_name}=$action{apn_name};
+            }
+            if ( $action{pin_code} eq "" )
+            {
+            $target->{pin_code}="null";
+            }else{
+            $target->{pin_code}=$action{pin_code};
             }
             $target->{dial_num}=$action{dial_num};
         }

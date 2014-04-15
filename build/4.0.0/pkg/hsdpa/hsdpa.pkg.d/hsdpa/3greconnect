@@ -6,6 +6,7 @@ device=$2
 ACTIVEBASICXML="/usr/local/apache/active/basic.xml"
 QBCONFACTIVE="/usr/local/apache/qbconf/basic.xml"
 apn_name=`grep iid=\"$ispid\" $ACTIVEBASICXML|sed -e "s/  <isp.*apn_name=\"//"|sed -e "s/\".*//"`
+pin_code=`grep iid=\"$ispid\" $ACTIVEBASICXML|sed -e "s/  <isp.*pin_code=\"//"|sed -e "s/\".*//"`
 dial_num=`grep iid=\"$ispid\" $ACTIVEBASICXML|sed -e "s/  <isp.*dial_num=\"//"|sed -e "s/\".*//"`
 if [ "$dial_num" = "" ];then
    dial_num="*99#"
@@ -83,9 +84,9 @@ then
                    if [ "$chk_result" != "0" ];then
                    cp -af /etc/wvdial.$device /etc/wvdial.$usbPort.new
                    sed -i -e '{s/'$device'/'$usbPort'/g}' /etc/wvdial.$usbPort.new
-                   /usr/bin/wvdial -C /etc/wvdial.$usbPort.new Init &
-                   sleep 10
                    /usr/bin/wvdial -C /etc/wvdial.$usbPort.new &
+                   sleep 10
+                   /usr/bin/wvdial -C /etc/wvdial.$usbPort.new Init &
                    sleep 20
                    break 1 
                    fi
@@ -93,19 +94,19 @@ then
               done
               else
                  device_3g=`cat /tmp/usbdev.tab |grep $imei|awk '{print $3}'` 
-                 /usr/bin/wvdialsetup $ispname $device_3g $apn_name $ispid $dial_num $username $password $mode_2G3G $band_2G3G             
-                 /usr/bin/wvdial -C /etc/wvdial.$device Init &
-                 sleep 10
+                 /usr/bin/wvdialsetup $ispname $device_3g $apn_name $ispid $dial_num $username $password $mode_2G3G $band_2G3G $pin_code
                  /usr/bin/wvdial -C /etc/wvdial.$device &
+                 sleep 10
+                 /usr/bin/wvdial -C /etc/wvdial.$device Init &
                  sleep 20
               fi
              fi
              if [ ! -f /etc/wvdial.$device ];then
-              /usr/bin/wvdialsetup $ispname $device $apn_name $ispid $dial_num $username $password $mode_2G3G $band_2G3G             
+              /usr/bin/wvdialsetup $ispname $device $apn_name $ispid $dial_num $username $password $mode_2G3G $band_2G3G $pin_code
              fi 
-             /usr/bin/wvdial -C /etc/wvdial.$device Init &
-              sleep 10
              /usr/bin/wvdial -C /etc/wvdial.$device &
+              sleep 10
+             /usr/bin/wvdial -C /etc/wvdial.$device Init &
              sleep 20
              let count=$count+1
              #if [ "$usbmodemtype" != "H20" ] && [ "$count" = "3" ];then

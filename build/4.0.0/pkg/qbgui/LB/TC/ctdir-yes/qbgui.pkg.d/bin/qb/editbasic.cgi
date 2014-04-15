@@ -25,12 +25,20 @@ if ( $tmp_action[2] )
     $action{flag_3g}=$form->param('flag_3g');
     $action{flag_3g} = $tmp_action[2];
     $action{flag_3g} =~s/flag_3g=//;
+    $action{flag_4g}=$form->param('flag_4g');
+    $action{flag_4g} = $tmp_action[2];
+    $action{flag_4g} =~s/flag_4g=//;
 }
 if ( $form->param('flag_3g') eq '1' )
 {
     $action{flag_3g}=$form->param('flag_3g');
 }
+if ( $form->param('flag_4g') eq '1' )
+{
+    $action{flag_4g}=$form->param('flag_4g');
+}
 $action{apn_name}=$form->param('apn_name');
+$action{pin_code}=$form->param('pin_code');
 $action{interface_name}=$form->param('interface_name');
 $action{imei}=$form->param('imei');
 $action{dial_num}=$form->param('dial_num');if ( !$action{dial_num} ) { $action{dial_num}='*99#'; }

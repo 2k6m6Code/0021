@@ -520,10 +520,14 @@ if ( -r $gUPGINFO )
             'U7510'                =>'Huawei U7510', 
             'MF190'                =>'ZTE MF190', 
             'MF627'                =>'ZTE MF627', 
-			'MC8090'               =>'Sierra MC7710/MC8090',
+	    'MC8090'               =>'Sierra MC7710/MC8090',
             'H20'                  =>'Qisda H20',
             'T77Z'                 =>'Sierra T77Z', 
             'HP10'                 =>'AMO HP10' 
+);
+
+%g4GUSBmodem=(
+            'MC8090'               =>'Sierra MC7710/MC8090' 
 );
 
 %gModemAction=(
@@ -573,6 +577,32 @@ if ( -r $gUPGINFO )
             'UMTS900'                            =>'UMTS 900', 
             'UMTS1900'                           =>'UMTS 1900', 
             'UMTS2100'                           =>'UMTS 2100' 
+); 
+%gband_4G_hash=(
+            'Auto'                               =>'Auto Select Band', 
+            '34'                                 =>'Band 01 2100MHz', 
+            '43'                                 =>'Band 02 1900MHz', 
+            '44'                                 =>'Band 03 1800MHz', 
+            '42'                                 =>'Band 04 1700MHz', 
+            '45'                                 =>'Band 05 850MHz', 
+            '35'                                 =>'Band 07 2600MHz', 
+            '47'                                 =>'Band 08 900MHz', 
+            '48'                                 =>'Band 09 1800MHz', 
+            '41'                                 =>'Band 11 1500MHz', 
+            '50'                                 =>'Band 12 700MHz', 
+            '36'                                 =>'Band 13 700MHz', 
+            '37'                                 =>'Band 17 700MHz', 
+            '54'                                 =>'Band 18 800MHz', 
+            '55'                                 =>'Band 19 800MHz', 
+            '56'                                 =>'Band 20 800MHz', 
+            '57'                                 =>'Band 21 1500MHz', 
+            '61'                                 =>'Band 25 1900MHz', 
+            '62'                                 =>'Band 26 800MHz', 
+            '38'                                 =>'Band 38 2600MHz', 
+            '39'                                 =>'Band 40 2300MHz', 
+            '76'                                 =>'Band 41 2500 2600MHz'
+            #'77'                                 =>'Band 42 3500MHz(Not listed on the sierra support table)', 
+            #'78'                                 =>'Band 43 3600MHz(Not listed on the sierra support table)' 
 ); 
 %gmode_2G3G_hash=(
             'GSM'                                =>'GSM Only', 

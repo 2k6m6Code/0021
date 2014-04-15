@@ -1,0 +1,67 @@
+#! /bin/sh
+#set -x
+usbdev=$1
+action=$2
+
+USBNO=`echo $usbdev|sed 's/ttyUSB//g'|sed 's/\n//g'`
+if [ -f /tmp/usbdev.tab ];then
+Brand=`cat /tmp/usbdev.tab|grep "$usbdev "|awk '{print $7}'`
+else
+Brand=`cat /tmp/usbdev.tab.bak|grep "$usbdev "|awk '{print $7}'`
+fi
+usbmodemtype=`grep pppoeportdev=\"$usbdev\" /usr/local/apache/active/basic.xml|sed -e "s/  <isp.*usbmodemtype=\"//"|sed -e "s/\".*//"`
+
+case $Brand in
+   Huawei )
+            case $usbmodemtype in
+                          E161 )
+                                 AP_Port_NO=`expr $USBNO + 2`
+                                 ;;
+                          K4605 )
+                                 AP_Port_NO=`expr $USBNO + 3`
+                                 ;;
+                          E1750)
+                                 AP_Port_NO=`expr $USBNO + 3`
+                                 ;;
+                          E1762)
+                                 AP_Port_NO=`expr $USBNO + 1`
+                                 ;;
+                          E1690)
+                                 AP_Port_NO=`expr $USBNO + 3`
+                                 ;;
+                          E367)
+                                 AP_Port_NO=`expr $USBNO + 3`
+                                 ;;
+                              *)
+                                 AP_Port_NO=`expr $USBNO + 2`
+                                 ;;
+            esac 
+            ;; # ex.
+    Qisda )
+            AP_Port_NO=`expr $USBNO - 1`
+            ;; # ex.
+    Sierra)
+			echo 100
+            exit 0
+            ;; #doesn't support monitor port
+        * )
+            AP_Port_NO=`expr $USBNO - 1`
+            ;; # ex.
+esac
+
+AP_device=ttyUSB$AP_Port_NO
+
+case $action in
+       isp )
+            catty -r 0 -d /dev/$AP_device -b 460800 -w "AT+COPS?\r\n"|grep ^+COPS|sed -e "s/^+COPS.*,\"//"|sed -e "s/\".*//"|sed -e "s/^+COPS: //"
+            ;;
+      cell )
+            catty -r 0 -d /dev/$AP_device -b 460800 -w "at\$cellinfo3G=1\r\n"|grep CELLINFO3G|awk -F "," '{print $11}'
+            ;;
+      band )
+            catty -r 0 -d /dev/$AP_device -b 460800 -w "at\!BAND=09\r\n"|sed -e "s/\"//"
+            ;;
+      txrx )
+            catty -r 0 -d /dev/$AP_device -b 460800 -w "at\$QTTR=2\r\n"|grep ^\$QTTR|sed -e "s/^\$QTTR://"|awk -F "," '{print $1 "','" $2}'
+            ;;
+esac

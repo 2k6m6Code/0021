@@ -1,0 +1,223 @@
+###############################################################################################
+#                                           Syslog Management Console
+###############################################################################################
+require ("/usr/local/apache/qb/language/qblanguage.cgi");
+@qblang = QBlanguage();
+sub showSyslog 
+{
+    my (%action)=@_;
+    my $syslog=XMLread($gPATH.'backupdb.xml');
+    #generating presentation format in TABLE 
+    print qq (<table cellspacing="0" border="0">\n);
+    print qq (<tr><td align="center" class="bigtitle" colspan="2">External FTP Server); #</td></tr>);
+    print qq (<a href="javascript:qbShowHelp('syslog')"><image src="image/help.gif" border="0" title="Help"></a></td></tr>);
+    
+    print qq (<tr><td colspan="2"><hr size="1"></td></tr>);
+
+    #****************************************************************************************
+    
+    print qq (<tr style="display:none;">);
+    print qq (<td class="body"  valign="top" align="left">);
+    print qq ($qblang[464]);
+    print qq (</td>);
+    print qq (<td class="body"  valign="top" align="left">);
+    my $status=( $syslog->{serverlog} ) ? ('checked') : (''); 
+    print qq (<INPUT type="checkbox" name="serverlog"  $status >); 
+    print qq (</td>);
+    print qq (</tr>);  
+    #****************************************************************************************
+    print qq (<tr>);
+    print qq (<td class="body"  valign="top" align="left">);
+    print qq ($qblang[469]);
+    print qq (</td>);
+    print qq (<td class="body"  valign="top" align="left">);
+    my $status=( $syslog->{ftpserver} ) ? ('checked') : (''); 
+    print qq (<INPUT type="checkbox" name="ftpserver"  $status onClick="switchFTPServerIP()">);
+    #print qq (<INPUT type="checkbox" name="ftpserver"  $status >);
+    #print qq (<INPUT type="text" maxlength="15" class="qbtext" name="ftpserverip" value="$syslog->{ftpserverip}" onChange="checkAndSetFTPServerIP()">);
+    print qq (<INPUT type="text" class="qbtext" name="ftpserverip" value="$syslog->{ftpserverip}" >);
+    print qq (</td>);
+    print qq (</tr>); 
+
+    #****************************************************************************************
+    print qq (<tr>);
+    print qq (<td class="body"  valign="top" align="left">);
+    print qq ($qblang[471]);
+    print qq (</td>);
+    print qq (<td class="body"  valign="top" align="left">);
+    print qq (<INPUT type="text" class="qbtext" name="ftpusername" value="$syslog->{ftpusername}" style="width:150">);
+    print qq (</td>);
+    print qq (</tr>); 
+
+    #****************************************************************************************
+    print qq (<tr>);
+    print qq (<td class="body"  valign="top" align="left">);
+    print qq ($qblang[472]);
+    print qq (</td>);
+    print qq (<td class="body"  valign="top" align="left">);
+    print qq (<INPUT type="password" class="qbtext" name="ftppassword" value="$syslog->{ftppassword}" style="width:150">);
+    print qq (</td>);
+    print qq (</tr>); 
+
+    #****************************************************************************************
+    print qq (<tr>);
+    print qq (<td class="body"  valign="top" align="left">);
+    print qq ($qblang[473]);
+    print qq (</td>);
+    print qq (<td class="body"  valign="top" align="left">);
+    print qq (<INPUT type="text" title="Support one layer directory can be created automatically!!! For example:If you type  /aaa/bbb/ccc ,qb will create a directory ccc in /aaa/bbb,then upload config file to /aaa/bbb/ccc/" class="qbtext" name="ftpdir" value="$syslog->{ftpdir}" style="width:150">);
+    print qq (</td>);
+    print qq (</tr>); 
+
+    #****************************************************************************************
+    print qq (<tr>);
+    print qq (<td class="body"  valign="top" align="left">);
+    print qq ($qblang[474]);
+    print qq (</td>);
+    print qq (<td><select class="qbopt"  name="ftpfrequency" style="width:150">);
+    foreach my $count ( 1..24  ) 
+    {  
+       my $status=( "$count.hour" eq "$syslog->{ftpfrequency}" ) ? ('selected'):('');
+       if ( $count eq "1" ){print qq (<option $status value="$count.hour">$count hour</option>);}
+       else {print qq (<option $status value="$count.hour">$count hours</option>);}
+    }
+    foreach my $count ( 1..14  ) 
+    {  
+       my $status=( "$count.day" eq "$syslog->{ftpfrequency}" ) ? ('selected'):('');
+       if ( $count eq "1" ){print qq (<option $status value="$count.day">$count day</option>);}
+       else {print qq (<option $status value="$count.day">$count days</option>);}
+    }
+    foreach my $count ( 1..24  ) 
+    {  
+       my $status=( "$count.everyd" eq "$syslog->{ftpfrequency}" ) ? ('selected'):('');
+       if ( $count < 13 ){print qq (<option $status value="$count.everyd">$count:00 AM everyday</option>);}
+       else {print qq (<option $status value="$count.everyd">$count:00 PM everyday</option>);}
+    }
+    print qq (</select>);
+    print qq (</td>);
+    print qq (</tr>); 
+
+
+    print qq (<tr><td colspan="2"><hr size="1"></td></tr>);
+
+    
+    #************************************ Command Button  ********************************************
+    print qq (<tr>);
+    print qq (<td colspan="2" align="center">);
+    print qq (<input class="qb" type="button" value="$qblang[139]" title="Save All Parameters and apply now !" onClick="goSubmit('APPLY')" style="width:100">);
+    print qq (<input class="qb" type="button" width="100" value="Restore File" onclick="MM_openBrWindow('../file_restore.cgi','Import',350,140)">);
+    print qq (</td></tr>);
+ 
+    print qq (</table>);
+}
+#showConsole
+
+
+#======================================================================================================================
+sub backupdbScript 
+{
+    print << "SCRIPT";
+
+    <script language="javascript">
+
+    var myform; 
+    
+    function cgi_dep_onload() 
+    {
+        myform=window.document.forms[0]; 
+        switchSyslogServerIP();   
+    }
+
+    function switchSyslogServerIP()
+    {
+        myform.syslogserverip.disabled=( myform.syslogserver.checked ) ? (false) : (true);
+    }
+
+    function switchFTPServerIP()
+    {
+        myform.ftpserverip.disabled=( myform.ftpserver.checked ) ? (false) : (true);
+        if (myform.ftpserver.checked)
+        {
+            myform.serverlog.checked=true;
+            myform.kernellog.checked=true;
+            myform.squidlog.checked=true;
+            myform.locallog.checked=false;
+        }else
+        {
+            myform.serverlog.checked=false;
+            myform.kernellog.checked=false;
+            myform.squidlog.checked=false;
+            myform.locallog.checked=true;
+        }
+    }
+    function MM_openBrWindow(theURL,winName,win_width,win_height)
+    {
+       var PosX = (window.screen.availWidth-10-win_width)/2;
+       var PosY = (window.screen.availHeight-30-win_height)/2;
+       features = "width="+win_width+",height="+win_height+",top="+PosY+",left="+PosX+",status=no,location=no,status=no,menubar=no,toolbar=no,resizable=no,scrollbars=no";
+       var newwin = window.open(theURL,winName,features);
+    }
+                                                                                        
+    function checkAndSetSyslogServerIP()
+    {
+        if ( !isValidIP(myform.syslogserverip.value) ) 
+        { 
+            myform.syslogserverip.value=""; 
+            alert('IP format Error');
+        }
+    }
+
+    function checkAndSetFTPServerIP()
+    {
+        if ( !isValidIP(myform.ftpserverip.value) ) 
+        { 
+            myform.ftpserverip.value=""; 
+            alert('FTP IP format Error');
+        }
+    }
+
+    
+    </script>
+SCRIPT
+}
+#backupdbScript
+
+
+#======================================================================================================================
+#maintainSyslog( %action )
+sub maintainSyslog 
+{
+    my (%action)=@_;
+    if ( !$action{action} ) { return; }
+    my $syslog=XMLread($gPATH.'backupdb.xml');
+
+    if ( $action{action}=~m/^APPLY$/ ) 
+    {
+        $syslog->{ftpserver}=$action{ftpserver};
+        $syslog->{ftpserverip}=$action{ftpserverip};
+        $syslog->{ftpusername}=$action{ftpusername};
+        $syslog->{ftppassword}=$action{ftppassword};
+        $syslog->{ftpdir}=$action{ftpdir};
+        $syslog->{ftpfrequency}=$action{ftpfrequency};
+    }
+    
+    #-------updating backupdb.xml------------------------ 
+    XMLwrite($syslog, $gPATH."backupdb.xml");
+
+    #@dep
+    runCommand(command=>'do_backupdb.pl', params=>'');
+
+    #================================================================================================
+    # to make sure the writing to CF succefully, we have to sync for a certain times
+    # sync the writing to CF
+    qbSync();
+    
+    
+    # kill klogd and syslogd
+    runCommand(command=>'service', params=>'syslog restart');
+    
+    LogUserAction( action=>'APPLYSYSLOGSERVER', serverlog=>$action{serverlog}, kernellog=>$action{kernellog}, squidlog=>$action{squidlog}, locallog=>$action{locallog}, syslogserver=>$action{syslogserver}, syslogserverip=>$action{syslogserverip}, ftpserver=>$action{ftpserver}, ftpserverip=>$action{ftpserverip}, syslogdev=>$action{syslogdev}, ftpusername=>$action{ftpusername}, ftppassword=>$action{ftppassword}, ftpdir=>$action{ftpdir}, ftpfrequency=>$action{frpfrequency} );
+}
+#maintainSyslog
+#
+1

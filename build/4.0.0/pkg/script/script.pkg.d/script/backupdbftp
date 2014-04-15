@@ -1,0 +1,43 @@
+#!/bin/sh
+#set -x
+
+HOST=$1
+USER=$2
+PASSWD=$3
+DIR=$4
+FILENAME=`hostname`.`date +%s`
+#FILENAME=`date +%s`
+killall -9 nfcapd
+/sbin/service syslog stop
+tar zcvf /mnt/tclog/$FILENAME.db /mnt/tclog/*
+/usr/local/bin/nfcapd -w -D -t 60 -S 1 -l /mnt/tclog/nfcapd/ -p 54311
+/sbin/service syslog start
+sleep 2
+sync;sync
+FILE="$FILENAME.tgz"
+cd /mnt/tclog
+if [ $DIR != '' ]
+then
+ftp -inv $HOST <<END_SCRIPT
+quote USER $USER
+quote PASS $PASSWD
+mkdir $DIR
+cd $DIR
+binary
+put $FILE
+reset
+bye
+END_SCRIPT
+else
+ftp -inv $HOST <<END_SCRIPT
+quote USER $USER
+quote PASS $PASSWD
+binary
+put $FILE
+reset
+bye
+END_SCRIPT
+fi
+rm -f *.db
+exit 0
+

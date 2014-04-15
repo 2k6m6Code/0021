@@ -156,9 +156,11 @@ sub showISPList
         
             print qq (<td align="center" width="$titleWidth{ISPID}" height="25" >);
             if ( $isp->{flag_3g} )
+            {
             print qq (USB3G$isp->{iid}</td>);
-            else
+            }else{
             print qq (LTE$isp->{iid}</td>);
+            }
         }
         elsif ( $isp->{isptype} eq "dhcp" )
         {

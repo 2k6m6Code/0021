@@ -88,6 +88,12 @@ case $action in
                              AP_device=ttyUSB$AP_Port_NO
                              catty -r 0 -d /dev/$AP_device -b 460800 -w "at\$QCPWRDN\r\n"
                          ;;
+                    Sierra )
+                             USBNO=`echo $device|sed 's/ttyUSB//g'|sed 's/\n//g'`
+                             AP_Port_NO=`expr $USBNO - 1`
+                             AP_device=ttyUSB$AP_Port_NO
+                             catty -r 0 -d /dev/$AP_device -b 460800 -w "at\!RESET\r\n"
+                         ;;
                         * )
                              echo -ne "AT+CFUN=1,0\r" >/dev/$device
                              sleep 10

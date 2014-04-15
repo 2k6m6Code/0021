@@ -41,8 +41,7 @@ case $Brand in
             AP_Port_NO=`expr $USBNO - 1`
             ;; # ex.
     Sierra)
-			echo 100
-            exit 0
+            AP_Port_NO=`expr $USBNO - 1`
             ;; #doesn't support monitor port
         * )
             AP_Port_NO=`expr $USBNO - 1`

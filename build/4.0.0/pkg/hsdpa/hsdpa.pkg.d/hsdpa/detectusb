@@ -81,7 +81,7 @@ do
       esac 
       # Gary for Sierra MC8090
       if [ "$usbVendor" = "1199" ] && [ "$usbProduct" = "68a3" ] ;then
-         InterfaceNumberchk=03
+         InterfaceNumberchk=04
       fi
      #To find out the ttyUSB number
      for usbPort in $Allusbport
@@ -134,7 +134,7 @@ do
               stty -F /dev/ttyUSB$AP_Port_NO -echo -echoe -echok
               ;; # ex.
               Sierra )
-              AP_Port_NO=`expr $USBNO + 0`
+              AP_Port_NO=`expr $USBNO - 1`
               stty -F /dev/ttyUSB$AP_Port_NO -echo -echoe -echok
               ;; # ex.
               * )

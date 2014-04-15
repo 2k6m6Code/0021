@@ -70,9 +70,9 @@ then
              if [ "$usbmodemtype" != "H20" ] && [ "$usbmodemtype" != "T77Z" ] && [ "$usbmodemtype" != "MC8090" ];then
                  /opt/qb/hsdpa/detectusb $usbmodemtype 1
              fi
-             if [ "$usbmodemtype" == "MC8090" ];then
-                 /opt/qb/hsdpa/MC8090_3G_info.sh $device
-             fi
+             #if [ "$usbmodemtype" == "MC8090" ];then
+             #    /opt/qb/hsdpa/MC8090_3G_info.sh $device
+             #fi
              if [ "$count" = "1" ];then
               if [ "$imei" = "" ];then
               Allotherdevice=`ls -al /dev|grep $usbmodemtype|awk '{print $11}'|sed 's/\n//g'`

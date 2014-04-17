@@ -30,8 +30,8 @@ system("/usr/local/apache/qb/setuid/run /bin/chmod 777 /tmp");
 if(grep(/srcip/,$tm_option))
 {
 	if(grep(/local/,$tm_type)){
-#	print qq("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time '$tm_proto src ip $tm_ip && dst $tm_net' -o long -o \"fmt:%ts %td  %pr %sap %dap %pkt %byt  %fl\" > /tmp/test_nfdump");
-	system("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time '$tm_proto src ip $tm_ip && dst $tm_net' -o long -o \"fmt:%ts %td  %pr %sap %dap %pkt %byt  %fl\" > /tmp/test_nfdump");}
+#	print qq("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time '$tm_proto src ip $tm_ip and (dst $tm_net)' -o long -o \"fmt:%ts %td  %pr %sap %dap %pkt %byt  %fl\" > /tmp/test_nfdump");
+	system("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time '$tm_proto src ip $tm_ip and (dst $tm_net)' -o long -o \"fmt:%ts %td  %pr %sap %dap %pkt %byt  %fl\" > /tmp/test_nfdump");}
 	else{
 	system("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time '$tm_proto dst ip $tm_ip' -o long -o \"fmt:%ts %td  %pr %sap %dap %pkt %byt  %fl\" > /tmp/test_nfdump");
 	}

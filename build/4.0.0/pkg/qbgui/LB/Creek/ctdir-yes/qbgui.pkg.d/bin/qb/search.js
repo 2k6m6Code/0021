@@ -8,7 +8,7 @@ function title(sa)
 	$("#ip_option").append($("<option></option>").attr("value","-A srcip ").text("Src IP"));
 	$("#ip_option").append($("<option></option>").attr("value","-A dstip ").text("Dst IP"));
 	$("#ip_option").append($("<option></option>").attr("value","-A srcip4/24 ").text("Src Subnet"));
-	$("#ip_option").append($("<option></option>").attr("value","-A dstip4/24 ").text("Dsr Subnet"));
+	$("#ip_option").append($("<option></option>").attr("value","-A dstip4/24 ").text("Dst Subnet"));
     }
     else if (sa == "top_N")
     {

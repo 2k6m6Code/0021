@@ -283,7 +283,7 @@ function Submit()
 		 }
      //} 
         
-     if (\$("#end_hr").val() < 10 ){\$("#end_hr").val('0'+tmp[2]);}
+//     if (\$("#end_hr").val() < 10 ){\$("#end_hr").val('0'+tmp[2]);}
      time += "nfcapd." + tmp[0] + tmp[1] + tmp[2] + \$("#end_hr").val() + \$("#end_sec").val();
      var top = "-n " + \$("#top_1").val();
      var ip = \$("#ip_option").val();

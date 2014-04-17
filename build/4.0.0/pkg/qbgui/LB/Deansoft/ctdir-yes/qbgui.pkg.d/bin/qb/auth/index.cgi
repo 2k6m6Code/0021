@@ -63,10 +63,70 @@ if ($ENV{'HTTP_VIA'} && $ENV{'HTTP_X_FORWARDED_FOR'})
    if ($type eq 'LDAP')
    {
        #LDAP
-       my $status = system("/usr/bin/ldapwhoami -H ldap://123.51.217.232:389 -x -D \"uid=$username,ou=rd,dc=creek,dc=com\" -w $password");
-       if ($status =~m /Success/)
+	   my $list_r = $reflist->{server};
+       my $sip,$group,$port,$domain;
+       foreach my $ss  (@$list_r)
        {
-           print qq($status);
+           if ($ss->{schname} eq 'system' || $ss->{schname} eq 'LD' || $ss->{schname} eq 'AD' || $ss->{schname} eq 'Radius'){next;}
+           $sip=$ss->{ip};
+           $group=$ss->{group};
+           $port=$ss->{port};
+           $domain=$ss->{domain};
+       }
+       my @dc = split(/\./,$domain);
+       my $info='';
+       $info=$info.'cn='.$username;
+	   if($group ne ''){
+       $info=$info.",cn=".$group;}
+       foreach my $result (@dc)
+       {
+           $info=$info.',dc='.$result;
+       }
+       my @status = `/usr/local/apache/qb/setuid/run /usr/sbin/ldapwhoami -H ldap://$sip:$port -x -D \"$info\" -w $password`;
+       foreach my $aa (@status)
+       {
+           if (!grep(/Success/,$aa)){next;}
+           if (grep(/Success/,$aa))
+			{
+				$success = '1';
+				foreach my $server (@$list)
+			   {
+				   if ($server->{description} eq 'None' || $server->{description} ne 'LDAP'){next;}
+				   my $userlist = $server->{member};
+				   my $ttime=time()+(8*60*60);
+				   foreach my $user (@$userlist)
+				   {
+					   if (($user->{idd} eq $username && ($ip eq $user->{ip} || $user->{ip} eq '') && ($user->{time} eq '' || ($ttime - $user->{time}) > 0)))
+					   {
+						   $user->{time} = $ttime;
+						   if ($user->{iip} ne '')
+						   {
+								system("/usr/local/apache/qb/setuid/run /sbin/iptables -t nat -D AUTH -s $user->{iip} -j RETURN");
+						   }
+						   $user->{iip} = $ip;
+							foreach my $myquota (@$quotalist)
+							{
+								if($myquota->{name} eq $user->{idd})
+								{
+									system("/usr/local/apache/qb/setuid/run /sbin/iptables -t mangle -D PREROUTING -d $myquota->{ip} -j $myquota->{name}.down");
+									system("/usr/local/apache/qb/setuid/run /sbin/iptables -t mangle -D POSTROUTING -s $myquota->{ip} -j $myquota->{name}.up");
+									$myquota->{ip}=$user->{iip}
+								}
+							}
+					   }
+				   }
+			   }
+			}
+			if ($success)
+			{
+				XMLwrite($quota,$gPATH.'quota.xml');
+				XMLwrite($reflist,$gPATH.'auth.xml');
+				foreach $new_ip (@$quotalist)
+				{
+					#print "$new_ip->{name}";
+					if($new_ip->{name} eq $username){quotawork(quotaaction=>'CREAT', LINK=>$new_ip->{name});}
+				}
+			}
        }
    }elsif ($type eq 'Radius')
    {
@@ -92,11 +152,11 @@ if ($ENV{'HTTP_VIA'} && $ENV{'HTTP_X_FORWARDED_FOR'})
    {
        #AD
        my $list_r = $reflist->{server};
-       my $ip,$group,$port,$domain;
+       my $sip,$group,$port,$domain;
        foreach my $ss  (@$list_r)
        {
            if ($ss->{schname} eq 'system' || $ss->{schname} eq 'LD' || $ss->{schname} eq 'LDAP' || $ss->{schname} eq 'Radius'){next;}
-           $ip=$ss->{ip};
+           $sip=$ss->{ip};
            $group=$ss->{group};
            $port=$ss->{port};
            $domain=$ss->{domain};
@@ -109,11 +169,51 @@ if ($ENV{'HTTP_VIA'} && $ENV{'HTTP_X_FORWARDED_FOR'})
        {
            $info=$info.',dc='.$result;
        }
-       my @status = `/usr/local/apache/qb/setuid/run /usr/sbin/ldapwhoami -H ldap://$ip:$port -x -D \"$info\" -w $password`;
+       my @status = `/usr/local/apache/qb/setuid/run /usr/sbin/ldapwhoami -H ldap://$sip:$port -x -D \"$info\" -w $password`;
        foreach my $aa (@status)
        {
            if (!grep(/Success/,$aa)){next;}
-           if (grep(/Success/,$aa)){$success = '1';}
+           if (grep(/Success/,$aa))
+			{
+				$success = '1';
+				foreach my $server (@$list)
+			   {
+				   if ($server->{description} eq 'None' || $server->{description} ne 'AD'){next;}
+				   my $userlist = $server->{member};
+				   my $ttime=time()+(8*60*60);
+				   foreach my $user (@$userlist)
+				   {
+					   if (($user->{idd} eq $username && ($ip eq $user->{ip} || $user->{ip} eq '') && ($user->{time} eq '' || ($ttime - $user->{time}) > 0)))
+					   {
+						   $user->{time} = $ttime;
+						   if ($user->{iip} ne '')
+						   {
+								system("/usr/local/apache/qb/setuid/run /sbin/iptables -t nat -D AUTH -s $user->{iip} -j RETURN");
+						   }
+						   $user->{iip} = $ip;
+							foreach my $myquota (@$quotalist)
+							{
+								if($myquota->{name} eq $user->{idd})
+								{
+									system("/usr/local/apache/qb/setuid/run /sbin/iptables -t mangle -D PREROUTING -d $myquota->{ip} -j $myquota->{name}.down");
+									system("/usr/local/apache/qb/setuid/run /sbin/iptables -t mangle -D POSTROUTING -s $myquota->{ip} -j $myquota->{name}.up");
+									$myquota->{ip}=$user->{iip}
+								}
+							}
+					   }
+				   }
+			   }
+			}
+			if ($success)
+			{
+				XMLwrite($quota,$gPATH.'quota.xml');
+				XMLwrite($reflist,$gPATH.'auth.xml');
+				foreach $new_ip (@$quotalist)
+				{
+					#print "$new_ip->{name}";
+					if($new_ip->{name} eq $username){quotawork(quotaaction=>'CREAT', LINK=>$new_ip->{name});}
+				}
+			}
        }
    }elsif ($type eq 'LD')
    {

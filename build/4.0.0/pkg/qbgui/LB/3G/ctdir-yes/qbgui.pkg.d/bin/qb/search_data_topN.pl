@@ -35,7 +35,7 @@ print "Content-type: text/html\n\n";
 system("/usr/local/apache/qb/setuid/run /bin/chmod 777 /tmp");
 system("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip > /tmp/test_nfdump");
 system("/usr/local/apache/qb/setuid/run /bin/chmod 777 /tmp/test_nfdump");
-print qq("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip");
+#print qq("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip");
 
 print qq (<table bgcolor="#332211" width="100%" border="0" id="tables">);
 open(FILE,"/tmp/test_nfdump");
@@ -100,7 +100,7 @@ foreach my $file (@$flow)
 {
     if ($file->{schname} eq 'system'){next;}
     print qq (<tr bgcolor="$bgcolor" originalColor="$originalColor" onmouseover="focusedColor(this)" onmouseout="blurColor(this)">);
-    print qq (<td width="200" align="center" colspan=7>$file->{schname}<td>);
+    print qq (<td width="200" align="center" colspan=7>$file->{schname}</td>);
     my $menber = $file->{member};
     my $packets=0;
     my $bytes=0;
@@ -162,7 +162,7 @@ foreach my $file (@$flow)
     }
 }
 print qq (<tr bgcolor="$bgcolor" originalColor="$originalColor" onmouseover="focusedColor(this)" onmouseout="blurColor(this)">);
-print qq (<td width="200" align="center" colspan=7>Other<td>);
+print qq (<td width="200" align="center" colspan=7>Other</td>);
 $top=1;
 foreach my $database (@tmp_data)
 {

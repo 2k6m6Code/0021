@@ -159,7 +159,7 @@ elsif($tm_option eq 'out_dst')
 }
 else
 {
-	system("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip > /tmp/test_nfdump");
+	system("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip -o \"fmt:%ts %td  %sa %da %pkt %byt %bps %bpp  %fl\" > /tmp/test_nfdump");
 	#print qq("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip > /tmp/test_nfdump");
 }
 system("/usr/local/apache/qb/setuid/run /bin/chmod 777 /tmp/test_nfdump");

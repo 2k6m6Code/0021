@@ -30,7 +30,7 @@ if($tm_title eq 'webfilter')
 	system ("/usr/local/apache/qb/setuid/run /bin/cat /mnt/tclog/squid/log/$y-$m-$d | awk '/TCP_DENIED/ {print\$1 \" \" \$3 \" \" \$7}' > /tmp/$y-$m-$d.log");
 	system ("/usr/local/apache/qb/setuid/run /usr/bin/perl -p -e 's/^\\d+\.\\d+/localtime \$&/e' < /tmp/$y-$m-$d.log > /tmp/tmp_squid.log");
         system ("/usr/local/apache/qb/setuid/run /bin/cat /tmp/tmp_squid.log | awk '{print \$7}' |sort|uniq -c|sort -nr > /tmp/tmp_squid2.log");
-        system ("/usr/local/apache/qb/setuid/run /bin/cat /tmp/tmp_squid.log | awk '$7 ~ /^h/{print \$7}' |cut -s -f 1-3 -d /|sort|uniq -c|sort -nr > /tmp/tmp_squid_domain.log");
+        system ("/usr/local/apache/qb/setuid/run /bin/cat /tmp/tmp_squid.log | awk '\$7 ~ /^h/{print \$7}' |cut -s -f 1-3 -d /|sort|uniq -c|sort -nr > /tmp/tmp_squid_domain.log");
 	system ("sync");
 }
 if($tm_title eq 'webcache')

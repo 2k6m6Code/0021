@@ -55,11 +55,11 @@ my $goto = '-->';
 if (!grep(/query/,$option))
 {
    $display = "display:none";
-   $text ='Hour&nbsp;&nbsp;';
+   $text ='&nbsp;To&nbsp;&nbsp;';
    $goto ='';
 }
 
-print qq (<select id="start_sec" style="$display">);
+print qq (<select id="start_sec");# style="$display">);
 foreach my $tm (0..59 )
 {
     if ($tm < 10 ){$tm = '0'.$tm;}
@@ -67,8 +67,8 @@ foreach my $tm (0..59 )
 }
 print qq (</select>$text);
 
-print qq ($goto<input type="text" id="datepicker_1" style="width:90px;$display" value="$now_date"/>);
-print qq (&nbsp;<select id="end_hr" style="$display">);
+print qq ($goto<input type="text" id="datepicker_1" style="width:90px;" value="$now_date"/>);#$display
+print qq (&nbsp;<select id="end_hr");# style="$display">);
 $hour++;
 foreach my $tm (0..23 )
 {
@@ -83,7 +83,7 @@ foreach my $tm (0..23 )
 }
 print qq (</select>);
 
-print qq (<select id="end_sec" style="$display">);
+print qq (<select id="end_sec");# style="$display">);
 foreach my $tm (0..59 )
 {
     if ($tm < 10 ){$tm = '0'.$tm;}
@@ -91,6 +91,7 @@ foreach my $tm (0..59 )
 }
 print qq (</select>);
 
+=cut
 print qq (<a name="noquery" >Report Type : </a><select id="report_type" name="noquery">);
 print qq (<option value="0">Hourly</option>);
 print qq (<option value="1">Daily</option>);
@@ -105,7 +106,7 @@ print qq (<option value="0">All Time</option>);
 print qq (<option value="1">Work Time</option>);
 print qq (<option value="2">Off Time</option>);
 print qq (</select></td></tr>);
-
+=cut
 print qq (<tr><td align="center"><input type="button" id="query" value="Query" onclick="Submit();"></td></tr>);
 
 print qq (</table></div>);
@@ -153,6 +154,7 @@ function Submit()
 	\$("#query").attr('disabled', true);
      var url = "search_data_icmp_total.pl";
      var start = \$("#datepicker").val();
+	 /*
      switch (\$("#report_type").val())
      {
          case '0':
@@ -220,6 +222,7 @@ function Submit()
          
          break;
      }
+	 */
      var end = \$("#datepicker_1").val();
      if (!start || !end)
      {
@@ -235,11 +238,11 @@ function Submit()
 			 if(myhr < 10){myhr = '0'+myhr.toString();}
 			 else{myhr.toString();}
              //\$("#end_hr").val(((\$("#start_hr").val()-0)+1));
-			 \$("#end_hr").val(myhr);
+//			 \$("#end_hr").val(myhr);
          }
 		 else
 		 {
-             \$("#end_hr").val(\$("#start_hr").val());
+//             \$("#end_hr").val(\$("#start_hr").val());
 		 }
     // } 
         

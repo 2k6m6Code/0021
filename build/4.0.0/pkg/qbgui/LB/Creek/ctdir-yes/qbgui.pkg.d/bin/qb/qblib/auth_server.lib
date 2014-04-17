@@ -81,7 +81,7 @@ sub scriptSchedule
     
     function cgi_dep_onload() { myform=window.document.forms[0]; }
 
-    function NewSchedule() { window.top.mainFrame.location.href="../newsauth_server.cgi"; }    
+    function NewSchedule() { window.top.mainFrame.location.href="menu_authertication.cgi?p=newsauth_server.cgi"; }    
     
     function powerswitch(oo)
     {

@@ -26,6 +26,7 @@ $action{group_quota} = $form->param('group_quota');
 $action{group_name} = $form->param('group_name');
 $action{d_qn} = $form->param('d_qn');
 $action{d_ql} = $form->param('d_ql');
+$action{d_cl} = $form->param('d_cl');
 
 print qq (<html><head><link rel="stylesheet" href="gui.css" type="text/css"><script type="text/javascript" src="jquery-1.9.1.min.js"></script></head><body bgcolor="#336699" text="#ffffff" link="#000040" >);
 
@@ -38,7 +39,7 @@ if ( $action{action} ) { maintainSchedule( %action ); }
 print qq(<div align="center">);
 #------- start to draw every form object to interact with users --------------------------------
 print qq(<form name="newscheduleform" method="post" action="newsauth_user.cgi">);
-print qq (<table cellspacing="0" border="0">);
+print qq (<table cellspacing="0" border="0" style="width:100%">);
 print qq (<tr><td>);
 showNewSchedule(%action);
 scriptNewSchedule();
@@ -54,6 +55,7 @@ print qq(<input type="hidden" id="d_time" name="d_time" value="">);
 print qq(<input type="hidden" id="d_quota" name="d_quota" value="">);
 print qq(<input type="hidden" id="d_qn" name="d_qn" value="">);
 print qq(<input type="hidden" id="d_ql" name="d_ql" value="">);
+print qq(<input type="hidden" id="d_cl" name="d_cl" value="">);
 print qq(<input type="hidden" id="group_name" name="group_name" value="">);
 print qq(<input type="hidden" id="group_quota" name="group_quota" value="">);
 print qq(</form></div>);

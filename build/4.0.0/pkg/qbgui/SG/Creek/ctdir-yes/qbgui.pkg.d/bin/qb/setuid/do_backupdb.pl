@@ -6,7 +6,7 @@ require ('/usr/local/apache/qb/qbmod.cgi');
 # main program start routine
 # --------------------------
 
-my $QB_BACKUPDB_FILE="/usr/local/apache/abconf/backupdb.xml";
+my $QB_BACKUPDB_FILE="/usr/local/apache/qbconf/backupdb.xml";
 my $QB_CRONTAB="/etc/crontab";
 #=======================================================
 # parsing backupdb.xml into $backupdb

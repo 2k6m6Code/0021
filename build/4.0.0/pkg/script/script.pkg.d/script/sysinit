@@ -871,7 +871,7 @@ then
     mount /dev/$SYSLOGDEV /mnt/tclog
 else
     cat >> /etc/crontab <<!
-#0 0 */$ftpfrequency * *  root       /opt/qb/bin/script/syslogftp $ftpserverip $ftpusername $ftppassword $ftpdir
+#0 0 */ftpfrequency * *  root       /opt/qb/bin/script/syslogftp ftpserverip ftpusername ftppassword ftpdir
 !
 fi
 
@@ -896,7 +896,7 @@ then
     rm -f /mnt/tclog/*
 else
     cat >> /etc/crontab <<!
-#0 0 */$ftpfrequency * *  root       /opt/qb/bin/script/backupdbftp $ftpserverip $ftpusername $ftppassword $ftpdir
+#0 0 */ftpfrequency * *  root       /opt/qb/bin/script/backupdbftp ftpserverip ftpusername ftppassword ftpdir
 !
 fi
 

@@ -31,12 +31,15 @@ sub showNewSchedule
     }elsif ($edit->{schname} eq "Radius")
     {
         $RAD = 'SELECTED';
+    }elsif ($edit->{schname} eq "AD")
+    {
+    	$AD = 'SELECTED';
     }
     print qq (<select class="qbtext" id="schname_show" name="schname_show" style="WIDTH: 120px" onchange="change(this);">);
     print qq (<option value="LD" $LDAP>Local Datebase</option>);
     print qq (<option value="LDAP" $LDAP>LDAP</option>);
     print qq (<option value="Radius" $RAD>Radius</option>);
-    print qq (<option value="AD" >AD</option></select>);
+    print qq (<option value="AD" $AD >AD</option></select>);
     print qq (<input type="hidden" class="qbtext" id="schname" name="schname" value="$action{schname}" >);
     print qq (</td></tr>);
     print qq (<tr>);
@@ -152,6 +155,7 @@ sub scriptNewSchedule
     {
         if (oo.value != "LD")
         {
+            document.getElementById('ip').disabled = false;
             document.getElementById('port').disabled = false;
             document.getElementById('group').disabled = false;
             document.getElementById('domain').disabled = false;
@@ -159,6 +163,7 @@ sub scriptNewSchedule
         }    
         else
         {
+            document.getElementById('ip').disabled = true;
             document.getElementById('port').disabled = true;
             document.getElementById('group').disabled = true;
             document.getElementById('domain').disabled = true;
@@ -288,7 +293,7 @@ sub scriptNewSchedule
             schname_show.disabled = true; 
         
         if ( action != '' || action == 'ENABLED')
-            window.top.mainFrame.location.href="auth_server.cgi";
+            window.top.mainFrame.location.href="menu_authertication.cgi?p=auth_server.cgi";
         
     }
     
@@ -332,7 +337,7 @@ sub maintainSchedule
         $newschedule{group}=$action{d_group};
         $newschedule{domain}=$action{d_domain};
         $newschedule{schname}=$action{schname};
-        $newschedule{enabled}=($action{enabled})?($action{enabled}):('1');
+        $newschedule{enabled}=($action{enabled})?($action{enabled}):('0');
         $newschedule{description}=$action{description};
 
         foreach my $sh ( @$schlist )
@@ -374,10 +379,15 @@ sub maintainSchedule
         my $delet=$action{name};
         foreach my $item ( @$schlist )
         {
-            if ( $item->{schname} eq $delet ) 
-            { 
+            if ( $item->{schname} eq 'system'){next;}
+            if ( $item->{schname} eq $delet )
+            {
                $item->{enabled} = $enabled;
                $check = '1';
+            }
+            else
+            {
+               $item->{enabled} = '0';
             }
         }
     }
@@ -406,11 +416,10 @@ sub maintainSchedule
     
     if ( $action{action}=~m/^ENABLED$/ )
     {
-    
-        system("/bin/cp -a /usr/local/apache/conf/httpd.con.n /mnt/conf/httpd.con");
+    	system("/usr/local/apache/qb/setuid/run /bin/cp -a /usr/local/apache/qb/httpd.con.n /mnt/conf/httpd.con");
         if ($check eq '1')
         {
-            system("/bin/cp -a /usr/local/apache/conf/httpd.con.y /mnt/conf/httpd.con");
+            system("/usr/local/apache/qb/setuid/run /bin/cp -a /usr/local/apache/qb/httpd.con.y /mnt/conf/httpd.con");
             system("/usr/local/apache/qb/setuid/run /usr/bin/perl /usr/local/apache/qb/auth_open.pl"); 
         }
         system("sync");

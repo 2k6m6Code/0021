@@ -15,27 +15,25 @@ sub showNewSchedule
     }
    
     
-    my @titleHeadList=('IP', 'User Name', 'Password', 'Time','Mail', 'Information', 'Quota<br>Notification', 'Bandwidth<br>setting', 'Edit');
+    my @titleHeadList=('IP', 'User Name', 'Password', 'Time','Mail', 'Information', 'Quota<br>Notification', 'Bandwidth<br>setting', 'Connection<br>Limit', 'Edit');
     my %titleWidth=('IP'=>200, 'Name'=>100, 'Password'=>150, 'Time'=>200,'Mail'=>100, 'Information'=>100 , 'Information'=>100 ,'Edit'=>50);
     
-    print qq (<table bgcolor="#336699" cellspacing="3" border="0">);
+    print qq (<table bgcolor="#336699" cellspacing="3" border="0" style="width:100%">);
     print qq (<tr><td class="bigtitle">User Group);
 
     print qq (<hr size=1>);
     
-    print qq (<table width="650">);
+    print qq (<table width="100%">);
     print qq (<tr>);
-    print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 20px"></td>);
-    print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 80px">);
+    print qq (<td class="body"  valign="center" align="right" style="height: 30px; width:50%">);
     print qq (Name :);
-    print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 250px">);
+    print qq (<td class="body"  valign="center" align="left" style="height: 30px; width:50%">);
     print qq (<input class="qbtext" id="schname_show" name="schname_show" style="WIDTH: 120px" value="$edit->{schname}">);
     print qq (<input type="hidden" class="qbtext" id="schname" name="schname" value="$action{schname}" >);
     print qq (<tr>);
-    print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 20px"></td>);
-    print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 80px">);
+    print qq (<td class="body"  valign="center" align="right" style="height: 30px; width:50%">);
     print qq (Auth :);
-    print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 250px">);
+    print qq (<td class="body"  valign="center" align="left" style="height: 30px; width:50%">);
     
     print qq (<select class="qbtext" id="description" name="description" style="WIDTH: 120px" onchange="checktype();">);
     print qq (<option value="None">None</option>);
@@ -58,13 +56,13 @@ sub showNewSchedule
     print qq (</td></tr>);
     print qq (</table>);
      
-    print qq (<table width="650">);
-    print qq (<tr><td class="body"  valign="center" align="left" style="height: 30px; width: 20px"></td>);
+    print qq (<table width="100%">);
+    print qq (<tr style="display:none;"><td class="body"  valign="center" align="left" style="height: 30px; width: 20px"></td>);
     print qq (<td class="body"  valign="center" align="left" style="height: 1px; width: 100%" onClick="showhide()">);
     print qq (&raquo; Group Quota Setting:);
     print qq (</td></table>);
 	
-	print qq (<table id="hidden" style="display:none;" width="650">);
+	print qq (<table id="hidden" style="display:none;" width="100%">);
     print qq (<tr>);
     print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 250px">);
     print qq (Limit Downlink at :);
@@ -154,7 +152,7 @@ sub showNewSchedule
     print qq (</tr></table>);
     
     print qq (<div class="divframe" style="width:650; height:150;display:block;">); 
-    print qq (<table id="scheduleList" style="width:650" border="0"><tr bgcolor="#332211">);
+    print qq (<table id="scheduleList" style="width:100%" border="0" bgcolor="#332211"><tr bgcolor="#332211">);
     foreach my $title ( @titleHeadList ) { print qq (<td align="center" width="$titleWidth{$title}">$title</td>); }
     print qq (<td>);
     print qq (<a href="javascript:DeleteSchedule()"><image src="../image/del.gif" title="Delete Checked Schdule(s)" border="0"></a>);
@@ -166,7 +164,7 @@ sub showNewSchedule
     my $ip;
     foreach my $show ( @$showlist )
     {
-        print qq (<tr>);
+        print qq (<tr bgcolor="#336699" style="height:45px;">);
         if ($show->{ip} eq ''){$ip="* ".$show->{iip};}
         else{$ip=$show->{ip};}
         print qq (<td align="center" width="100">$ip</td>);
@@ -192,6 +190,7 @@ sub showNewSchedule
 		my $viewql='N/A';
 		my $vbs='0';
 		my $vql='0';
+		my $vlmit='10';
 		foreach my $ql ( @$quotalist )
 		{
 			if($show->{idd} eq $ql->{name})
@@ -243,26 +242,32 @@ sub showNewSchedule
 				if($ql->{qn} eq '3'){$viewqn = 'admin<br>user';}
 				
 				if(($ql->{bs} eq '0'||!$ql->{bs})&&($ql->{ql} eq '0'||!$ql->{ql})){$viewql = 'Down/Up<br>Block';$vbs='0';$vql='0';}
-				if(($ql->{bs} eq '0'||!$ql->{bs})&&$ql->{ql} eq '1'){$viewql = 'Down/Up<br>Limit';$vbs='0';$vql='1';}
+				if(($ql->{bs} eq '0'||!$ql->{bs})&&$ql->{ql} eq '1'){$viewql = 'Down/Up<br>Limit/$ql->{lmit}';$vbs='0';$vql='1';$vlmit=$ql->{lmit};}
 				if($ql->{bs} eq '1'&&($ql->{ql} eq '0'||!$ql->{ql})){$viewql = 'Total<br>Block';$vbs='1';$vql='0';}
-				if($ql->{bs} eq '1'&&$ql->{ql} eq '1'){$viewql = 'Total<br>Limit';$vbs='1';$vql='1';}
+				if($ql->{bs} eq '1'&&$ql->{ql} eq '1'){$viewql = 'Total<br>Limit/$ql->{lmit}';$vbs='1';$vql='1';$vlmit=$ql->{lmit};}
 			}
 		}
 		print qq ($quota);
 		print qq (</td>);
 		print qq (<td align="center" width="50">$viewqn</td>);
 		print qq (<td align="center" width="50">$viewql</td>);
+		my $CL='N/A';
+		if ($show->{tcp} ne ''&&$show->{udp} ne '')
+        {
+            $CL = 'TCP:'.$show->{tcp}.'<br>UDP:'.$show->{udp};
+        }
+		print qq (<td align="center" width="50">$CL</td>);
         print qq (<td align="center" width="50">);
 		if($dmit ne '')
-        {print qq (<a onclick="status('$show->{ip},$show->{idd},$show->{pwd},$show->{mail},$dmit,$dbps,$umit,$ubps,$tcycle,$tchose,$ttime,$viewqn,$vbs,$vql')"><img src="../image/edit.gif"></a></td>);}
+        {print qq (<a onclick="status('$show->{ip},$show->{idd},$show->{pwd},$show->{mail},$dmit,$dbps,$umit,$ubps,$tcycle,$tchose,$ttime,$viewqn,$vbs,$vql,$vlmit,$show->{tcp},$show->{udp}')"><img src="../image/edit.gif"></a></td>);}
 		else
-		{print qq (<a onclick="status('$show->{ip},$show->{idd},$show->{pwd},$show->{mail},,M,,M,0,0,00:00')"><img src="../image/edit.gif"></a></td>);}
+		{print qq (<a onclick="status('$show->{ip},$show->{idd},$show->{pwd},$show->{mail},,M,,M,0,0,00:00,0,0,0,10,$show->{tcp},$show->{udp}')"><img src="../image/edit.gif"></a></td>);}
         print qq (<td><input type="checkbox" name="subschs" ></td>);
         print qq (</tr>);
     }
     print qq (</table></div>);
     
-    print qq (<table bgcolor="#667788" width="650">);
+    print qq (<table bgcolor="#667788" width="100%" style="display: none;">);
     #-------------------------------------------------------------------------------------------
     #  Schedule: Days , Start time , Stop Time
     #-------------------------------------------------------------------------------------------
@@ -317,7 +322,7 @@ sub showNewSchedule
     print qq (</td></tr>);
 	print qq (</table>);
 	
-	print qq (<table id="hidden2" style="display: none;" bgcolor="#667788" width="650">);
+	print qq (<table id="hidden2" style="display: none;" bgcolor="#667788" width="100%">);
     print qq (<tr>);
     print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 20px"></td>);
     print qq (<td class="body"  valign="center" align="left" style="height: 30px; width: 250px" colspan="">);
@@ -449,6 +454,12 @@ sub showNewSchedule
     }
     print qq (</select>);
     print qq (</td></tr>);
+	print qq (<tr>);
+	print qq (<td>TCP<input class="qbtext" type="text" id="tcp" name="tcp" value="$tcp" style="width:45">Connections</td>);
+	print qq (</tr>);
+	print qq (<tr>);
+	print qq (<td>UDP<input class="qbtext" type="text" id="udp" name="udp" value="$udp" style="width:45">Connections</td>);
+	print qq (</tr>);
     print qq (</table>);
     
     #print qq (<tr><hr size=1></tr>);
@@ -469,11 +480,15 @@ sub showNewSchedule
     
     #print qq (</table>);
     #-----------------------------------------------------------------------------------------------------
-    print qq (<table>);
+    print qq (<table width="100%">);
     print qq (<tr><td>);
     print qq (<hr size=1>);
     print qq (<tr>);
     print qq (<td class="body"  valign="center" align="center" style="height: 30px; width: 650px">);
+    print qq (<input type="button" class="qb" value="Group" onclick="group_setting_window()" style="width:50">);
+	print qq (&nbsp;&nbsp;);
+    print qq (<input type="button" class="qb" value="Add" onclick="quota_setting_window()" style="width:50">);
+	print qq (&nbsp;&nbsp;);
     print qq (<input class="qb" type="button" style="width:50" value="Save" onclick="SaveSchedule();">);
     print qq (&nbsp;&nbsp;);
     print qq (<input class="qb" type="button" style="width:50" value="Back" onclick="history.go(-1);">);
@@ -570,7 +585,7 @@ sub scriptNewSchedule
 				for (var i = 0; i < radio.length; i++)
 				{
 					if (radio[i].checked == true)
-						chose=radio[i].value; 
+						chose=radio[i].value;
 				}
 			}
 			if(cycle='30'){chose=number;}
@@ -802,23 +817,31 @@ sub scriptNewSchedule
     function status(oo)
     {
         var tmp_data = new Array;
+		var en=0;
+		var dis=0;
+		var en_quota=0;
+		var dis_quota=1;
         tmp_data = oo.split(/,/);
         if (tmp_data[0] == '')
         {
             document.getElementById("ip").disabled = true;
             document.getElementById("dis").checked = true;
+			dis=1;
         }
         else
         {
             document.getElementById("ip").disabled = false;
             document.getElementById("en").checked = true;
-        }    
+			en=1;
+        }
         document.getElementById("ip").value = tmp_data[0];
         document.getElementById("port").value = tmp_data[1];
         document.getElementById("pwd").value = tmp_data[2];
         document.getElementById("mail").value = tmp_data[3];
-		if(tmp_data[4] != '' || tmp_data[4] != 'N/A')
+		if(tmp_data[4] != '')// || tmp_data[4] != 'N/A')
 		{
+			en_quota=1;
+			dis_quota=0;
 			document.getElementById("dmit1").value = tmp_data[4];
 			document.getElementById("dbps1").value = tmp_data[5];
 			document.getElementById("umit1").value = tmp_data[6];
@@ -826,7 +849,7 @@ sub scriptNewSchedule
 			document.getElementById("cycle1").value = tmp_data[8];
 			var chose = tmp_data[9];
 			var time = tmp_data[10];
-			time_data = time.split(/:/);
+			var time_data = time.split(/:/);
 			if(tmp_data[8] == '7')
 			{
 				var radio = document.getElementsByName("week1");
@@ -857,7 +880,11 @@ sub scriptNewSchedule
 			}
 			document.getElementById("bs").value=tmp_data[12];
 			document.getElementById("ql").value=tmp_data[13];
+			document.getElementById("lmit1").value=tmp_data[14];
+			document.getElementById("tcp").value=tmp_data[15];
+			document.getElementById("udp").value=tmp_data[16];
 		}
+		MM_openBrWindow('auth_quota_add.cgi?dmit='+tmp_data[4]+'&dbps='+tmp_data[5]+'&umit='+tmp_data[6]+'&ubps='+tmp_data[7]+'&cycle='+tmp_data[8]+'&chose='+tmp_data[9]+'&hr='+document.getElementById("hr1").value+'&sec='+document.getElementById("sec1").value+'&bs='+tmp_data[12]+'&ql='+tmp_data[13]+'&lmit='+tmp_data[14]+'&en='+en+'&dis='+dis+'&en_quota='+en_quota+'&dis_quota='+dis_quota+'&ip='+tmp_data[0]+'&port='+tmp_data[1]+'&pwd='+tmp_data[2]+'&mail='+tmp_data[3]+'&tcp='+tmp_data[15]+'&udp='+tmp_data[16],'Quota_Add','800','350');
     }
 		
     function AddSchedule()
@@ -874,6 +901,8 @@ sub scriptNewSchedule
         var quota='';
 		var chose='0';
 		var time='00:00';
+		var tcp=document.getElementById('tcp').value;
+		var udp=document.getElementById('udp').value;
         var color=(total % 2) ? ( "#556677" ) : ( "#334455" );
         
 		if(document.getElementById("dmit1").value > 909 && document.getElementById("dbps1").value == 'T')
@@ -977,6 +1006,8 @@ sub scriptNewSchedule
                  }
             }   
         }
+		var CL = 'N/A';
+		
         if ( pwd == '' || pwd == null)
             pwd = '--------';
         if ( isOK == 1) 
@@ -990,10 +1021,12 @@ sub scriptNewSchedule
             var t_quota = schedule.insertCell(5);
 			var t_qn = schedule.insertCell(6);
 			var t_ql = schedule.insertCell(7);
-            var t_edit = schedule.insertCell(8);
-            var t_checkitem  = schedule.insertCell(9);
+			var t_cl = schedule.insertCell(8);
+            var t_edit = schedule.insertCell(9);
+            var t_checkitem  = schedule.insertCell(10);
             
-            //insertdays.setAttribute("style", "width:250");
+			schedule.setAttribute("bgcolor", "#336699");
+            schedule.setAttribute("style", "height:45px");			
             t_ip.innerHTML=ip;
             t_port.innerHTML=port;
             t_pwd.innerHTML=pwd;
@@ -1003,13 +1036,15 @@ sub scriptNewSchedule
             t_mail.innerHTML=mail;
             t_time = '' ;
             var tordit = '<a onclick=\"status(\\'';
-			if(quota != 'N/A'){tordit += ip + ',' + port + ',' + pwd + ',' + mail + ',' + document.getElementById("dmit1").value + ',' + document.getElementById("dbps1").value+ ',' + document.getElementById("umit1").value+ ',' + document.getElementById("ubps1").value+ ',' + document.getElementById("cycle1").value+ ',' + chose+ ',' + time + ',' + qn + ',' + bs + ',' + ql; chose='';time='';}
-            else{tordit += ip + ',' + port + ',' + pwd + ',' + mail + ',' + '' + ',' + 'M' + ',' + '' + ',' + 'M' + ',' + '0' + ',' + '' + ',' + '00:00' + ',' + '';}
+			if(quota != 'N/A'){tordit += ip + ',' + port + ',' + pwd + ',' + mail + ',' + document.getElementById("dmit1").value + ',' + document.getElementById("dbps1").value+ ',' + document.getElementById("umit1").value+ ',' + document.getElementById("ubps1").value+ ',' + document.getElementById("cycle1").value+ ',' + chose+ ',' + time + ',' + qn + ',' + bs + ',' + ql + ',' + lmit + ',' + tcp + ',' + udp; chose='';time='';}
+            else{tordit += ip + ',' + port + ',' + pwd + ',' + mail + ',' + '' + ',' + 'M' + ',' + '' + ',' + 'M' + ',' + '0' + ',' + '' + ',' + '00:00' + ',' + '' + ',' + '' + ',' + '' + ',' + '' + ',' + '' + ',' + '';;}
             tordit +=  '\\')\">';
             tordit +='<img src=\"../image/edit.gif\"></a></td>';
             var tochecked = '<input type=\"checkbox\" name=\"subschs\" >';
             t_checkitem.innerHTML = tochecked;
             t_edit.innerHTML = tordit;
+			if ( (tcp != '' || tcp != null)&&(udp != '' || udp != null)){CL='TCP:'+tcp+'<br>UDP:'+udp;}
+			t_cl.innerHTML = CL;
         }
     }
     function DeleteSchedule()
@@ -1041,6 +1076,7 @@ sub scriptNewSchedule
         var quota='';
 		var qn='';
 		var ql='';
+		var cl='';
         
   	var schname_show=document.getElementById('schname_show');
         var schname=schname_show.value;
@@ -1057,6 +1093,7 @@ sub scriptNewSchedule
 	    quota += subsch[i].cells[5].innerHTML + ';';
 		qn += subsch[i].cells[6].innerHTML + ';';
 		ql += subsch[i].cells[7].innerHTML + ';';
+		cl += subsch[i].cells[8].innerHTML + ';';
 	}
 	if ( schname == '' )
         {
@@ -1098,6 +1135,7 @@ sub scriptNewSchedule
         myform.d_quota.value = quota;
 		myform.d_qn.value = qn;
 		myform.d_ql.value = ql;
+		myform.d_cl.value = cl;
 		myform.group_name.value = schname;
 //        myform.submit();
 	goSubmit('SAVE');
@@ -1114,7 +1152,7 @@ sub scriptNewSchedule
         if ( action != '' )
 		{
             if(action == 'GROUP'){}
-			else{window.top.mainFrame.location.href="auth_user.cgi";}
+			else{window.top.mainFrame.location.href="menu_authertication.cgi?p=auth_user.cgi";}
         }
     }
 	
@@ -1127,6 +1165,71 @@ sub scriptNewSchedule
 		while( (timer.getTime() - time) < (seconds * 100) );
 	}
 	
+function quota_setting_window()
+{
+	var dmit = document.getElementById('dmit1').value;
+        var dbps = document.getElementById('dbps1').value;
+        var umit = document.getElementById('umit1').value;
+        var ubps = document.getElementById('ubps1').value;
+        
+        var cycle = document.getElementById('cycle1').value;
+        var hr = document.getElementById('hr1').value;
+        var sec = document.getElementById('sec1').value;
+        var number = document.getElementById('number1').value;
+        var radio = document.getElementsByName("week1");
+        var radio_data;
+        for (var i = 0; i < radio.length; i++)
+        {
+        	if (radio[i].checked == true)
+                radio_data=radio[i].value;
+        }
+        var chose = '0'
+        if(cycle==7){chose=radio_data;}
+        if(cycle==30){chose=number;}
+        var bs = document.getElementById('bs').value;
+        var ql = document.getElementById('ql').value;
+        var lmit = document.getElementById('lmit1').value;
+        //alert('quota_add.cgi?dmit='+dmit+'&dbps='+dbps+'&umit='+umit+'&ubps='+ubps+'&cycle='+cycle+'&chose='+chose+'&hr='+hr+'&sec='+sec+'&bs='+bs);
+        MM_openBrWindow('auth_quota_add.cgi?dmit='+dmit+'&dbps='+dbps+'&umit='+umit+'&ubps='+ubps+'&cycle='+cycle+'&chose='+chose+'&hr='+hr+'&sec='+sec+'&bs='+bs+'&ql='+ql+'&lmit='+lmit,'Quota_Add','800','350');
+}
+
+function group_setting_window()
+{
+	var dmit = document.getElementById('dmit').value;
+        var dbps = document.getElementById('dbps').value;
+        var umit = document.getElementById('umit').value;
+        var ubps = document.getElementById('ubps').value;
+        
+        var cycle = document.getElementById('cycle').value;
+        var hr = document.getElementById('hr').value;
+        var sec = document.getElementById('sec').value;
+        var number = document.getElementById('number').value;
+        var radio = document.getElementsByName("week");
+        var radio_data;
+        for (var i = 0; i < radio.length; i++)
+        {
+        	if (radio[i].checked == true)
+                radio_data=radio[i].value;
+        }
+        var chose = '0'
+        if(cycle==7){chose=radio_data;}
+        if(cycle==30){chose=number;}
+//        var bs = document.getElementById('bs').value;
+//        var ql = document.getElementById('ql').value;
+//        var lmit = document.getElementById('lmit1').value;
+        //alert('quota_add.cgi?dmit='+dmit+'&dbps='+dbps+'&umit='+umit+'&ubps='+ubps+'&cycle='+cycle+'&chose='+chose+'&hr='+hr+'&sec='+sec+'&bs='+bs);
+//        MM_openBrWindow('auth_group_quota_add.cgi?dmit='+dmit+'&dbps='+dbps+'&umit='+umit+'&ubps='+ubps+'&cycle='+cycle+'&chose='+chose+'&hr='+hr+'&sec='+sec+'&bs='+bs+'&ql='+ql+'&lmit='+lmit,'Quota_Add','300','345');
+        MM_openBrWindow('auth_group_quota_add.cgi?dmit='+dmit+'&dbps='+dbps+'&umit='+umit+'&ubps='+ubps+'&cycle='+cycle+'&chose='+chose+'&hr='+hr+'&sec='+sec+'&bs='+''+'&ql='+''+'&lmit='+'','Quota_Add','300','345');
+}
+
+function MM_openBrWindow(theURL,winName,win_width,win_height)
+{
+	var PosX = (window.screen.availWidth-10-win_width)/2;
+        var PosY = (window.screen.availHeight-30-win_height)/2;
+        features = "width="+win_width+",height="+win_height+",top="+PosY+",left="+PosX+",status=no,location=no,status=no,menubar=no,toolbar=no,resizable=no,scrollbars=no";
+        var newwin = window.open(theURL,winName,features);
+		newwin.focus();
+}	
     </script>
 scriptNewSchedule
 }
@@ -1169,6 +1272,7 @@ sub maintainSchedule
         my @quota = split(/;/, $action{d_quota});
 		my @qn = split(/;/, $action{d_qn});
 		my @ql = split(/;/, $action{d_ql});
+		my @cl = split(/;/, $action{d_cl});
         my @newquota;
 		
         my $index=0; 
@@ -1202,6 +1306,14 @@ sub maintainSchedule
             $newschedule{type}=$action{description};
             $time[$index]=~ s/A-//;
             $newschedule{time}=$time[$index];
+			if($cl[$index] ne 'N/A')
+			{
+			my ($mytcp,$myudp) = split(/<br>/, $cl[$index]);
+			my @tcpvalue = split(/:/, $mytcp);
+			my @udpvalue = split(/:/, $myudp);
+			$newschedule{tcp}=$tcpvalue[1];
+			$newschedule{udp}=$udpvalue[1];
+			}
             push(@subscharray, \%newschedule);
 			
 			if($quota[$index] eq ''){}

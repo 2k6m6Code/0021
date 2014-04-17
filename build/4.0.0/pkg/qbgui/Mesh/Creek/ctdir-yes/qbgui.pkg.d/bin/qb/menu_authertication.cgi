@@ -1,6 +1,13 @@
 #!/usr/bin/perl
+use CGI;
 require ("/usr/local/apache/qb/language/qblanguage.cgi");
 @qblang = QBlanguage();
+my  %action;
+my  $form = new CGI;
+$action{page} = $form->param('p');
+my $page = 'auth_server.cgi';
+if($action{page}){$page=$action{page};}
+
 print "Content-type:text/html\n\n";
 print '<html lang="en">';
 print '<head>';
@@ -30,6 +37,6 @@ print '<button class="menu"  onclick="mainframe.location=\'auth_status.cgi\'		"s
 
 print '<script type="text/javascript" src="../qb.js"></script>';
 #print '<a href="javascript:qbShowHelp(\'traffic\')"><img src="/image/help.gif" title="Help" alt="help image" ></a>';
-print '</td></tr><tr><td><iframe frameborder="0" style="height:100%;width:100%" src="auth_server.cgi" name="mainframe"></iframe></td></tr>';
+print '</td></tr><tr><td><iframe frameborder="0" style="height:92%;width:100%" src="'.$page.'" name="mainframe"></iframe></td></tr>';
 #print '</table></body></html>';
 print '</body></html>';

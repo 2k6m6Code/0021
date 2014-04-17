@@ -22,7 +22,7 @@ sub showQuotaInfo
 	if($action{view} eq 'policy'){@viewitem=@title2;$viewtype='policy';$viewtitle=@titleName[1];}
 	if($action{view} eq 'ip'){@viewitem=@title3;$viewtype='ip';$viewtitle=@titleName[2];}
 	
-	print qq(<table width="80%" class="sortable" cellspacing="0" border="0">);
+	print qq(<table id="quota_list" width="80%" class="sortable" cellspacing="0" border="0">);
 	print qq(<tr><td class="bigtitle" colspan="12" align="left">$viewtitle<hr size=1></td></tr><tr bgcolor="#332211"> );
 	foreach my $title (@viewitem ){print qq(<td width="auto" align="center" style="white-space: nowrap;">$title);}
 	print qq(</td>);

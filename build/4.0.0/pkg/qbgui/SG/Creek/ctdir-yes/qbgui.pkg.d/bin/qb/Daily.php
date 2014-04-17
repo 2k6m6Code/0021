@@ -4,7 +4,31 @@
 <script type="text/javascript" src="jquery-1.10.2.js"></script>
 <script src="highcharts.min.js"></script>
 <script src="exporting.js"></script>
-
+<style>
+.no-close .ui-dialog-titlebar-close {
+    display: none;
+    }
+.ui-dialog-titlebar {
+  font-size: 100% !important;
+  background-color: #336699;
+    background-image: none;
+      color: #FFFF;
+      }
+.ui-dialog {
+  font-size: 80% !important;
+  background-color: #556677;
+}
+.ui-dialog-buttonpane {
+  background-color: #556677;
+  color: #FFFF;
+}
+.ui-dialog-content{
+color:#0000;
+} 
+.ui-widget-content {
+color:#0000;
+}
+</style>
 
 </head>
 <body bgcolor="#336699" text="#ffffff" link="#000040" >
@@ -55,6 +79,8 @@ echo '<input type="text" style="width:90px" value="" >&nbsp;&nbsp;&nbsp;'; */
 -->
 </table></div>
 <img id="load_gif" src="image/loading.gif" style="display:none;">
+<div id="dialog" title="Result">
+</div>
 <div id="flows" style="width:75%;height:200px"></div>
 <div id="bytes" style="width:75%;height:200px"></div>
 <div id="packets" style="width:75%;height:200px"></div>
@@ -65,7 +91,6 @@ echo '<input type="text" style="width:90px" value="" >&nbsp;&nbsp;&nbsp;'; */
 <script src="jquery.ui.datepicker-zh-TW.js"></script>
 <script src="../qbjs/jquery.dataTables.min.js"></script>
 <script language="javascript">
-
 Submit();
 
 $( "#datepicker" ).datepicker({
@@ -182,6 +207,12 @@ $.ajax({
 });
 }
 
+Highcharts.setOptions({
+global: {
+useUTC: ture
+}
+});
+
 function creat_map(o,a,y,m,d)
 {
 	var Today=new Date();
@@ -237,10 +268,101 @@ function creat_map(o,a,y,m,d)
 		    name:o,
 		    pointInterval:1800000,
 		    pointStart:Date.UTC(y,m,d),
-		    data:a
+		    data:a,
+		    point:{
+		    	events:{
+		        	click: function(event) {
+		        	$("#dialog").css("color","white");
+		        	var datetime = unix_to_datetime((this.x/1000)-(8*60*60));
+		        	var tmp = datetime.split("-");
+		        	var endh = parseInt(tmp[3]);
+		        	var endm = '00';
+		        	if(tmp[4] == '00'){endm = '30';}else{endh= endh+1;}
+		        	if(endh < 10){endh = '0'+endh;}
+		        	var time = 'nfcapd.'+tmp[0]+tmp[1]+tmp[2]+tmp[3]+tmp[4]+':nfcapd.'+tmp[0]+tmp[1]+tmp[2]+endh+endm;
+		        	var limit = '-s record/'+o;
+		        	var symd = tmp[0]+"/"+tmp[1]+"/"+tmp[2];
+		        	var option = 'realtime';
+		        	var url = "search_data.pl";
+				$.get(url,{time:time,limit:limit,symd:symd,option:option},function fno(data){
+		        		$("#dialog").html(data);
+		        		var oTable =  $('#tables').dataTable({
+		        			"timeout": 5000,
+		        			"bPaginate": false,
+		        			"bInfo": false
+		        		});
+		        	        $("label").attr("style","display:none");
+		        	        //\$("#ip_search").keyup(function()
+		        	        //{
+		        	        //	oTable.fnFilter(\$("#ip_search").val());
+		        	        //});
+                                        //\$("#load_gif").css('display','none');
+  	                        });
+//		        	$('#dialog').html( (this.x/1000)-(8*60*60)+"<br>"+time+"<br>"+limit);
+//		        	$('#dialog').html( this.x+' '+this.y );
+		        	$( "#dialog" ).dialog({
+		        		width: 800,
+		        		height: 560,
+		        		closeText: 'Close me',
+		        		dialogClass: "no-close",
+					buttons: [{
+		        			text: "Close",
+		        		        click: function() {
+		        		        	$( this ).dialog( "close" );
+		        		        }
+		        		}]
+		        	});
+		        	}
+                    	}
+                    }
 		}]
 	});
 
+}
+
+function datetime_to_unix(datetime){
+	var arr = datetime.split("-");
+	var now = new Date(Date.UTC(arr[0],arr[1],arr[2],'00','00','00'));
+	return parseInt(now.getTime()-8*60*60);
+}
+
+function unix_to_datetime(unix) {
+	var now = new Date(parseInt(unix)*1000);
+	var M = now.getMonth()+1;
+	var D = now.getDate();
+	var H = now.getHours();
+	var MM = now.getMinutes();
+	if(M < 10){M='0'+M};
+	if(D < 10){D='0'+D};
+	if(H < 10){H='0'+H};
+	if(MM < 10){MM='0'+MM};
+	var result = now.getFullYear()+"-"+M+"-"+D+"-"+H+"-"+MM;
+	return result.toString();
+}
+
+function search_flow(ip,time,option,symd,proto)
+{
+	//$("#load_gif").css('display','block');
+        var ip = ip;
+        var time = time;
+        var option = option;
+        var symd = symd;
+        var proto = proto;
+        var url = "search_flow.pl";
+        $.get(url,{ip:ip,time:time,option:option,symd:symd,proto:proto},function fno(data){
+        	$("#dialog").html(data);
+                var oTable =  $('#tables').dataTable({
+                	"timeout": 5000,
+                        "bPaginate": false,
+                        "bInfo": false
+                });
+                $("label").attr("style","display:none");
+        //        $("#ip_search").keyup(function()
+        //        {
+        //        	oTable.fnFilter(\$("#ip_search").val());
+        //        });
+        //        $("#load_gif").css('display','none');
+        });
 }
 </script>
 </body></html>

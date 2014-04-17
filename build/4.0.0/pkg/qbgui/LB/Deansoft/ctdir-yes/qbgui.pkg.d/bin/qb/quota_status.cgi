@@ -43,6 +43,10 @@ foreach my $tm ( @time )
 }
 print qq (</select>seconds);
 print qq (<input type="button" value="Stop" class="qb" style="width:60" id="switch" onclick="Switch(this.value)">);
+print qq (<select name="myfilter" id="filter" onchange="myfilter();">);
+print qq (<option value="0">All</option>);
+print qq (<option value="1">Blacklist</option>);
+print qq (</select>);
 print qq (</td></tr></table>);
 print qq(<div class="divframe" align="center" id="main">);
 print qq(<form name="quotaform" method="post" action="quota_status.cgi">);
@@ -158,9 +162,36 @@ function refresh()
 		});
 	}
 	auto_refresh();
+	myfilter();
 }
 auto_refresh();
 
+function myfilter()
+{
+	filter = document.getElementById('filter');
+	var tb = document.getElementById("quota_list");
+	var rowsLength = tb.rows.length;
+	var searchCol = 1;
+	for(var i=2;i<(rowsLength-1);i++)
+	{
+		var tr_color = tb.rows[i].style;
+		if(filter.value == '0')
+		{
+			tr_color.display='table-row';
+		}
+		else if(filter.value == '1')
+		{
+			if(tr_color.backgroundColor == '')
+			{
+				tr_color.display='none';
+			}
+			else
+			{
+				tr_color.display='table-row';
+			}
+		}
+	}
+}
 </script>
 QB
 

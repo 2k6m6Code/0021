@@ -51,10 +51,10 @@ foreach my $file (@$flow)
 		$nonet=$nonet.'not host '.$user->{ip}.' and ';
 	}
 }
-
+my $unitnet=$staticnet;
 if($tm_unit ne 'all')
 {
-	$staticnet='';
+	$unitnet='';
 	#$nonet='';
 	foreach my $file (@$unitlist)
 	{
@@ -65,12 +65,12 @@ if($tm_unit ne 'all')
 			foreach my $user (@$menber)
 			{
 				if($user->{ip} eq ''){next;}
-				$staticnet=$staticnet.'host '.$user->{ip}.' or ';
+				$unitnet=$unitnet.'host '.$user->{ip}.' or ';
 			}
 		}
 	}
 }
-
+$unitnet=~s/or $//g;
 $staticnet=~s/or $//g;
 
 if ($limit[1] ne '')
@@ -85,8 +85,10 @@ if ($limit[1] ne '')
 }        
 print "Content-type: text/html\n\n";
 system("/usr/local/apache/qb/setuid/run /bin/chmod 777 /tmp");
-print qq("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip 'SRC $staticnet && DST $staticnet' -o \"fmt:%ts %td %sa %pkt %byt %bps %bpp  %fl\"");
-system("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip 'SRC $staticnet && DST $staticnet' -o \"fmt:%ts %td %sa %pkt %byt %bps %bpp  %fl\" > /tmp/test_nfdump");
+#print qq("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip '(SRC $unitnet) and (DST $staticnet)' -o \"fmt:%ts %td %sa %pkt %byt %bps %bpp  %fl\"");
+my $output_format = 'fmt:%ts %td %sa %pkt %byt %bps %bpp  %fl';
+if(grep(/dstip/,$tm_ip)){$output_format='fmt:%ts %td %da %pkt %byt %bps %bpp  %fl';}
+system("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip '(SRC $unitnet) and (DST $staticnet)' -o \"$output_format\" > /tmp/test_nfdump");
 system("/usr/local/apache/qb/setuid/run /bin/chmod 777 /tmp/test_nfdump");
 
 #my $file_check='0';
@@ -222,7 +224,7 @@ close(FILE);
 					#$tm_time=~s/nfcapd\.//g;
 					#my @YY=split(/(\d{2})/,$tm_time);
 					#print qq (<td width="200" align="center"><a href="query.php?ip=$iii&time_Y=$YY[1]$YY[3]/$YY[5]/$YY[7]&time_h=$YY[9]&time_X=$YY[13]$YY[15]/$YY[17]/$YY[19]&time_z=$YY">$traffic[6]</a></td></tr>); 
-					print qq (<td width="200" align="center"><a href="javascript:search_flow('$iii','$tm_time','$tm_ip','$tm_symd','local','$staticnet')">$traffic[6]</a></td>);
+					print qq (<td width="200" align="center" onclick="javascript:search_flow('$iii','$tm_time','$tm_ip','$tm_symd','local','$staticnet')">$traffic[6]</td>);
 					$top++;
                 }
             }
@@ -295,7 +297,7 @@ foreach my $file (@$flow)
 					#$tm_time=~s/nfcapd\.//g;
 					#my @YY=split(/(\d{2})/,$tm_time);
 					#print qq (<td width="200" align="center"><a href="query.php?ip=$iii&time_Y=$YY[1]$YY[3]/$YY[5]/$YY[7]&time_h=$YY[9]&time_X=$YY[13]$YY[15]/$YY[17]/$YY[19]&time_z=$YY">$traffic[6]</a></td></tr>); 
-					print qq (<td width="200" align="center"><a href="javascript:search_flow('$iii','$tm_time','$tm_ip','$tm_symd')">$traffic[6]</a></td>);
+					print qq (<td width="200" align="center" onclick="javascript:search_flow('$iii','$tm_time','$tm_ip','$tm_symd')">$traffic[6]</td>);
 					$top++;
                 }
             }

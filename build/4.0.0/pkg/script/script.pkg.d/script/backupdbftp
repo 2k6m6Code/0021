@@ -9,12 +9,13 @@ FILENAME=`hostname`.`date +%s`
 #FILENAME=`date +%s`
 killall -9 nfcapd
 /sbin/service syslog stop
-tar zcvf /mnt/tclog/$FILENAME.db /mnt/tclog/*
+cd /mnt/tclog
+tar zcvf /mnt/tclog/$FILENAME.db ./nfcapd ./total_*
 /usr/local/bin/nfcapd -w -D -t 60 -S 1 -l /mnt/tclog/nfcapd/ -p 54311
 /sbin/service syslog start
 sleep 2
 sync;sync
-FILE="$FILENAME.tgz"
+FILE="$FILENAME.db"
 cd /mnt/tclog
 if [ $DIR != '' ]
 then

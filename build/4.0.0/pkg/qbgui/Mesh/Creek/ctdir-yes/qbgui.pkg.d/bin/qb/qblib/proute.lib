@@ -24,7 +24,7 @@ sub showPolicyTitle
     }
     if ( $action{viewpoint} eq 'nat' && $action{showqos} ne '1')
     {
-	@titleList=('Schedule', 'Pool', 'NAT Status', 'Status', 'Quota D/U', 'Edit');
+	@titleList=('Schedule', 'Pool', 'NAT Status', 'Status', 'Edit');
     }
     if ( $action{viewpoint} eq 'app' && $action{showqos} ne '1')
     {
@@ -34,7 +34,7 @@ sub showPolicyTitle
     print qq (<div class="divframe">);
     print qq (<table width="100%" bgcolor="#332211" border="0" align="center"> );
     print qq (<tr>);
-=cut # Gary hide on/off policy 20140319
+#=cut # Gary hide on/off policy 20140319
     if ( $action{viewpoint} eq 'nat' )
     {
         print qq (<td align="center" style="width:$titleWidth{Enabled}">Enabled);
@@ -42,7 +42,7 @@ sub showPolicyTitle
 print qq (<input type="button" class="qb" value="Apply" onclick="AlertApply();" title="Activate your setup for enable or disable.">);
 	print qq (</td>);
     }
-=cut
+#=cut
     print qq (<td align="center" width="$titleWidth{'Source'}" ><a href="javascript:sortPolicy('BYSOURCE')" title="Sort by Source" border="0">Source</a></td>);
     print qq (<td align="center" width="$titleWidth{'Destination'}" >Destination</td>);
     my $title = ( $action{viewpoint} eq 'app' ) ? ( 'Application' ) : ( 'Service' );
@@ -168,7 +168,7 @@ sub list_ini_rule
 
         print qq (<tr bgcolor="$bgcolor" originalColor="$originalColor" onmouseover="focusedColor(this)" onmouseout="blurColor(this)">);
         
-=cut # Gary hide on/off policy 20140319
+#=cut # Gary hide on/off policy 20140319
         # Gary 20140220 add enabled/disabled function
         if ( $action{viewpoint} eq 'nat' )
         {
@@ -178,7 +178,7 @@ sub list_ini_rule
             my $status=($class->{enabled} eq '0')?'':'checked';
             print qq (<input type="checkbox" $status name="enabled_policy" $update_or_not id="enabled_policy" style="" value="$checkrulekey" onClick="enabled_disabled_policy(this.value,this.checked);"></td>);
         }
-=cut
+#=cut
         #===================================================================      
         if ( $viewpoint eq 'dmz' &&  $class->{source} ne 'system' && !exists($source2isp{$class->{source}}) ) 
         {
@@ -316,7 +316,7 @@ sub list_ini_rule
 
 		#===================================================================   
 		#Quota View
-		if($action{viewpoint} eq 'nat')
+		if($action{viewpoint} eq 'nat' && $action{showqos} eq '1')
 		{
 			my $quotaref=XMLread($gPATH.'quota.xml');
 			my $quotalist=$quotaref->{quota};
@@ -1536,11 +1536,11 @@ sub iniroute_script
 		var number = document.getElementById('number').value;
 		var radio = document.getElementsByName("week");
 		var radio_data;
-        for (var i = 0; i < radio.length; i++)
-        {
-            if (radio[i].checked == true)
-            radio_data=radio[i].value;
-        }
+	        for (var i = 0; i < radio.length; i++)
+        	{
+        		if (radio[i].checked == true)
+        		radio_data=radio[i].value;
+        	}
 		var chose = '0'
 		if(cycle==7){chose=radio_data;}
 		if(cycle==30){chose=number;}

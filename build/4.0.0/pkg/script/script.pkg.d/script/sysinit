@@ -849,58 +849,6 @@ fi
 #sync
 
 #..........................................................
-# 2008-1202 Brian
-# * Setup export log to ftp server.
-#..........................................................
-SYSLOGCFG="/usr/local/apache/config/syslog.xml"
-ftpserver=`sed -e "s/<opt.*ftpserver=\"//" $SYSLOGCFG|sed -e "s/\".*//"`
-ftpusername=`sed -e "s/<opt.*ftpusername=\"//" $SYSLOGCFG|sed -e "s/\".*//"`
-ftppassword=`sed -e "s/<opt.*ftppassword=\"//" $SYSLOGCFG|sed -e "s/\".*//"`
-ftpserverip=`sed -e "s/<opt.*ftpserverip=\"//" $SYSLOGCFG|sed -e "s/\".*//"`
-ftpfrequency=`sed -e "s/<opt.*ftpfrequency=\"//" $SYSLOGCFG|sed -e "s/\".*//"`
-ftpdir=`sed -e "s/<opt.*ftpdir=\"//" $SYSLOGCFG|sed -e "s/\".*//"`
-SYSLOGDEV=`grep syslogdev $SYSLOGCFG|sed -e "s/<opt.*syslogdev=\"//"|sed -e "s/\".*//"`
-
-if [ "$ftpserver" = "1" ]
-then
-    cat >> /etc/crontab <<!
-0 0 */$ftpfrequency * *  root       /opt/qb/bin/script/syslogftp $ftpserverip $ftpusername $ftppassword $ftpdir
-!
-    /usr/local/apache/qb/setuid/do_qbsyslog.pl
-    rm -f /mnt/tclog/*
-    mount /dev/$SYSLOGDEV /mnt/tclog
-else
-    cat >> /etc/crontab <<!
-#0 0 */ftpfrequency * *  root       /opt/qb/bin/script/syslogftp ftpserverip ftpusername ftppassword ftpdir
-!
-fi
-
-#..........................................................
-# 2014-0414 Brian
-# * Setup export database to ftp server.
-#..........................................................
-BACKUPDBCFG="/usr/local/apache/qbconf/backupdb.xml"
-ftpserver=`sed -e "s/<opt.*ftpserver=\"//" $BACKUPDBCFG|sed -e "s/\".*//"`
-ftpusername=`sed -e "s/<opt.*ftpusername=\"//" $BACKUPDBCFG|sed -e "s/\".*//"`
-ftppassword=`sed -e "s/<opt.*ftppassword=\"//" $BACKUPDBCFG|sed -e "s/\".*//"`
-ftpserverip=`sed -e "s/<opt.*ftpserverip=\"//" $BACKUPDBCFG|sed -e "s/\".*//"`
-ftpfrequency=`sed -e "s/<opt.*ftpfrequency=\"//" $BACKUPDBCFG|sed -e "s/\".*//"`
-ftpdir=`sed -e "s/<opt.*ftpdir=\"//" $BACKUPDBCFG|sed -e "s/\".*//"`
-
-if [ "$ftpserver" = "1" ]
-then
-    cat >> /etc/crontab <<!
-0 0 */$ftpfrequency * *  root       /opt/qb/bin/script/backupdbftp $ftpserverip $ftpusername $ftppassword $ftpdir
-!
-    /usr/local/apache/qb/setuid/do_backupdb.pl
-    rm -f /mnt/tclog/*
-else
-    cat >> /etc/crontab <<!
-#0 0 */ftpfrequency * *  root       /opt/qb/bin/script/backupdbftp ftpserverip ftpusername ftppassword ftpdir
-!
-fi
-
-#..........................................................
 # 2012-0321 Brian
 # * QBserv is dead with unknown reason,so need to kill the process in a period of time.
 #..........................................................
@@ -936,6 +884,56 @@ ln -s /opt/qb/bin/script/ispdown /usr/sbin/ispdown
 #/usr/sbin/httpd -k restart
 /sbin/service httpd restart
 
+#..........................................................
+# 2008-1202 Brian
+# * Setup export log to ftp server.
+#..........................................................
+SYSLOGCFG="/usr/local/apache/config/syslog.xml"
+ftpserver=`sed -e "s/<opt.*ftpserver=\"//" $SYSLOGCFG|sed -e "s/\".*//"`
+#ftpusername=`sed -e "s/<opt.*ftpusername=\"//" $SYSLOGCFG|sed -e "s/\".*//"`
+#ftppassword=`sed -e "s/<opt.*ftppassword=\"//" $SYSLOGCFG|sed -e "s/\".*//"`
+#ftpserverip=`sed -e "s/<opt.*ftpserverip=\"//" $SYSLOGCFG|sed -e "s/\".*//"`
+#ftpfrequency=`sed -e "s/<opt.*ftpfrequency=\"//" $SYSLOGCFG|sed -e "s/\".*//"`
+#ftpdir=`sed -e "s/<opt.*ftpdir=\"//" $SYSLOGCFG|sed -e "s/\".*//"`
+SYSLOGDEV=`grep syslogdev $SYSLOGCFG|sed -e "s/<opt.*syslogdev=\"//"|sed -e "s/\".*//"`
+
+if [ "$ftpserver" = "1" ]
+then
+    cat >> /etc/crontab <<!
+0 0 */ftpfrequency * *  root       /opt/qb/bin/script/syslogftp ftpserverip ftpusername ftppassword ftpdir
+!
+    /usr/local/apache/qb/setuid/do_qbsyslog.pl
+    rm -f /mnt/tclog/*
+    mount /dev/$SYSLOGDEV /mnt/tclog
+else
+    cat >> /etc/crontab <<!
+#0 0 */ftpfrequency * *  root       /opt/qb/bin/script/syslogftp ftpserverip ftpusername ftppassword ftpdir
+!
+fi
+
+#..........................................................
+# 2014-0414 Brian
+# * Setup export database to ftp server.
+#..........................................................
+BACKUPDBCFG="/usr/local/apache/qbconf/backupdb.xml"
+ftpserver=`sed -e "s/<opt.*ftpserver=\"//" $BACKUPDBCFG|sed -e "s/\".*//"`
+#ftpusername=`sed -e "s/<opt.*ftpusername=\"//" $BACKUPDBCFG|sed -e "s/\".*//"`
+#ftppassword=`sed -e "s/<opt.*ftppassword=\"//" $BACKUPDBCFG|sed -e "s/\".*//"`
+#ftpserverip=`sed -e "s/<opt.*ftpserverip=\"//" $BACKUPDBCFG|sed -e "s/\".*//"`
+#ftpfrequency=`sed -e "s/<opt.*ftpfrequency=\"//" $BACKUPDBCFG|sed -e "s/\".*//"`
+#ftpdir=`sed -e "s/<opt.*ftpdir=\"//" $BACKUPDBCFG|sed -e "s/\".*//"`
+
+if [ "$ftpserver" = "1" ]
+then
+    cat >> /etc/crontab <<!
+0 0 */ftpfrequency * *  root       /opt/qb/bin/script/backupdbftp ftpserverip ftpusername ftppassword ftpdir
+!
+    /usr/local/apache/qb/setuid/do_backupdb.pl
+else
+    cat >> /etc/crontab <<!
+#0 0 */ftpfrequency * *  root       /opt/qb/bin/script/backupdbftp ftpserverip ftpusername ftppassword ftpdir
+!
+fi
 
 #Enable Analyser
 ENABLEANALYSER=$(awk "/ENABLEANALYSER/ {print \$2}"  $QBREG_FILE)

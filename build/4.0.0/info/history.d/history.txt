@@ -12,6 +12,8 @@ Version : 4.0.0-0021
       The modification include :backupdb.cgi,backupdbftp,backupdb.lib,backupdb.xml,do_backupdb.pl,file_restore.cgi,flow_user.cgi,flow_user_sec.cgi,l7log.cgi,storage_set.cgi,sysinit
     5.To fix auto backup syslog/database via ftp sometimes can't work after the reboot.
       The modification include :sysinit
+    6.To remove libxtables.so.5.0.0 from script.pkg because fsimage contain it.
+      The modification include :sysinit
 
 ======== Wed Mar  5 18:01:02 CST 2014 ========
 Version : 4.0.0-0020

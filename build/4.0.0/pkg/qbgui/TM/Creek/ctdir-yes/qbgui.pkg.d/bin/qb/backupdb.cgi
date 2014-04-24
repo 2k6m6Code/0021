@@ -37,7 +37,7 @@ print qq (<button  onclick="parent.mainFrame.location='l7log.cgi'" style="width:
 print qq (<button  onclick="parent.mainFrame.location='flow_user.cgi'" style="width:170" hidefocus="true" class="menu">Unit</button>);
 print qq (<button  onclick="parent.mainFrame.location='flow_user_sec.cgi'" style="width:170" hidefocus="true" class="menu">Transparent Subnets</button>);
 print qq (<button  onclick="parent.mainFrame.location='storage_set.cgi'" style="width:170" hidefocus="true" class="menu">Storage</button>);
-print qq (<button  onclick="parent.mainFrame.location='backupdb.cgi'" style="width:170" hidefocus="true" class="menu">Backup</button>);
+print qq (<button  onclick="parent.mainFrame.location='backupdb.cgi'" style="width:170" hidefocus="true" class="menu">Backup Database</button>);
 #假如認證失敗，就直接結束
 if ( !$gLOGINRESULT ) { general_script(); exit;}
 

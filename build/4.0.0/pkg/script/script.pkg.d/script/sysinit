@@ -1401,7 +1401,7 @@ fi
 # 2013-1101
 # Gary reduce fqdn timeout
 #..........................................................
-cp -af /opt/qb/bin/script/libxtables.so.5.0.0 /lib
+#cp -af /opt/qb/bin/script/libxtables.so.5.0.0 /lib
 
 #..........................................................
 # 2013-1119

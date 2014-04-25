@@ -30,7 +30,7 @@ if (!$dig)
 {
     @table_name  = $act->getfile("$PATH"."$dig"."/"."$date");
     if ($dig eq 'suspicious'){@title=('Time','IP','Account','Status');}
-    else{@title=('Time','IP','Status');}
+    else{@title=('Time','IP','Status','Type');}
 }
 print qq (<table bgcolor="#332211" width="100%" border="0" id="tables">);
 my $lineCount = 1;
@@ -59,7 +59,8 @@ if (!$dig)
     	print qq (<td width="200" align="center">$name[0] $name[1]</td>);    
     	print qq (<td width="200" align="center">$name[2]</td>);    
     	if ($dig eq 'suspicious'){print qq (<td width="200" align="center">$name[4]</td>);}
-    	print qq (<td width="200" align="center">$name[3]</td>);    
+    	print qq (<td width="200" align="center">$name[3]</td>);   
+    	if ($dig ne 'suspicious'){print qq (<td width="200" align="center">$name[4]</td>);} 
     }
 }    
 print qq (</table>);

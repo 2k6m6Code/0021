@@ -189,8 +189,9 @@ sub callPserver()
     check_proute_qb();
 
 	#Gary do weburl webstr and string iptables 20130624
-    write_iptables_weburl_script();
+    	write_iptables_weburl_script();
 	write_iptables_access_script();
+	edit_layer7_rules();
 
     #@dep:
     maintainConfig(action=>'SAVECONFIG', configname=>'active');        

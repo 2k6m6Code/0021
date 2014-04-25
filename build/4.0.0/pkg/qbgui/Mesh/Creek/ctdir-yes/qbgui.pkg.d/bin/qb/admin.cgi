@@ -34,6 +34,14 @@ $action{cfgftpusername}=$form->param('cfgftpusername');
 $action{cfgftppassword}=$form->param('cfgftppassword');
 $action{cfgftpdirectory}=$form->param('cfgftpdirectory');
 
+$action{mail_linkdown}=($form->param('mail_linkdown')) ? (1) : (0);
+$action{mail_linkup}=($form->param('mail_linkup')) ? (1) : (0);
+$action{mail_noreg}=($form->param('mail_noreg')) ? (1) : (0);
+$action{mail_warranty}=($form->param('mail_warranty')) ? (1) : (0);
+$action{mail_license}=($form->param('mail_license')) ? (1) : (0);
+$action{mail_shd}=($form->param('mail_shd')) ? (1) : (0);
+$action{mail_cf}=($form->param('mail_cf')) ? (1) : (0);
+$action{mail_cllog}=($form->param('mail_cllog')) ? (1) : (0);
 
 ##############################################
 # Set TIMEZONE

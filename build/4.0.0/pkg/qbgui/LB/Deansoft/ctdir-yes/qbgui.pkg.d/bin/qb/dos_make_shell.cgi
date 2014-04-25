@@ -273,17 +273,16 @@ sub makeshell
 				}
 				if ($ip->{cls} eq 'SYN')
 				{
-				print DQOS qq($CMDFLOOD -p tcp -d $ip->{dosip} -m state --state ESTABLISHED,RELATED -j ACCEPT \n);
-				print DQOS qq($CMDFLOOD -p tcp -d $ip->{dosip} --syn -m limit --limit $ip->{syn_num}/s --limit-burst $LIMITBURST -j ACCEPT\n);
-				print DQOS qq($CMDFLOOD -p tcp -d $ip->{dosip} --syn -m limit --limit 1/m -j LOG --log-level alert --log-prefix syn_flood:\n);
-				print DQOS qq($CMDFLOOD -p tcp -d $ip->{dosip} --syn -j DROP\n);
+				print DQOS qq($CMDFLOOD -p tcp -s $ip->{dosip} -m state --state ESTABLISHED,RELATED -j ACCEPT \n);
+				print DQOS qq($CMDFLOOD -p tcp -s $ip->{dosip} --syn -m limit --limit $ip->{syn_num}/s --limit-burst $LIMITBURST -j ACCEPT\n);
+				print DQOS qq($CMDFLOOD -p tcp -s $ip->{dosip} --syn -m limit --limit 1/m -j LOG --log-level alert --log-prefix syn_flood:\n);
+				print DQOS qq($CMDFLOOD -p tcp -s $ip->{dosip} --syn -j DROP\n);
 				}
 				if ($ip->{cls} eq 'UDP')
 				{
-				print DQOS qq($CMDFLOOD -p udp -d $ip->{dosip} -j ACCEPT \n);
-				print DQOS qq($CMDFLOOD -p udp -d $ip->{dosip} -m limit --limit $ip->{udp_num}/s --limit-burst $LIMITBURST -j ACCEPT\n);
-				print DQOS qq($CMDFLOOD -p udp -d $ip->{dosip} -m limit --limit 1/m -j LOG --log-level alert --log-prefix udp_flood:\n);
-				print DQOS qq($CMDFLOOD -p udp -d $ip->{dosip} -j DROP\n);
+				print DQOS qq($CMDFLOOD -p udp -s $ip->{dosip} -m limit --limit $ip->{udp_num}/s --limit-burst $LIMITBURST -j ACCEPT\n);
+				print DQOS qq($CMDFLOOD -p udp -s $ip->{dosip} -m limit --limit 1/m -j LOG --log-level alert --log-prefix udp_flood:\n);
+				print DQOS qq($CMDFLOOD -p udp -s $ip->{dosip} -j DROP\n);
 				}
 				
 			}

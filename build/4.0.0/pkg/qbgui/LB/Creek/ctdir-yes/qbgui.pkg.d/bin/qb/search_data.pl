@@ -10,6 +10,8 @@ my $tm_ip = $cgi->param("ip");
 my $tm_limit = $cgi->param("limit");
 my $tm_top = $cgi->param("top");
 my $tm_option = $cgi->param("option");
+my $tm_proto = $cgi->param("proto");
+my $tm_group = $cgi->param("group");
 my $tm_unit = 'all';
 if($cgi->param("unit") ne ''||$cgi->param("unit") ne 'all'){
 $tm_unit = $cgi->param("unit");}
@@ -83,6 +85,10 @@ if($tm_unit ne 'all')
 
 $staticnet=~s/or $/and /g;
 #$nonet=~s/and $/and /g;
+if($tm_proto ne 'all' && $tm_proto ne '')
+{
+	$staticnet=$staticnet.'proto '.$tm_proto.' and';
+}
 if($tm_unit ne 'all'){$nonet=~s/or \)$/\)and /g;}
 
 if ($limit[1] ne '')
@@ -102,14 +108,14 @@ system("/usr/local/apache/qb/setuid/run /bin/chmod 777 /tmp");
 if($tm_option eq 'bd_tr')
 {
 	system("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip 'not host 127.0.0.1 and not host 0.0.0.0' -o \"fmt:%ts %td  %pr %sap <-> %dap %ipkt %opkt %ibyt  %obyt  %fl \" > /tmp/test_nfdump");
-	#print qq("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip -o \"fmt:%ts %td  %pr %sap <-> %dap %ipkt %opkt %ibyt  %obyt  %fl \" > /tmp/test_nfdump");
+	#print qq("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip 'not host 127.0.0.1 and not host 0.0.0.0' -o \"fmt:%ts %td  %pr %sap <-> %dap %ipkt %opkt %ibyt  %obyt  %fl \" > /tmp/test_nfdump");
 }
 if($tm_option eq 'realtime')
 {
 	if(grep(/-B /,$tm_ip))
 	{
-		system("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip 'not host 127.0.0.1 and not host 0.0.0.0' -o \"fmt:%ts %td  %pr %sap <-> %dap %ipkt %opkt %ibyt  %obyt  %fl \" > /tmp/test_nfdump");
-		#print qq("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip -o \"fmt:%ts %td  %pr %sap <-> %dap %ipkt %opkt %ibyt  %obyt  %fl \" > /tmp/test_nfdump");
+		system("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip '$staticnet not host 127.0.0.1 and not host 0.0.0.0' -o \"fmt:%ts %td  %pr %sap <-> %dap %ipkt %opkt %ibyt  %obyt  %fl \" > /tmp/test_nfdump");
+		#print qq("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip '$staticnet not host 127.0.0.1 and not host 0.0.0.0' -o \"fmt:%ts %td  %pr %sap <-> %dap %ipkt %opkt %ibyt  %obyt  %fl \" > /tmp/test_nfdump");
 	}
 	elsif(grep(/local/,$tm_ip))
 	{
@@ -118,8 +124,8 @@ if($tm_option eq 'realtime')
 	}
 	else
 	{
-		system("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip 'not host 127.0.0.1 and not host 0.0.0.0' -o \"fmt:%ts %td  %sa %da %pkt %byt %bps %bpp  %fl\" > /tmp/test_nfdump");
-		#print qq("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip -o \"fmt:%ts %td  %pr %sa %pkt %byt %bps %bpp  %fl\" > /tmp/test_nfdump");
+		system("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip '$staticnet not host 127.0.0.1 and not host 0.0.0.0' -o \"fmt:%ts %td  %sa %da %pkt %byt %bps %bpp  %fl\" > /tmp/test_nfdump");
+		#print qq("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip '$staticnet not host 127.0.0.1 and not host 0.0.0.0' -o \"fmt:%ts %td  %sa %da %pkt %byt %bps %bpp  %fl\" > /tmp/test_nfdump");
 	}
 }
 elsif($tm_option eq 'query_host')
@@ -159,8 +165,8 @@ elsif($tm_option eq 'out_dst')
 }
 else
 {
-	system("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip -o \"fmt:%ts %td  %sa %da %pkt %byt %bps %bpp  %fl\" > /tmp/test_nfdump");
-	#print qq("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip > /tmp/test_nfdump");
+	######system("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip -o \"fmt:%ts %td  %sa %da %pkt %byt %bps %bpp  %fl\" > /tmp/test_nfdump");
+	######print qq("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip -o \"fmt:%ts %td  %sa %da %pkt %byt %bps %bpp  %fl\" > /tmp/test_nfdump");
 }
 system("/usr/local/apache/qb/setuid/run /bin/chmod 777 /tmp/test_nfdump");
 #system("/usr/local/apache/qb/setuid/run /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$tm_symd/$tm_time $tm_top $tm_limit $tm_ip > /tmp/mytest");
@@ -244,6 +250,10 @@ test1: foreach my $data (<FILE>)
 			if (grep(/IP Addr/,$title)){$title=~s/IP Addr/IP addr/g;}
 	        print qq(<th style="width: 200px;">$title</th>);
 	    }
+	}
+	if($tm_group eq 'view_group')
+	{
+		print qq (<th style="width: 200px;">Unit</th>);
 	}
 	print qq (</tr></thead>);
     }
@@ -660,7 +670,12 @@ test1: foreach my $data (<FILE>)
 					{
 						$iii = $testtraffic[4].','.$testtraffic[6];
 					}
+					#if($tm_proto eq 'ICMP'){
+					#print qq (<td width="200" align="center">$db</td>);
+					#}
+					#else{
 					print qq (<td width="200" align="center" onclick="javascript:search_flow('$iii','$tm_time','$tm_option','$tm_symd','$tm_ip','$traffic[2]')">$db</td>);
+					#}
 				}
 				else
 				{print qq (<td width="200" align="center" onclick="javascript:search_flow('$iii','$tm_time','$tm_ip','$tm_symd','$traffic[2]')">$db</td>);}
@@ -711,8 +726,35 @@ test1: foreach my $data (<FILE>)
 				}
 			    else
 			    {
+					#print qq (<td width="200" align="center" onclick="javascript:search_flow('$iii','$tm_time','$tm_ip','$tm_symd','$traffic[2]')">$db</td>);
 					print qq (<td width="200" align="center" $mytitle>$db</td>);
 				}
+			}
+		}
+		if($tm_group eq 'view_group')
+		{
+			my ($unit_sip,$unit_dip) = split(/,/,$iii);
+			my $view_unit='No Unit';
+			foreach my $file (@$unitlist)
+			{
+				if ($file->{schname} eq 'system'){next;}
+				my $menber = $file->{member};
+				foreach my $user (@$menber)
+				{
+					if($user->{ip} eq ''){next;}
+					if($user->{ip} eq $unit_sip||$user->{ip} eq $unit_dip)
+					{
+						$view_unit=$file->{schname};
+					}
+				}
+			}
+			if($view_unit ne 'No Unit')
+			{
+				print qq (<td width="200" align="center" onclick="javascript:search_group('-B','$tm_time','bd_tr','$tm_symd','$view_unit')">$view_unit</td>);
+			}
+			else
+			{
+				print qq (<td width="200" align="center">$view_unit</td>);
 			}
 		}
 		print qq (</tr>);

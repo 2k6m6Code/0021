@@ -417,9 +417,11 @@ sub maintainSchedule
     if ( $action{action}=~m/^ENABLED$/ )
     {
     	system("/usr/local/apache/qb/setuid/run /bin/cp -a /usr/local/apache/qb/httpd.con.n /mnt/conf/httpd.con");
+    	system("/usr/local/apache/qb/setuid/run /bin/cp -a /usr/local/apache/qb/ssl.conf.n /usr/local/apache/conf.d/ssl.conf");
         if ($check eq '1')
         {
             system("/usr/local/apache/qb/setuid/run /bin/cp -a /usr/local/apache/qb/httpd.con.y /mnt/conf/httpd.con");
+            system("/usr/local/apache/qb/setuid/run /bin/cp -a /usr/local/apache/qb/ssl.conf.y /usr/local/apache/conf.d/ssl.conf");
             system("/usr/local/apache/qb/setuid/run /usr/bin/perl /usr/local/apache/qb/auth_open.pl"); 
         }
         system("sync");

@@ -63,6 +63,10 @@ sub showRtable
         {
             $balancemode='TB';
         }
+        if ($table->{mode1} eq 'ORP' && $table->{mode} eq 'BSWLT')
+        {
+            $balancemode='ORP';
+        }
         
         #===================================================================      
         # prepare display color
@@ -138,6 +142,7 @@ sub showRtable
     if ( $balanceMode eq "BBL" && $target->{equalize}  ) { $balanceMode="WRR_LATENCY";  }
 	if ( $balanceMode eq "BBLP" && $target->{equalize}  ) { $balanceMode="WRR_LCY_PKT";  }
     if ( $target->{mode1} eq "TB" && $target->{mode} eq "WLC"){$balanceMode="TB";}
+    if ( $target->{mode1} eq "ORP" && $target->{mode} eq "BSWLT"){$balanceMode="ORP";}
     
     print qq (<table width="100%">);
     print qq (<tr><td width="60%" align="left">);
@@ -1451,6 +1456,11 @@ sub maintainRtable
             $temp->{mode1}='TB';
         }
         
+        if ($action{mode} eq 'ORP')
+        {
+            $temp->{mode}='BSWLT';
+            $temp->{mode1}='ORP';
+        }
         $temp->{dsipnum}=$dsip_count;
         #if ( $dsip_count>=2 && $temp->{equalize} ) {  $temp->{equalize}=0; }
 

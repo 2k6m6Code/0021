@@ -118,6 +118,12 @@ my @tcdev=$form->param('tcdev');
 my $tcpdumpoptions=$form->param('tcpdumpoptions');
 
 #==============================================
+#for Network Scanner
+my $network_scan_option=$form->param('network_scan_option');
+#==============================================
+#for Netbios Scanner
+my $netbios_scan_option=$form->param('netbios_scan_option');
+#==============================================
 #for arp ...nancy 041130
 # file : /proc/qbalancer/qbreport
 # ln1:Iface gateway ip       MAC                T in        T out       A in    A out   conns  KA  rtt dead
@@ -564,6 +570,18 @@ _EOF_
         # "-l" is an option for tcpdump to make stdout line buffered. Modified  since 2003.04.02 15:38  2.1.5.0007
         $tcpdumpoptions=~s/\|/<br>/g;#Fix a security hole
         $runstring.=qq($cmd -l -n $tcpdumpoptions); 
+    }
+    elsif ( $tool eq "network_scan" )    
+    { 
+        my $cmd=locateCommand(command=>'nmap');
+
+        $runstring.=qq($cmd $network_scan_option); 
+    }
+    elsif ( $tool eq "netbios_scan" )    
+    { 
+        my $cmd=locateCommand(command=>'nbtscan');
+
+        $runstring.=qq($cmd $netbios_scan_option); 
     }
     elsif ( $tool eq "arp" )
     {

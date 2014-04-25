@@ -531,6 +531,13 @@ fi
 
 #/usr/bin/perl /usr/local/apache/qb/transformwork.pl action=GO
 
+#Gary 20140422 layer7 log for 南藝大標案
+iptables_layer7='/usr/local/apache/active/iptables_layer7'
+if [ -f "$iptables_layer7" ]; then
+iptables -X
+$iptables_layer7
+fi
+
 #Gary 20130624 weburl webstr string
 iptables_weburl='/usr/local/apache/active/iptables_weburl'
 if [ -f "$iptables_weburl" ]; then

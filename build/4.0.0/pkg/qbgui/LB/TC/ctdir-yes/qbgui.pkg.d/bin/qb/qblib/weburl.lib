@@ -968,14 +968,16 @@ sub write_iptables_weburl_script()
     	        $source=$host->{hostaddress};
     	        
     	        if ( $host->{hosttype} ne 'network' && $host->{hosttype} ne 'weburl' ) { $sources=1; }
-    	    }else{$source=$item->{source};}
+    	    }
+    	    #else{$source=$item->{source};}
 
     	    if ( $item->{destination} eq $host->{hostname} )
     	    {
     	    	$destination=$host->{hostaddress};
     	    	
     	        if ( $host->{hosttype} ne 'network' && $host->{hosttype} ne 'weburl' ) { $destinations=1; }
-    	    }else{$destination=$item->{destination};}
+    	    }
+    	    #else{$destination=$item->{destination};}
  
     	    if ( "host-".$item->{listname} eq $host->{hostname} )
     	    {
@@ -983,7 +985,7 @@ sub write_iptables_weburl_script()
     	    }
         }
 		
-    	if ( $item->{source} eq 'system' )	{ $source='0.0.0.0/0'; }
+    	if ( $item->{source} eq '0.0.0.0/0' )	{ $source='0.0.0.0/0'; }
     	if ( $item->{destination} eq 'system' ) { $destination='0.0.0.0/0'; }
  
  	if ( $item->{filtertype} eq 'weburl' )
@@ -1003,8 +1005,10 @@ sub write_iptables_weburl_script()
 						{
 							if($item->{schedule} eq 'All Week'||!$item->{schedule})
 							{
-								print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destinationip -m $item->{filtertype} --contains \"$keyword\" -j DROP &\n";
-								print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destinationip -m $item->{filtertype} --contains \"$keyword\" -j DROP &\n";
+								print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destinationip -m $item->{filtertype} --contains \"$keyword\" -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7 \n";
+								print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destinationip -m $item->{filtertype} --contains \"$keyword\" -j DROP \n";
+								print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destinationip -m $item->{filtertype} --contains \"$keyword\" -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7 \n";
+								print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destinationip -m $item->{filtertype} --contains \"$keyword\" -j DROP \n";
 							}
 							else
 							{
@@ -1018,8 +1022,10 @@ sub write_iptables_weburl_script()
 										my $subsch = $sch->{subsch};
 										foreach my $item2 ( @$subsch )
 										{
-											print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destinationip -m $item->{filtertype} --contains \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP &\n";
-											print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destinationip -m $item->{filtertype} --contains \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP &\n";
+											print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destinationip -m $item->{filtertype} --contains \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+											print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destinationip -m $item->{filtertype} --contains \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP \n";
+											print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destinationip -m $item->{filtertype} --contains \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+											print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destinationip -m $item->{filtertype} --contains \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP \n";
 											
 											#print DNSPROXY qq "/usr/local/sbin/iptables -t nat -I PREROUTING -p udp --dport 53 $address -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j REDIRECT --to-port $dnsproxyport\n";
 											#print DELDNSPROXY qq "/usr/local/sbin/iptables -t nat -D PREROUTING -p udp --dport 53 $address -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j REDIRECT --to-port $dnsproxyport\n";
@@ -1040,8 +1046,10 @@ sub write_iptables_weburl_script()
    	            	{
 						if($item->{schedule} eq 'All Week'||!$item->{schedule})
 						{
-							print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destination -m $item->{filtertype} --contains \"$keyword\" -j DROP &\n";
-							print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destination -m $item->{filtertype} --contains \"$keyword\" -j DROP &\n";
+							print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destination -m $item->{filtertype} --contains \"$keyword\" -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+							print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destination -m $item->{filtertype} --contains \"$keyword\" -j DROP \n";
+							print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destination -m $item->{filtertype} --contains \"$keyword\" -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+							print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destination -m $item->{filtertype} --contains \"$keyword\" -j DROP \n";
 						}
 						else
 						{
@@ -1055,8 +1063,10 @@ sub write_iptables_weburl_script()
 									my $subsch = $sch->{subsch};
 									foreach my $item2 ( @$subsch )
 									{
-										print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destination -m $item->{filtertype} --contains \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP &\n";
-										print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destination -m $item->{filtertype} --contains \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP &\n";							
+										print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destination -m $item->{filtertype} --contains \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+										print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destination -m $item->{filtertype} --contains \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP \n";
+										print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destination -m $item->{filtertype} --contains \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";							
+										print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destination -m $item->{filtertype} --contains \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP \n";							
 									}
 								}
 							}
@@ -1073,8 +1083,10 @@ sub write_iptables_weburl_script()
    	    	        {
 						if($item->{schedule} eq 'All Week'||!$item->{schedule})
 						{
-							print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destinationip -m $item->{filtertype} --contains \"$keyword\" -j DROP &\n";
-							print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destinationip -m $item->{filtertype} --contains \"$keyword\" -j DROP &\n";
+							print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destinationip -m $item->{filtertype} --contains \"$keyword\" -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+							print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destinationip -m $item->{filtertype} --contains \"$keyword\" -j DROP \n";
+							print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destinationip -m $item->{filtertype} --contains \"$keyword\" -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+							print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destinationip -m $item->{filtertype} --contains \"$keyword\" -j DROP \n";
 						}
 						else
 						{
@@ -1088,8 +1100,10 @@ sub write_iptables_weburl_script()
 									my $subsch = $sch->{subsch};
 									foreach my $item2 ( @$subsch )
 									{
-										print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destinationip -m $item->{filtertype} --contains \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP &\n";
-										print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destinationip -m $item->{filtertype} --contains \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP &\n";							
+										print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destinationip -m $item->{filtertype} --contains \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7 \n";
+										print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destinationip -m $item->{filtertype} --contains \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP \n";
+										print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destinationip -m $item->{filtertype} --contains \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7 \n";							
+										print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destinationip -m $item->{filtertype} --contains \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP \n";							
 									}
 								}
 							}
@@ -1103,8 +1117,10 @@ sub write_iptables_weburl_script()
     	    {
 				if($item->{schedule} eq 'All Week'||!$item->{schedule})
 				{
-					print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destination -m $item->{filtertype} --contains \"$keyword\" -j DROP &\n";
-					print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destination -m $item->{filtertype} --contains \"$keyword\" -j DROP &\n";
+					print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destination -m $item->{filtertype} --contains \"$keyword\" -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+					print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destination -m $item->{filtertype} --contains \"$keyword\" -j DROP \n";
+					print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destination -m $item->{filtertype} --contains \"$keyword\" -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+					print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destination -m $item->{filtertype} --contains \"$keyword\" -j DROP \n";
 				}
 				else
 				{
@@ -1115,8 +1131,10 @@ sub write_iptables_weburl_script()
 							my $subsch = $sch->{subsch};
 							foreach my $item2 ( @$subsch )
 							{
-								print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destination -m $item->{filtertype} --contains \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP &\n";
-								print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destination -m $item->{filtertype} --contains \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP &\n";							
+								print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destination -m $item->{filtertype} --contains \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+								print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destination -m $item->{filtertype} --contains \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP \n";
+								print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destination -m $item->{filtertype} --contains \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";							
+								print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destination -m $item->{filtertype} --contains \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP \n";							
 							}
 						}
 					}
@@ -1145,8 +1163,10 @@ sub write_iptables_weburl_script()
     	    	            {
 								if($item->{schedule} eq 'All Week'||!$item->{schedule})
 								{
-									print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destinationip -p tcp -m $item->{filtertype} --url \"$keyword\" -j DROP &\n";
-									print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destinationip -p tcp -m $item->{filtertype} --url \"$keyword\" -j DROP &\n";
+									print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destinationip -p tcp -m $item->{filtertype} --url \"$keyword\" -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+									print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destinationip -p tcp -m $item->{filtertype} --url \"$keyword\" -j DROP \n";
+									print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destinationip -p tcp -m $item->{filtertype} --url \"$keyword\" -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+									print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destinationip -p tcp -m $item->{filtertype} --url \"$keyword\" -j DROP \n";
 								}
 								else
 								{
@@ -1157,8 +1177,10 @@ sub write_iptables_weburl_script()
 											my $subsch = $sch->{subsch};
 											foreach my $item2 ( @$subsch )
 											{
-												print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destinationip -p tcp -m $item->{filtertype} --url \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP &\n";
-												print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destinationip -p tcp -m $item->{filtertype} --url \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP &\n";
+												print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destinationip -p tcp -m $item->{filtertype} --url \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7 \n";
+												print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destinationip -p tcp -m $item->{filtertype} --url \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP \n";
+												print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destinationip -p tcp -m $item->{filtertype} --url \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7 \n";
+												print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destinationip -p tcp -m $item->{filtertype} --url \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP \n";
 											}
 										}
 									}
@@ -1177,8 +1199,10 @@ sub write_iptables_weburl_script()
     	            	{
 							if($item->{schedule} eq 'All Week'||!$item->{schedule})
 							{
-								print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destination -p tcp -m $item->{filtertype} --url \"$keyword\" -j DROP &\n";
-								print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destination -p tcp -m $item->{filtertype} --url \"$keyword\" -j DROP &\n";
+								print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destination -p tcp -m $item->{filtertype} --url \"$keyword\" -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+								print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destination -p tcp -m $item->{filtertype} --url \"$keyword\" -j DROP \n";
+								print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destination -p tcp -m $item->{filtertype} --url \"$keyword\" -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+								print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destination -p tcp -m $item->{filtertype} --url \"$keyword\" -j DROP \n";
 							}
 							else
 							{
@@ -1189,8 +1213,10 @@ sub write_iptables_weburl_script()
 										my $subsch = $sch->{subsch};
 										foreach my $item2 ( @$subsch )
 										{
-											print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destination -p tcp -m $item->{filtertype} --url \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP &\n";
-											print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destination -p tcp -m $item->{filtertype} --url \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP &\n";
+											print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destination -p tcp -m $item->{filtertype} --url \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7 \n";
+											print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destination -p tcp -m $item->{filtertype} --url \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP \n";
+											print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destination -p tcp -m $item->{filtertype} --url \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7 \n";
+											print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destination -p tcp -m $item->{filtertype} --url \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP \n";
 										}
 									}
 								}
@@ -1208,8 +1234,10 @@ sub write_iptables_weburl_script()
     	    	        {
 							if($item->{schedule} eq 'All Week'||!$item->{schedule})
 							{
-								print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destinationip -p tcp -m $item->{filtertype} --url \"$keyword\" -j DROP &\n";
-								print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destinationip -p tcp -m $item->{filtertype} --url \"$keyword\" -j DROP &\n";
+								print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destinationip -p tcp -m $item->{filtertype} --url \"$keyword\" -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7 \n";
+								print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destinationip -p tcp -m $item->{filtertype} --url \"$keyword\" -j DROP \n";
+								print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destinationip -p tcp -m $item->{filtertype} --url \"$keyword\" -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7 \n";
+								print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destinationip -p tcp -m $item->{filtertype} --url \"$keyword\" -j DROP \n";
 							}
 							else
 							{
@@ -1220,8 +1248,10 @@ sub write_iptables_weburl_script()
 										my $subsch = $sch->{subsch};
 										foreach my $item2 ( @$subsch )
 										{
-											print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destinationip -p tcp -m $item->{filtertype} --url \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP &\n";
-											print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destinationip -p tcp -m $item->{filtertype} --url \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP &\n";
+											print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destinationip -p tcp -m $item->{filtertype} --url \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7 \n";
+											print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destinationip -p tcp -m $item->{filtertype} --url \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP \n";
+											print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destinationip -p tcp -m $item->{filtertype} --url \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7 \n";
+											print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destinationip -p tcp -m $item->{filtertype} --url \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP \n";
 										}
 									}
 								}
@@ -1235,8 +1265,10 @@ sub write_iptables_weburl_script()
     	    {
 				if($item->{schedule} eq 'All Week'||!$item->{schedule})
 				{
-					print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destination -p tcp -m $item->{filtertype} --url \"$keyword\" -j DROP &\n";
-					print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destination -p tcp -m $item->{filtertype} --url \"$keyword\" -j DROP &\n";
+					print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destination -p tcp -m $item->{filtertype} --url \"$keyword\" -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+					print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destination -p tcp -m $item->{filtertype} --url \"$keyword\" -j DROP \n";
+					print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destination -p tcp -m $item->{filtertype} --url \"$keyword\" -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+					print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destination -p tcp -m $item->{filtertype} --url \"$keyword\" -j DROP \n";
 				}
 				else
 				{
@@ -1247,8 +1279,10 @@ sub write_iptables_weburl_script()
 							my $subsch = $sch->{subsch};
 							foreach my $item2 ( @$subsch )
 							{
-								print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destination -p tcp -m $item->{filtertype} --url \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP &\n";
-								print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destination -p tcp -m $item->{filtertype} --url \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP &\n";
+								print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destination -p tcp -m $item->{filtertype} --url \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+								print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destination -p tcp -m $item->{filtertype} --url \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP \n";
+								print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destination -p tcp -m $item->{filtertype} --url \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+								print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destination -p tcp -m $item->{filtertype} --url \"$keyword\" -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP \n";
 							}
 						}
 					}
@@ -1277,8 +1311,10 @@ sub write_iptables_weburl_script()
     	    	        {
 							if($item->{schedule} eq 'All Week'||!$item->{schedule})
 							{
-								print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destinationip -m $item->{filtertype} --string \"$keyword\" --algo bm -j DROP &\n";
-								print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destinationip -m $item->{filtertype} --string \"$keyword\" --algo bm -j DROP &\n";
+								print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destinationip -m $item->{filtertype} --string \"$keyword\" --algo bm -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+								print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destinationip -m $item->{filtertype} --string \"$keyword\" --algo bm -j DROP \n";
+								print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destinationip -m $item->{filtertype} --string \"$keyword\" --algo bm -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+								print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destinationip -m $item->{filtertype} --string \"$keyword\" --algo bm -j DROP \n";
 							}
 							else
 							{
@@ -1289,8 +1325,10 @@ sub write_iptables_weburl_script()
 										my $subsch = $sch->{subsch};
 										foreach my $item2 ( @$subsch )
 										{
-											print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destinationip -m $item->{filtertype} --string \"$keyword\" --algo bm -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP &\n";
-											print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destinationip -m $item->{filtertype} --string \"$keyword\" --algo bm -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP &\n";
+											print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destinationip -m $item->{filtertype} --string \"$keyword\" --algo bm -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7 \n";
+											print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destinationip -m $item->{filtertype} --string \"$keyword\" --algo bm -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP \n";
+											print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destinationip -m $item->{filtertype} --string \"$keyword\" --algo bm -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+											print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destinationip -m $item->{filtertype} --string \"$keyword\" --algo bm -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP \n";
 										}
 									}
 								}
@@ -1309,8 +1347,10 @@ sub write_iptables_weburl_script()
     	           	{
 						if($item->{schedule} eq 'All Week'||!$item->{schedule})
 						{
-							print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destination -m $item->{filtertype} --string \"$keyword\" --algo bm -j DROP &\n";
-							print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destination -m $item->{filtertype} --string \"$keyword\" --algo bm -j DROP &\n";
+							print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destination -m $item->{filtertype} --string \"$keyword\" --algo bm -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+							print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destination -m $item->{filtertype} --string \"$keyword\" --algo bm -j DROP \n";
+							print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destination -m $item->{filtertype} --string \"$keyword\" --algo bm -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+							print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destination -m $item->{filtertype} --string \"$keyword\" --algo bm -j DROP \n";
 						}
 						else
 						{
@@ -1321,8 +1361,10 @@ sub write_iptables_weburl_script()
 									my $subsch = $sch->{subsch};
 									foreach my $item2 ( @$subsch )
 									{
-										print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destination -m $item->{filtertype} --string \"$keyword\" --algo bm -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP &\n";
-										print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destination -m $item->{filtertype} --string \"$keyword\" --algo bm -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP &\n";
+										print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destination -m $item->{filtertype} --string \"$keyword\" --algo bm -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+										print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $sourceip -d $destination -m $item->{filtertype} --string \"$keyword\" --algo bm -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP \n";
+										print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destination -m $item->{filtertype} --string \"$keyword\" --algo bm -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+										print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $sourceip -d $destination -m $item->{filtertype} --string \"$keyword\" --algo bm -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP \n";
 									}
 								}
 							}
@@ -1340,8 +1382,10 @@ sub write_iptables_weburl_script()
    	    	        { 
 						if($item->{schedule} eq 'All Week'||!$item->{schedule})
 						{
-							print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destinationip -m $item->{filtertype} --string \"$keyword\" --algo bm -j DROP &\n";
-							print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destinationip -m $item->{filtertype} --string \"$keyword\" --algo bm -j DROP &\n";
+							print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destinationip -m $item->{filtertype} --string \"$keyword\" --algo bm -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+							print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destinationip -m $item->{filtertype} --string \"$keyword\" --algo bm -j DROP \n";
+							print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destinationip -m $item->{filtertype} --string \"$keyword\" --algo bm -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+							print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destinationip -m $item->{filtertype} --string \"$keyword\" --algo bm -j DROP \n";
 						}
 						else
 						{
@@ -1352,8 +1396,10 @@ sub write_iptables_weburl_script()
 									my $subsch = $sch->{subsch};
 									foreach my $item2 ( @$subsch )
 									{
-										print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destinationip -m $item->{filtertype} --string \"$keyword\" --algo bm -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP &\n";
-										print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destinationip -m $item->{filtertype} --string \"$keyword\" --algo bm -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP &\n";
+										print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destinationip -m $item->{filtertype} --string \"$keyword\" --algo bm -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+										print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destinationip -m $item->{filtertype} --string \"$keyword\" --algo bm -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP \n";
+										print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destinationip -m $item->{filtertype} --string \"$keyword\" --algo bm -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+										print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destinationip -m $item->{filtertype} --string \"$keyword\" --algo bm -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP \n";
 									}
 								}
 							}
@@ -1367,8 +1413,10 @@ sub write_iptables_weburl_script()
     	    {
 				if($item->{schedule} eq 'All Week'||!$item->{schedule})
 				{
-					print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destination -m $item->{filtertype} --string \"$keyword\" --algo bm -j DROP &\n";
-					print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destination -m $item->{filtertype} --string \"$keyword\" --algo bm -j DROP &\n";
+					print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destination -m $item->{filtertype} --string \"$keyword\" --algo bm -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+					print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destination -m $item->{filtertype} --string \"$keyword\" --algo bm -j DROP \n";
+					print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destination -m $item->{filtertype} --string \"$keyword\" --algo bm -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+					print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destination -m $item->{filtertype} --string \"$keyword\" --algo bm -j DROP \n";
 				}
 				else
 				{
@@ -1379,22 +1427,22 @@ sub write_iptables_weburl_script()
 							my $subsch = $sch->{subsch};
 							foreach my $item2 ( @$subsch )
 							{
-								print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destination -m $item->{filtertype} --string \"$keyword\" --algo bm -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP &\n";
-								print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destination -m $item->{filtertype} --string \"$keyword\" --algo bm -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP &\n";
+								print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destination -m $item->{filtertype} --string \"$keyword\" --algo bm -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+								print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destination -m $item->{filtertype} --string \"$keyword\" --algo bm -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP \n";
+								print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destination -m $item->{filtertype} --string \"$keyword\" --algo bm -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j LOG --log-prefix \"KEYFILTER_$keyword \" --log-level 7\n";
+								print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destination -m $item->{filtertype} --string \"$keyword\" --algo bm -m time --timestart $item2->{timestart} --timestop $item2->{timestop} --weekday $item2->{days} -j DROP \n";
 							}
 						}
 					}
 				}
-                #print IPTABLES_WEBURL qq "/sbin/iptables -A FORWARD -s $source -d $destination -m $item->{filtertype} --string \"$keyword\" --algo bm -j DROP &\n";
-                #print IPTABLES_WEBURL qq "/sbin/iptables -A INPUT -s $source -d $destination -m $item->{filtertype} --string \"$keyword\" --algo bm -j DROP &\n";
             }
 		}
  	}
  
  
     }
-    
-    
+    print IPTABLES_WEBURL qq "/sbin/iptables -I INPUT -d 172.31.3.1 -j ACCEPT \n";
+    print IPTABLES_WEBURL qq "/sbin/iptables -I FORWARD -d 172.31.3.1 -j ACCEPT \n";
     
     close(IPTABLES_WEBURL);
     chmod(0777, $iptables_weburl);

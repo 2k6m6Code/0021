@@ -41,6 +41,12 @@ sub showDiag
 #Brian 2010-1019
     print qq (<tr><td><input name="tool" type="radio" value="telnet" onClick="switchOption('telnet')">$qblang[427]</td></tr>); 
 
+#Brian 2014-0424
+    print qq (<tr><td><input name="tool" type="radio" value="network_scan" onClick="switchOption('network_scan')">$qblang[488]</td></tr>); 
+
+#Brian 2014-0424
+    print qq (<tr><td><input name="tool" type="radio" value="netbios_scan" onClick="switchOption('netbios_scan')">$qblang[489]</td></tr>); 
+
 #Brian 2006-0912
     print qq (<tr><td><input name="tool" type="radio" value="wget" onClick="switchOption('wget')">$qblang[428]</td></tr>); 
 
@@ -405,6 +411,29 @@ sub showDiag
     print qq (</table>);
     print qq (</fieldset>);
  
+    #=================================================================================================
+    print qq (<fieldset id="network_scan" class="fieldset" style="display:none">);
+    print qq (<legend class="subtitle">$qblang[488]</legend>);
+    print qq (<table class="body" cellpadding="0" >);
+    print qq (<tr><td>$qblang[33]:</td><td><input class="qbtext"  type="text" name=network_scan_option></td></tr>);
+    print qq (<tr><td colspan="2" valign="bottom" align="center">);
+    print qq (<input type="button" class="qb" value="$qblang[407]" style="width:50px;width:50px" onClick="go();">);
+    print qq (<input type="button" class="qb" value="$qblang[350]"  style="width:50px;width:50px" onClick="stopResult()">);
+    print qq (</td></tr>);
+    print qq (</table>);
+    print qq (</fieldset>);
+
+    #=================================================================================================
+    print qq (<fieldset id="netbios_scan" class="fieldset" style="display:none">);
+    print qq (<legend class="subtitle">$qblang[489]</legend>);
+    print qq (<table class="body" cellpadding="0" >);
+    print qq (<tr><td>$qblang[33]:</td><td><input class="qbtext"  type="text" name=netbios_scan_option></td></tr>);
+    print qq (<tr><td colspan="2" valign="bottom" align="center">);
+    print qq (<input type="button" class="qb" value="$qblang[407]" style="width:50px;width:50px" onClick="go();">);
+    print qq (<input type="button" class="qb" value="$qblang[350]"  style="width:50px;width:50px" onClick="stopResult()">);
+    print qq (</td></tr>);
+    print qq (</table>);
+    print qq (</fieldset>);
    
     #=================================================================================================
     print qq (<fieldset id="tcpdump" class="fieldset" style="display:none">);

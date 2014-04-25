@@ -101,12 +101,12 @@ echo '</td></tr>';
 <option value="">IPv6</option>
 </select>
 <a>Protocol : </a>
-<select id="" >
-<option value="">ALL</option>
-<option value="">ICMP</option>
-<option value="">IGMP</option>
-<option value="">TCP</option>
-<option value="">UDP</option>
+<select id="proto" >
+<option value="all">ALL</option>
+<option value="ICMP">ICMP</option>
+<option value="IGMP">IGMP</option>
+<option value="TCP">TCP</option>
+<option value="UDP">UDP</option>
 </select>
 <a>Order by </a>
 <select id="order" >
@@ -180,7 +180,8 @@ function Submit()
      else
          var ip = $("#flow_dst").val() + $("#flow_dst_1").val();
      var limit= $("#order").val(); 
-     $.get(url,{time:time,ip:ip,limit:limit,top:top,option:option,symd:start},function fno(data){
+     var proto = $("#proto").val();
+     $.get(url,{time:time,ip:ip,limit:limit,top:top,option:option,symd:start,proto:proto},function fno(data){
          $("#table").html(data);
          var oTable =  $('#tables').dataTable({
              "bPaginate": false,

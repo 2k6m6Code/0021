@@ -127,11 +127,47 @@ sub showAdmin
     } 
     print qq (</td>);
     print qq (</tr>);
+
+    #******************************Export Config file to remote ftp server************************
+    #20140418 Select alert mail condition
+
+    print qq (<tr>);
+    print qq (<td class="body"  valign="top" align="left">);
+    print qq (Send mail conditions);
+    print qq (</td>);
+    print qq (<td class="body"  valign="top" align="left">);
+    print qq (<hr size="1">);
+
+    my $status=( $overview->{mail_linkdown} eq "0" ) ? ('') : ('checked');
+    print qq (<input type="checkbox" name="mail_linkdown"  $status title="">When wan link down<br>);
+
+    my $status=( $overview->{mail_linkup} eq "0" ) ? ('') : ('checked');
+    print qq (<input type="checkbox" name="mail_linkup"  $status title="">When wan link up<br>);
+
+    my $status=( $overview->{mail_noreg} eq "0" ) ? ('') : ('checked');
+    print qq (<input type="checkbox" name="mail_noreg"  $status title="Need to register QB or QB will stop working in the days">Register QB notice<br>);
+
+    my $status=( $overview->{mail_warranty} eq "0" ) ? ('') : ('checked');
+    print qq (<input type="checkbox" name="mail_warranty"  $status title="For physical device">Warranty expiry notice<br>);
+
+    my $status=( $overview->{mail_license} eq "0" ) ? ('') : ('checked');
+    print qq (<input type="checkbox" name="mail_license"  $status title="For virtual device">License expiry notice<br>);
+
+    my $status=( $overview->{mail_shd} eq "0" ) ? ('') : ('checked');
+    print qq (<input type="checkbox" name="mail_shd"  $status title="">Built-in log storage crashed<br>);
+
+    my $status=( $overview->{mail_cf} eq "0" ) ? ('') : ('checked');
+    print qq (<input type="checkbox" name="mail_cf"  $status title="">Built-in CF's filesystem become Read-Only<br>);
+
+    my $status=( $overview->{mail_cllog} eq "0" ) ? ('') : ('checked');
+    print qq (<input type="checkbox" name="mail_cllog"  $status title="Storage usage reach the maximum defined percentage and start to clear old log">Clear old traffic log<br>);
+
+    #print qq (<hr size="1">);
+    print qq (</td>);
+    print qq (</tr>);
+                                                
     print qq (<tr><td colspan="2"><hr size="1"></td></tr>);
     print qq (</table>);
-    
-    
-                                                
     #************************************ Command Button  ********************************************
     print qq (<table>);
     print qq (<tr>);

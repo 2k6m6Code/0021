@@ -30,7 +30,7 @@ sub showPolicyTitle
     {
 	@titleList=('Schedule', 'Action', 'Status', 'Edit');
     }
-    
+ 
     print qq (<div class="divframe">);
     print qq (<table width="100%" bgcolor="#332211" border="0" align="center"> );
     print qq (<tr>);
@@ -842,6 +842,33 @@ sub show_iniroute
         find( { wanted => sub { push(@FileList, $_) }, no_chdir => 1 },'/usr/local/apache/qbconf/l7-object/' );   
         print qq (<td class="body"  valign="top" align="center" >);
         print qq (<select class="qbopt" size="1" name="service" onchange="" value="" style="WIDTH:100;">);
+   ####### Gary 2014 0418 for 南藝大標案
+        print qq (<option $status value="GoogleBooks">Google Books</option>);
+        print qq (<option $status value="GoogleAnalytics">Google Analytics</option>);
+        print qq (<option $status value="GoogleCalendar">Google Calendar</option>);
+        print qq (<option $status value="GooglePicasa">Google Picasa</option>);
+        print qq (<option $status value="GoogleChrome">Google Chrome</option>);
+        print qq (<option $status value="GooglePLAY">Google PLAY</option>);
+        print qq (<option $status value="Evernote">Evernote</option>);
+        print qq (<option $status value="RSS">RSS</option>);
+
+        print qq (<option $status value=""></option>);
+        print qq (<option $status value="Niconico">NIconico</option>);
+        print qq (<option $status value="NextTV">NextTV</option>);
+        print qq (<option $status value="Youtube">Youtube</option>);
+        print qq (<option $status value="HiChannel">HiChannel</option>);
+
+        print qq (<option $status value=""></option>);
+        print qq (<option $status value="JustinTV">JustinTV</option>);
+        print qq (<option $status value="PPStream">PPStream</option>);
+        print qq (<option $status value="Qvod">Qvod</option>);
+        print qq (<option $status value="BaiduVideo">BaiduVideo</option>);
+        print qq (<option $status value="TeamViewer">TeamViewer</option>);
+        print qq (<option $status value="GoToMeeting">GoToMeeting</option>);
+        print qq (<option $status value=""></option>);
+
+   ####### 2014 0418 end
+   
         $action{service}=~s/:d//g;
         $action{service}=~s/:s//g;
         foreach my $service (  @$servicelist ) 
@@ -4999,6 +5026,335 @@ sub check_proute_qb
     $prouteref->{qb}->[0]->{class} = \@tmparray;
     XMLwrite($prouteref, $gPATH."proute.xml");
 }
+############################################################################
+#
+#  Run iptables for layer7
+#
+############################################################################
+
+sub edit_layer7_rules
+{
+    `/usr/local/apache/qb/setuid/run rm -rf /usr/local/apache/qbconf/iptables_layer7`;
+    
+    my $INIROUTEXML = XMLin('/usr/local/apache/qbconf/iniroute.xml',forcearray=>1);
+    my $HOSTXML	    = XMLin('/usr/local/apache/qbconf/host.xml',forcearray=>1);
+    my $SHEDULEXML  = XMLin('/usr/local/apache/qbconf/schedule.xml',forcearray=>1);
+    
+    my $overview=XMLread($gPATH.'overview.xml');
+    $overview->{resolve}="8.8.8.8";
+    XMLwrite($overview, $gPATH."overview.xml");
+    
+    my $app_class   = $INIROUTEXML->{app}->[0]->{class};
+    my $hostlist    = $HOSTXML->{host};
+    my $schedulelist  = $SHEDULEXML->{schedule};
+    
+    my @all_layer7=("GoogleBooks","GoogleAnalytics","GoogleCalendar","GoogleChrome","GooglePicasa","GooglePLAY","RSS","Evernote","Niconico","NextTV","Youtube","HiChannel","JustinTV","PPStream","Qvod","BaiduVideo","TeamViewer","GoToMeeting");
+    
+    foreach my $classes ( @$app_class )
+    {
+    	if ( $classes->{service} eq "system" ) { next; }
+    	my $layer7_flag=0;
+    	foreach my $target_layer7 ( @all_layer7 )
+    	{
+    	    if ( $classes->{service} eq $target_layer7 ) { $layer7_flag=1;}
+    	}
+    	if ( $layer7_flag eq "0" ) { next;}
+    	
+    	
+    	my $Array_Reused;
+    	my @Reused;
+    	if ( -e "/usr/local/apache/qbconf/iptables_layer7" )
+    	{
+    	    #`/usr/local/apache/qb/setuid/run rm -rf /tmp/garytest`;
+    	    $Array_Reused=`/usr/local/apache/qb/setuid/run grep -c $classes->{service} /usr/local/apache/qbconf/iptables_layer7`;
+    	    @Reused=split(/\n/, $Array_Reused);
+   	    #`/usr/local/apache/qb/setuid/run echo "GaryTest".$Reused[0] >> /tmp/garytest`;
+    	}
+   	
+   	if ( $Reused[0] eq '0' | !$Reused[0] )
+   	{
+    	`echo "/sbin/iptables -N $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+    	`echo "/sbin/iptables -A $classes->{service} -j LOG --log-prefix \\"LAYER7_$classes->{service} : \\" --log-level 7" >> /usr/local/apache/qbconf/iptables_layer7`;
+    	`echo "/sbin/iptables -A $classes->{service} -j DROP" >> /usr/local/apache/qbconf/iptables_layer7`;
+    	}
+    	
+    	my @srcobj;
+    	my @destobj;
+    	my @scheduleobj;
+    	
+    	####################################################
+    	# process source
+    	####################################################
+	if( grep(/^host-/, $classes->{source}) )
+	{
+	    foreach my $hostobj ( @$hostlist )
+	    {
+	    	if ( $classes->{source} eq $hostobj->{hostname} )
+	    	{
+	    	    my @tmparray=split ( /,/ , $hostobj->{hostaddress} );
+	    	    foreach my $tmp ( @tmparray )
+	    	    {
+	    	    	push ( @srcobj , $tmp );
+	    	    }
+	    	}
+	    }
+	}
+	else
+	{
+	    push ( @srcobj, $classes->{source} );
+	}
+	
+=cut
+    	####################################################
+    	# process destination
+    	####################################################
+	if( grep(/^host-/, $classes->{destination}) )
+	{
+	    foreach my $hostobj ( @$hostlist )
+	    {
+	    	if ( $classes->{destination} eq $hostobj->{hostname} )
+	    	{
+	    	    my @tmparray=split ( /,/ , $hostobj->{hostaddress} );
+	    	    foreach my $tmp ( @tmparray )
+	    	    {
+	    	    	push ( @destobj , $tmp );
+	    	    }
+	    	}
+	    }
+	}
+	else
+	{
+	    push ( @destobj, $classes->{destination} );
+	}
+    	
+=cut
+    	
+    	if ( $classes->{schedule} eq "All Week" )
+    	{
+    	    foreach my $srcIP ( @srcobj )
+    	    {
+    	    	my $iptables_src;    
+    	    	if ( $srcIP eq "0.0.0.0/0" ) { $iptables_src=''; }
+    	    	else { $iptables_src="-s ".$srcIP; }
+    	        foreach my $Target_Chain ( "FORWARD", "INPUT" )
+    	        {
+    	    	    foreach my $httpsport ( 80,443 )
+    	    	    {
+    	    	        my $port_rule="-m tcp -p tcp --dport ".$httpsport;
+    	    	        ## TODO doesn't had schedule time
+    	    	        if ( $classes->{service} eq "GoogleBooks" )
+    	    	        {
+	    	            `echo "/sbin/iptables -I $Target_Chain $iptables_src -d books.google.com.tw $port_rule -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	        }
+    	    	        elsif ( $classes->{service} eq "GooglePicasa" )
+    	    	        {
+	    	            `echo "/sbin/iptables -I $Target_Chain $iptables_src -d picasa.google.com $port_rule -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	        }
+    	    	        elsif ( $classes->{service} eq "GoogleAnalytics" )
+    	    	        {
+	    	            `echo "/sbin/iptables -I $Target_Chain $iptables_src -d analytics.google.com.tw $port_rule -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	        }
+    	    	        elsif ( $classes->{service} eq "GoogleCalendar" )
+    	    	        {
+	    	            `echo "/sbin/iptables -I $Target_Chain $iptables_src -d calendar.google.com.tw $port_rule -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	        }
+    	    	        elsif ( $classes->{service} eq "GooglePLAY" )
+    	    	        {
+	    	            `echo "/sbin/iptables -I $Target_Chain $iptables_src -d play.google.com $port_rule -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	        }
+    	    	        elsif ( $classes->{service} eq "Evernote" )
+    	    	        {
+	    	            `echo "/sbin/iptables -I $Target_Chain $iptables_src -d evernote.com $port_rule -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	        }
+    	    	        elsif ( $classes->{service} eq "Youtube" )
+    	    	        {
+	    	            `echo "/sbin/iptables -I $Target_Chain $iptables_src -d www.youtube.com $port_rule -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	        }
+    	    	        elsif ( $classes->{service} eq "NextTV" )
+    	    	        {
+	    	            `echo "/sbin/iptables -I $Target_Chain $iptables_src -d www.nexttv.com.tw $port_rule -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	        }
+    	    	        elsif ( $classes->{service} eq "HiChannel" )
+    	    	        {
+	    	             `echo "/sbin/iptables -I $Target_Chain $iptables_src -d hichannel.hinet.net $port_rule -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	        }
+    	    	        elsif ( $classes->{service} eq "Niconico" )
+    	    	        {
+	    	            `echo "/sbin/iptables -I $Target_Chain $iptables_src -d www.nicovideo.jp $port_rule -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	        }
+	    	        elsif ( $classes->{service} eq "JustinTV" )
+	    	        {
+	    	            `echo "/sbin/iptables -I $Target_Chain $iptables_src -d zn-tw.justintv.com -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	            `echo "/sbin/iptables -I $Target_Chain $iptables_src -d www.justintv.com -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	        }
+	            }
+    	    	    if ( $classes->{service} eq "TeamViewer" )
+    	    	    {
+	    	        `echo "/sbin/iptables -I $Target_Chain $iptables_src -d  master.teamviewer.com -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	        `echo "/sbin/iptables -I $Target_Chain $iptables_src -d master1.teamviewer.com -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	        `echo "/sbin/iptables -I $Target_Chain $iptables_src -d master2.teamviewer.com -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	        `echo "/sbin/iptables -I $Target_Chain $iptables_src -d master3.teamviewer.com -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	        `echo "/sbin/iptables -I $Target_Chain $iptables_src -d master4.teamviewer.com -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	        `echo "/sbin/iptables -I $Target_Chain $iptables_src -d master5.teamviewer.com -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	        `echo "/sbin/iptables -I $Target_Chain $iptables_src -d master6.teamviewer.com -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    }
+	    	    elsif ( $classes->{service} eq "PPStream" )
+	    	    {
+	    	    `echo "/sbin/iptables -I $Target_Chain $iptables_src -d update.ppstream.com -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    `echo "/sbin/iptables -I $Target_Chain $iptables_src -d stat.ppstream.com -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    `echo "/sbin/iptables -I $Target_Chain $iptables_src -d static.dns.iqiyi.com -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    `echo "/sbin/iptables -I $Target_Chain $iptables_src -d image1.webscache.com -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    `echo "/sbin/iptables -I $Target_Chain $iptables_src -d msg.video.dns.iqiyi.com -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    }
+	    	    elsif ( $classes->{service} eq "BaiduVideo" )
+	    	    {
+	    	    `echo "/sbin/iptables -I $Target_Chain $iptables_src -d php.player.baidu.com -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    `echo "/sbin/iptables -I $Target_Chain $iptables_src -d baoku.baidu.com -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    `echo "/sbin/iptables -I $Target_Chain $iptables_src -d img04.taobaocdn.com -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    }
+	    	    elsif ( $classes->{service} eq "Qvod" )
+	    	    {
+	    	    `echo "/sbin/iptables -I $Target_Chain $iptables_src -d kuaibo.com -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    `echo "/sbin/iptables -I $Target_Chain $iptables_src -d static.kuaibo.com -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    `echo "/sbin/iptables -I $Target_Chain $iptables_src -d barr.kuaibo.com -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    `echo "/sbin/iptables -I $Target_Chain $iptables_src -d prom.qbho.kuaibo.com -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    `echo "/sbin/iptables -I $Target_Chain $iptables_src -d www.yunfan.com -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    `echo "/sbin/iptables -I $Target_Chain $iptables_src -d w.cnzz.com -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    `echo "/sbin/iptables -I $Target_Chain $iptables_src -d is.img.yunfan.com -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    }
+	    	    elsif ( $classes->{service} eq "RSS" )
+	    	    {
+	    	    `echo "/sbin/iptables -I $Target_Chain $iptables_src -m weburl --contains "$classes->{service}" -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    }
+	    	    elsif ( $classes->{service} eq "GoogleChrome" )
+	    	    {
+	    	    `echo "/sbin/iptables -I $Target_Chain $iptables_src -m layer7 --l7proto "$classes->{service}" -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    }
+	        }
+    	    }
+    	}
+    	else
+    	{
+	    foreach my $schedule_list ( @$schedulelist )
+	    {
+	        if ( $classes->{schedule} eq $schedule_list->{schname} )
+	        {
+		    my $scheduledays=$schedule_list->{subsch};
+		    foreach my $scheduleday ( @$scheduledays )
+		    {
+			$scheduletime='-m time --timestart '.$scheduleday->{timestart}.' --timestop '.$scheduleday->{timestop}.' --weekdays '.$scheduleday->{days};
+    	    		foreach my $srcIP ( @srcobj )
+    	    		{
+    	    		    my $iptables_src;    
+    	    		    if ( $srcIP eq "0.0.0.0/0" ) { $iptables_src=''; }
+    	    		    else { $iptables_src="-s ".$srcIP; }
+    	      		    foreach my $Target_Chain ( "FORWARD", "INPUT" )
+    	      		    {
+    	    			foreach my $httpsport ( 80,443 )
+    	    			{
+    	    	     		    my $port_rule="-m tcp -p tcp --dport ".$httpsport;
+    	    	     		    ## TODO doesn't had schedule time
+    	    	     		    if ( $classes->{service} eq "GoogleBooks" )
+    	    	     		    {
+	    	         		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d books.google.com.tw $port_rule $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	     		    }
+    	    	     		    elsif ( $classes->{service} eq "GooglePicasa" )
+    	    	     		    {
+	    	         		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d picasa.google.com $port_rule $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	     		    }
+    	    	     		    elsif ( $classes->{service} eq "GoogleAnalytics" )
+    	    	     		    {
+	    	         		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d analytics.google.com.tw $port_rule $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	     		    }
+    	    	     		    elsif ( $classes->{service} eq "GoogleCalendar" )
+    	    	     		    {
+	    	         		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d calendar.google.com.tw $port_rule $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	     		    }
+    	    	     		    elsif ( $classes->{service} eq "GooglePLAY" )
+    	    	     		    {
+	    	         		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d play.google.com $port_rule $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	     		    }
+    	    	     		    elsif ( $classes->{service} eq "Evernote" )
+    	    	     		    {
+	    	         		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d evernote.com $port_rule $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	     		    }
+    	    	     		    elsif ( $classes->{service} eq "Youtube" )
+    	    	     		    {
+	    	         		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d www.youtube.com $port_rule $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	     		    }
+    	    	     		    elsif ( $classes->{service} eq "NextTV" )
+    	    	     		    {
+	    	         		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d www.nexttv.com.tw $port_rule $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	     		    }
+    	    	    	 	    elsif ( $classes->{service} eq "HiChannel" )
+    	    	     		    {
+	    	         		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d hichannel.hinet.net $port_rule $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	     		    }
+    	    	     		    elsif ( $classes->{service} eq "Niconico" )
+    	    	     		    {
+	    	         		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d www.nicovideo.jp $port_rule $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	     		    }
+	    	     		    elsif ( $classes->{service} eq "JustinTV" )
+	    	     		    {
+	    	         		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d zn-tw.justintv.com $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	         		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d www.justintv.com $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	     		    }
+	        		}
+    	    			if ( $classes->{service} eq "TeamViewer" )
+    	    			{
+	    	    		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d  master.teamviewer.com $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d master1.teamviewer.com $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+			    	`echo "/sbin/iptables -I $Target_Chain $iptables_src -d master2.teamviewer.com $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    			`echo "/sbin/iptables -I $Target_Chain $iptables_src -d master3.teamviewer.com $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d master4.teamviewer.com $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d master5.teamviewer.com $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d master6.teamviewer.com $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    			}
+	    			elsif ( $classes->{service} eq "PPStream" )
+	    			{
+	    	    		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d update.ppstream.com $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d stat.ppstream.com $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d static.dns.iqiyi.com $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d image1.webscache.com $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d msg.video.dns.iqiyi.com $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    			}
+	    			elsif ( $classes->{service} eq "BaiduVideo" )
+	    			{
+	    	    		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d php.player.baidu.com $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d baoku.baidu.com $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d img04.taobaocdn.com $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    			}
+	    			elsif ( $classes->{service} eq "Qvod" )
+	    			{
+	    	    		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d kuaibo.com $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d static.kuaibo.com $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d barr.kuaibo.com $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d prom.qbho.kuaibo.com $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d www.yunfan.com $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d w.cnzz.com $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    	    		`echo "/sbin/iptables -I $Target_Chain $iptables_src -d is.img.yunfan.com $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    			}
+	    			elsif ( $classes->{service} eq "RSS" )
+	    			{
+	    	    		`echo "/sbin/iptables -I $Target_Chain $iptables_src -m weburl --contains "$classes->{service}" $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    			}
+	    			elsif ( $classes->{service} eq "Chrome" )
+	    			{
+	    	    		`echo "/sbin/iptables -I $Target_Chain $iptables_src -m layer7 --l7proto "$classes->{service}" $scheduletime -j $classes->{service}" >> /usr/local/apache/qbconf/iptables_layer7`;
+	    			}
+	      		    }
+    	    		}
+	      	    }
+	    	}
+	    }
+    	}
+    }
+    
+    `/usr/local/apache/qb/setuid/run touch /usr/local/apache/qbconf/iptables_layer7`;
+    `/usr/local/apache/qb/setuid/run chmod 777 /usr/local/apache/qbconf/iptables_layer7`;
+    `/usr/local/apache/qb/setuid/run chown root:root /usr/local/apache/qbconf/iptables_layer7`;
+} 
+#edit_layer7_rules
 
 #
 1

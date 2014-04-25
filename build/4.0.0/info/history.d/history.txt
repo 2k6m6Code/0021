@@ -14,6 +14,14 @@ Version : 4.0.0-0021
       The modification include :sysinit
     6.To remove libxtables.so.5.0.0 from script.pkg because fsimage contain it.
       The modification include :sysinit
+    7.To open "analydev" "analytpe" for bigger SHD.
+      The modification include :sysinit
+    8.User can select alert mail conditions.
+      The modification include :admin.cgi,admin.lib,overview.lib,trialnotice
+    9.Support network scanner.
+      The modification include :nmap,nbtscan,sysinit,qblanguage.cgi,diagnose.lib,rundiatool.cgi
+   10.Add an algorithm:Optimal Routing Path.
+      The modification include :global.cgi,rtable.lib
 
 ======== Wed Mar  5 18:01:02 CST 2014 ========
 Version : 4.0.0-0020

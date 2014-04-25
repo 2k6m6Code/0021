@@ -3,6 +3,9 @@
 registered_date_sec=`cat /mnt/conf/dtstamp.dc`
 #warranty_time=`cat /tmp/init|grep Warranty|tail -n 1|awk '{print $2}'`
 #warranty_time_date=`date -d "1970-01-01 UTC $wrranty_time seconds"`
+OVERVIEWXML="/usr/local/apache/active/overview.xml"
+mail_noreg=`grep mail_noreg=\".*\" $OVERVIEWXML|sed -e "s/<opt.*mail_noreg=\"//"|sed -e "s/\".*//"`
+mail_warranty=`grep mail_warranty=\".*\" $OVERVIEWXML|sed -e "s/<opt.*mail_warranty=\"//"|sed -e "s/\".*//"`
 
 if [ -f /mnt/conf/dtstamp.dc ]; then
 
@@ -32,23 +35,24 @@ if [ -f /mnt/conf/dtstamp.dc ]; then
       let trialmin=59-$min
   
       echo "$trialdays Day $trialhour Hour $trialmin Min"
-  
+     if [ "$mail_noreg" != "0" ];then
       if [ "$trialdays" == "29" ];then
         /opt/qb/bin/script/trialmail.sh 30
-        echo $(date) "Warranty will expire after 30 Days !!! Need to register qb.">>/mnt/log/bootlog
+        echo $(date) "Trial Days will be ended after 30 Days !!! Need to register qb.">>/mnt/log/bootlog
       elif [ "$trialdays" == "13" ];then
         /opt/qb/bin/script/trialmail.sh 14
-        echo $(date) "Warranty will expire after 14 Days !!! Need to register qb.">>/mnt/log/bootlog
+        echo $(date) "Trial Days will be ended after 14 Days !!! Need to register qb.">>/mnt/log/bootlog
       elif [ "$trialdays" == "6" ];then
         /opt/qb/bin/script/trialmail.sh 7
-        echo $(date) "Warranty will expire after 7 Days !!! Need to register qb.">>/mnt/log/bootlog
+        echo $(date) "Trial Days will be ended after 7 Days !!! Need to register qb.">>/mnt/log/bootlog
       elif [ "$trialdays" == "1" ];then
         /opt/qb/bin/script/trialmail.sh 2
-        echo $(date) "Warranty will expire after 2 Days !!! Need to register qb.">>/mnt/log/bootlog
+        echo $(date) "Trial Days will be ended after 2 Days !!! Need to register qb.">>/mnt/log/bootlog
       elif [ "$trialdays" == "0" ];then
         /opt/qb/bin/script/trialmail.sh 1
-        echo $(date) "Warranty will expire after 1 Days !!! Need to register qb.">>/mnt/log/bootlog
+        echo $(date) "Trial Days will be ended after 1 Day !!! Need to register qb.">>/mnt/log/bootlog
       fi
+     fi
     else
       let trialdays=6-$days
       let trialhour=23-$hour
@@ -56,16 +60,18 @@ if [ -f /mnt/conf/dtstamp.dc ]; then
   
       echo "$trialdays Day $trialhour Hour $trialmin Min"
   
+     if [ "$mail_noreg" != "0" ];then
       if [ "$trialdays" == "6" ];then
         /opt/qb/bin/script/trialmail.sh 7
-        echo $(date) "Warranty will expire after 7 Days !!! Need to register qb.">>/mnt/log/bootlog
+        echo $(date) "Trial Days will be ended after 7 Days !!! Need to register qb.">>/mnt/log/bootlog
       elif [ "$trialdays" == "1" ];then
         /opt/qb/bin/script/trialmail.sh 2 
-        echo $(date) "Warranty will expire after 2 Days !!! Need to register qb.">>/mnt/log/bootlog
+        echo $(date) "Trial Days will be ended after 2 Days !!! Need to register qb.">>/mnt/log/bootlog
       elif [ "$trialdays" == "0" ];then
         /opt/qb/bin/script/trialmail.sh 1
-        echo $(date) "Warranty will expire after 1 Days !!! Need to register qb.">>/mnt/log/bootlog
+        echo $(date) "Trial Days will be ended after 1 Days !!! Need to register qb.">>/mnt/log/bootlog
       fi
+     fi
     fi
 
   # Registered Date is registered
@@ -112,6 +118,7 @@ if [ -f /mnt/conf/dtstamp.dc ]; then
     echo day_date $day_date
     echo real_date $real_date
     
+   if [ "$mail_warranty" != "0" ];then
     if [ "$month_date" == "$real_date" ] ;then
       /opt/qb/bin/script/trialmail.sh 30
       echo $(date) "Warranty will expire after 30 Days !!! ">>/mnt/log/bootlog
@@ -128,6 +135,7 @@ if [ -f /mnt/conf/dtstamp.dc ]; then
       /opt/qb/bin/script/trialmail.sh 1
       echo $(date) "Warranty will expire after 1 Days !!! ">>/mnt/log/bootlog
     fi
+   fi
   fi
 fi
 #echo $time

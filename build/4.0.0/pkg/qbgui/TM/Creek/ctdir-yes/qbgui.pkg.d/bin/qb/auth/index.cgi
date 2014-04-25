@@ -24,6 +24,10 @@ my $password=$form->param('password') ;
 #$username='TOM';
 #$password='123';
 my $check='0';
+my $conlimit='0';
+my $enable_quota='';
+my $tcp='';
+my $udp='';
 authenticate(action=>'RANDOMCHECK');
 
 print "Content-type:text/html\n\n";
@@ -52,6 +56,12 @@ if ($ENV{'HTTP_VIA'} && $ENV{'HTTP_X_FORWARDED_FOR'})
            {
                $type = $user->{type};
                $name_check = 1;
+               if ($user->{tcp} ne '' && $user->{udp} ne '')
+               {
+                        $conlimit='1';
+                        $tcp=$user->{tcp};
+               		$udp=$user->{udp};
+               }
            }
        }
    }
@@ -110,7 +120,8 @@ if ($ENV{'HTTP_VIA'} && $ENV{'HTTP_X_FORWARDED_FOR'})
 								{
 									system("/usr/local/apache/qb/setuid/run /sbin/iptables -t mangle -D PREROUTING -d $myquota->{ip} -j $myquota->{name}.down");
 									system("/usr/local/apache/qb/setuid/run /sbin/iptables -t mangle -D POSTROUTING -s $myquota->{ip} -j $myquota->{name}.up");
-									$myquota->{ip}=$user->{iip}
+									$myquota->{ip}=$user->{iip};
+									$enable_quota=$myquota->{bs};
 								}
 							}
 					   }
@@ -197,7 +208,8 @@ if ($ENV{'HTTP_VIA'} && $ENV{'HTTP_X_FORWARDED_FOR'})
 								{
 									system("/usr/local/apache/qb/setuid/run /sbin/iptables -t mangle -D PREROUTING -d $myquota->{ip} -j $myquota->{name}.down");
 									system("/usr/local/apache/qb/setuid/run /sbin/iptables -t mangle -D POSTROUTING -s $myquota->{ip} -j $myquota->{name}.up");
-									$myquota->{ip}=$user->{iip}
+									$myquota->{ip}=$user->{iip};
+									$enable_quota=$myquota->{bs};
 								}
 							}
 					   }
@@ -239,7 +251,8 @@ if ($ENV{'HTTP_VIA'} && $ENV{'HTTP_X_FORWARDED_FOR'})
 						{
 							system("/usr/local/apache/qb/setuid/run /sbin/iptables -t mangle -D PREROUTING -d $myquota->{ip} -j $myquota->{name}.down");
 							system("/usr/local/apache/qb/setuid/run /sbin/iptables -t mangle -D POSTROUTING -s $myquota->{ip} -j $myquota->{name}.up");
-							$myquota->{ip}=$user->{iip}
+							$myquota->{ip}=$user->{iip};
+							$enable_quota=$myquota->{bs};
 						}
 					}
                }
@@ -261,19 +274,55 @@ if ($ENV{'HTTP_VIA'} && $ENV{'HTTP_X_FORWARDED_FOR'})
         $badname = $username;
         $username='suspicious';
     }
+	my $login_quota='1';
+	if($enable_quota ne '')
+	{
+		system("/usr/local/apache/qb/setuid/run /bin/cat /dev/null >/tmp/login_quota");
+		if($enable_quota eq "0")
+        {
+            system("/usr/local/apache/qb/setuid/run /sbin/iptables -t mangle -L $username.down --line-numbers -vn|awk '/quota/' >/tmp/login_quota");
+            system("/usr/local/apache/qb/setuid/run /sbin/iptables -t mangle -L $username.up --line-numbers -vn|awk '/quota/' >>/tmp/login_quota");
+        }
+		elsif($enable_quota eq "1")
+        {
+            system("/usr/local/apache/qb/setuid/run /sbin/iptables -t mangle -L $username.total --line-numbers -vn|awk '/quota/' >/tmp/login_quota");
+        }
+		open(FILE,'</tmp/login_quota');
+		foreach my $line (<FILE>)
+        {
+			if (grep(/IMQ/,$line) || grep(/PREROUTING/,$line) || grep(/source/,$line) || grep(/CTDIRMARK/,$line) || grep(/MARK/,$line)){next;}
+            my @quotaref=split(/\s+/,$line);
+			if($quotaref[11] eq '0')
+			{
+				$login_quota=$quotaref[11];
+				$success = '2';
+			}
+		}
+	}
     my @dd = split(/\//,$action->getdate());
-    my $log_string = ($success)?("Success"):("Fail");
-    $log->Save_Log("/mnt/tclog/auth/$username/$dd[0]/$dd[1]/",$dd[2],"$ip $log_string $badname");
+    my $log_string = '';
+	if ($success eq '0'){$log_string = "Failed"}
+	if ($success eq '1'){$log_string = "Succeeded"}
+	if ($success eq '2'){$log_string = "Quota_exceeded"}
+    $log->Save_Log("/mnt/tclog/auth/$username/$dd[0]/$dd[1]/",$dd[2],"$ip $log_string $badname $type");
     #system("/usr/local/apache/qb/setuid/run /bin/cp -a /tmp/tclog/auth/$username /mnt/tclog/auth/");
     system(sync);
     system(sync);
     system(sync);
     if ($success eq '1')
     {
+    	if($conlimit eq '1')
+    	{
+    		system("/usr/local/apache/qb/setuid/run /sbin/iptables -t mangle -A PREROUTING -p tcp -s $ip --syn -m connlimit --connlimit-above $tcp -j DROP");
+    		system("/usr/local/apache/qb/setuid/run /sbin/iptables -t mangle -A PREROUTING -p udp -s $ip -m connlimit --connlimit-above $udp -j DROP");
+    	}
         #system("/usr/local/apache/qb/setuid/run /sbin/iptables -t nat -I PREROUTING -s $ip -j ACCEPT");
         system("/usr/local/apache/qb/setuid/run /sbin/iptables -t nat -I AUTH -s $ip -j RETURN");
         #system("/usr/local/apache/qb/setuid/run /sbin/iptables -t mangle -I AUTH -d $ip -j ACCEPT");
         #system("/usr/local/apache/qb/setuid/run /sbin/iptables -t mangle -I AUTH -s $ip -j ACCEPT");
+        print  "$ip,$success"
+    }elsif ($success eq '2')
+    {
         print  "$ip,$success"
     }else
     {

@@ -13,6 +13,10 @@ my @quota;
 my $i=0;
 my @quotaUP;
 my $ii=0;
+
+my ($sec, $min, $hour, $day, $mon, $year) = localtime(time);
+my $now_date=join("-",($year+1900,$mon+1,$day));
+my $now_time=join(":",($hour,$min,$sec));
 foreach my $countquota (@$quotalist)
 {
 	if ($countquota->{gateway} eq "system"){next;}
@@ -46,14 +50,16 @@ foreach my $countquota (@$quotalist)
 		my $source='0';
 		my $dest='0';
 		#print "$source $dest \n [$quotaref[11]] \n";
-		#print "$countquota->{mail} \n [$quotaref[11]] \n $countquota->{qn} \n";
-		if ((!$countquota->{mail}||$countquota->{mail} eq '0')&&$quotaref[11] eq '0'&&$countquota->{qn} ne '0')
+		#print "$countquota->{mail}  [$quotaref[11]]  $countquota->{qn} \n";
+		if ((!$countquota->{mail}||$countquota->{mail} eq '0')&&$quotaref[11] eq '0')#&&$countquota->{qn} ne '0')
 		{
 			if($countquota->{source} ne '' && $countquota->{dest} ne '')
 			{
 				$source = $countquota->{source}; $dest = $countquota->{dest}; $source =~s/host-//g; $dest =~s/host-//g;
 			}
 			system("/usr/local/apache/qb/setuid/run /bin/sh /usr/local/apache/qb/setuid/mailquota.sh $countquota->{name} $quotaref[11] $countquota->{type} $source $dest $countquota->{qn}"); $countquota->{mail}='1';
+			system("/usr/local/apache/qb/setuid/run /bin/echo $now_date $now_time $countquota->{name}	Quota exceeded >> /mnt/log/quota.log");
+			print "/usr/local/apache/qb/setuid/run /bin/echo $now_date $now_time $countquota->{name}	Quota exceeded";
 			#print "/usr/local/apache/qb/setuid/run /bin/sh /usr/local/apache/qb/setuid/mailquota.sh $countquota->{name} $quotaref[11] $countquota->{type} $source $dest $countquota->{qn}";
 		}
 		if ($action eq "")
@@ -75,13 +81,15 @@ foreach my $countquota (@$quotalist)
 		$source = '0';
 		$dest = '0';
 		
-		if ((!$countquota->{mail}||$countquota->{mail} eq '0')&&$quotarefUP[11] eq '0'&&$countquota->{qn} ne '0')
+		if ((!$countquota->{mail}||$countquota->{mail} eq '0')&&$quotarefUP[11] eq '0')#&&$countquota->{qn} ne '0')
 		{
 			if($countquota->{source} ne '' && $countquota->{dest} ne '')
 			{
 				$source = $countquota->{source}; $dest = $countquota->{dest}; $source =~s/host-//g; $dest =~s/host-//g;
 			}
 			system("/usr/local/apache/qb/setuid/run /bin/sh /usr/local/apache/qb/setuid/mailquota.sh $countquota->{name} $quotarefUP[11] $countquota->{type} $source $dest $countquota->{qn}"); $countquota->{mail}='1';
+			system("/usr/local/apache/qb/setuid/run /bin/echo $now_date $now_time $countquota->{name}	$source	Quota enough >> /mnt/log/quota.log");
+			print "/usr/local/apache/qb/setuid/run /bin/echo $now_date $now_time $countquota->{name}       $source Quota enough";
 			#print "/usr/local/apache/qb/setuid/run /bin/sh /usr/local/apache/qb/setuid/mailquota.sh $countquota->{name} $quotarefUP[11] $countquota->{type} $source $dest $countquota->{qn}";
 		}
 		if ($action eq "")
@@ -218,3 +226,4 @@ XMLwrite($quotaref, $gPATH."quota.xml");
 #{
     #system("/usr/local/apache/qb/setuid/run /usr/bin/perl /usr/local/apache/qb/setuid/quota.pl action=date");
 #}
+

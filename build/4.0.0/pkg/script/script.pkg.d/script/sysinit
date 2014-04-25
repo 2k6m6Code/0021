@@ -174,6 +174,10 @@ then
          #ln -s $QB_APP_DIR/comm             /usr/bin/comm
          ln -s $QB_APP_DIR/cpulimit_daemon.sh             /sbin/
 
+        #20140424 To scan network
+         ln -s /mnt/extra/sbin/nmap         /sbin/
+         ln -s /mnt/extra/sbin/nbtscan      /sbin/
+
         #2009117 Brian to replace a new wget tool for measure tunnel speed function
 #        rm -f /sbin/wget
 #        ln -s $QB_APP_DIR/wget               /sbin/wget
@@ -1257,7 +1261,7 @@ chmod 777 /var/tmp
 chmod 777 /tmp
 mkdir /tmp/tmpupg
 #20090223 Brian limit 20MB ram disk size for upgrade
-/sbin/mke2fs /dev/ram1 22000
+/sbin/mke2fs /dev/ram1 24000
 mount /dev/ram1 /tmp/tmpupg
 chmod 777 /tmp/tmpupg
 
@@ -1426,6 +1430,7 @@ ln /usr/local/apache/qbconf/overview.xml /usr/local/apache/qb/auth/
 
 #copy ldap command
 ln -s /opt/qb/bin/script/ldapwhoami /usr/sbin/ldapwhoami
+ln -s /opt/qb/bin/script/uniq /usr/sbin/uniq
 
 #
 # 2013 1205 

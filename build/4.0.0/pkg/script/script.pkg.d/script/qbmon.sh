@@ -133,6 +133,22 @@ fi
 ##
 ##
 
+################################################################################################
+#
+# 20140422 Check /var/log/iptables_layer7.log size
+#
+################################################################################################
+Now_layer7_size=`ls -l /var/log/iptables_layer7.log  | awk '{print $5}'`
+
+Maximum_size=1000000     # maximum 1MB
+while [ "$Now_layer7_size" -gt "$Maximum_size" ]
+do
+    # delete 1000 lines
+    sed -i '1,1000d' /var/log/iptables_layer7.log
+    Now_layer7_size=`ls -l /var/log/iptables_layer7.log  | awk '{print $5}'`
+done
+################################################################################################
+
 # check ram disk size
 disk_percentage=$(df| awk '/root/ {print $5}'|sed -e "s/\%//")
 if [ $disk_percentage -ge 95 ]; # disk size >= 95% need to clean the data of Historical Traffic

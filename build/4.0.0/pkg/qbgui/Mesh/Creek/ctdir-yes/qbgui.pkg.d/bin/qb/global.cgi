@@ -214,6 +214,7 @@ if ( -r $gUPGINFO )
 #            'WRR_LCY_PKT'        =>'Bonding By Latency and Packet Loss(For MPV/TMV Only)',
             #'BTK_EQUALIZE'       =>'Bandwidth Measure WRR By Packet (For MPV/TMV Only)',
             'BSWLT'              =>'Bidirectional Sensitive Weight Leasted Traffic',
+            'ORP'              =>'Optimal Routing Path',
             'DSWLT'              =>'Downlink Sensitive Weighted Least Traffic',
             'USWLT'              =>'Uplink Sensitive Weighted Least Traffic',
             'FRTT'               =>'ISP Response Time',

@@ -969,6 +969,17 @@ sub maintainOverview
 
         #$overview->{aggregate}=(!$action{express}) ? ('0'): ("$action{aggregate}");
         $overview->{aggregate}=0;
+        
+        
+        $overview->{mail_linkdown}=$action{mail_linkdown};
+        $overview->{mail_linkup}=$action{mail_linkup};
+        $overview->{mail_noreg}=$action{mail_noreg};
+        $overview->{mail_warranty}=$action{mail_warranty};
+        $overview->{mail_license}=$action{mail_license};
+        $overview->{mail_shd}=$action{mail_shd};
+        $overview->{mail_cf}=$action{mail_cf};
+        $overview->{mail_cllog}=$action{mail_cllog};
+        
 =cut
         $overview->{mail}=$action{mail};
 

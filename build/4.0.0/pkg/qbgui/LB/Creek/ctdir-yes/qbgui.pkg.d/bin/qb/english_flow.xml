@@ -167,6 +167,18 @@
                 </menu>
                 
                 <menu>
+                    <name>Keyword</name>
+                    <title></title>
+                    <link>weburl_log.cgi</link>
+                </menu>
+                
+                <menu>
+                    <name>Application</name>
+                    <title></title>
+                    <link>layer7_log.cgi</link>
+                </menu>
+                
+                <menu>
                     <name>Authentication</name>
                     <title></title>
                     <link>object_link.php?action=viewflow_auth</link>

@@ -551,6 +551,8 @@ $qblanguage[485]="DHCP";
 $qblanguage[486]="ARP Table";
 $qblanguage[487]="Authentication";
 
+$qblanguage[488]="Network Scanner";
+$qblanguage[489]="Netbios Scanner";
 }
 if($langcookie eq "zh_TW"){
 $qblanguage[0]="自動更新每";
@@ -1092,6 +1094,9 @@ $qblanguage[484]="Rules";
 $qblanguage[485]="DHCP";
 $qblanguage[486]="ARP Table";
 $qblanguage[487]="Authentication";
+
+$qblanguage[488]="Network Scanner";
+$qblanguage[489]="Netbios Scanner";
 }
 if($langcookie eq "fr_FR"){
 
@@ -1636,6 +1641,9 @@ $qblanguage[484]="Rules";
 $qblanguage[485]="DHCP";
 $qblanguage[486]="ARP Table";
 $qblanguage[487]="Authentication";
+
+$qblanguage[488]="Network Scanner";
+$qblanguage[489]="Netbios Scanner";
 }
 
 return @qblanguage;

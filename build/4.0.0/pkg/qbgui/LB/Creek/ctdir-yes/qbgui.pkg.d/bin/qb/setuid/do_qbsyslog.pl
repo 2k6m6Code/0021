@@ -12,7 +12,8 @@ require ('/usr/local/apache/qb/qbmod.cgi');
 my %FILE_OR_SERVER=(
                 'local2.warn'               =>  '/mnt/log/runway.log',
                 'local4.info'               =>  '/var/log/diagnose.log',
-                'daemon.*'                  =>  '/var/log/daemon.log'
+                'daemon.*'                  =>  '/var/log/daemon.log',
+                'kern.=7'		    =>  '/var/log/iptables_layer7.log'
 );
 
 my %FILE_ANALY=(

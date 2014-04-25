@@ -42,10 +42,10 @@ sub showDiag
     print qq (<tr><td><input name="tool" type="radio" value="telnet" onClick="switchOption('telnet')">$qblang[427]</td></tr>); 
 
 #Brian 2014-0424
-    print qq (<tr><td><input name="tool" type="radio" value="network_scan" onClick="switchOption('network_scan')">$qblang[488]</td></tr>); 
+    print qq (<tr><td><input name="tool" type="radio" value="network_scan" onClick="switchOption('network_scan')">$qblang[583]</td></tr>); 
 
 #Brian 2014-0424
-    print qq (<tr><td><input name="tool" type="radio" value="netbios_scan" onClick="switchOption('netbios_scan')">$qblang[489]</td></tr>); 
+    print qq (<tr><td><input name="tool" type="radio" value="netbios_scan" onClick="switchOption('netbios_scan')">$qblang[584]</td></tr>); 
 
 #Brian 2006-0912
     print qq (<tr><td><input name="tool" type="radio" value="wget" onClick="switchOption('wget')">$qblang[428]</td></tr>); 

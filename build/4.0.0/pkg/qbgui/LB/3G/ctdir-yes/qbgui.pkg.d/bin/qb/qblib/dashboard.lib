@@ -484,7 +484,7 @@ sub showDashboard
     print qq (<tr>);
     print qq (<td valign="top" align="center" width="450" >);
     print qq (<div class="divframe" style="width:380">); 
-    print qq (<table bgcolor="#332211" style=width:380" border="0"><tr>);
+    print qq (<table bgcolor="#332211" width="380" border="0"><tr>);
     print qq (<td width="100%">$qblang[23] </td>);
     print qq (<td class="body" width="20" align="right"><a href="javascript:gotocgi('status/rttraffic.cgi')" style="text-decoration:none" >);
     print qq (<img src="image/link.gif" width="12" height="12" border="0" /></a></td>);
@@ -622,8 +622,118 @@ sub showDashboard
     }
     
     print qq (</table>);
-    
+	
     #================================================== 
+	#--------------------------------------------------------------------
+    # Physical Links Traffic
+    #--------------------------------------------------------------------
+    print qq (<tr>);
+    print qq (<td valign="top" align="center" width="450" >);
+    print qq (<div class="divframe" style="width:380">); 
+    print qq (<table bgcolor="#332211" width="380" border="0"><tr>);
+    print qq (<td width="100%">Physical Links Traffic </td>);
+    print qq (<td class="body" width="20" align="right">);#<a href="javascript:gotocgi('status/rttraffic.cgi')" style="text-decoration:none" >);
+    #print qq (<img src="image/link.gif" width="12" height="12" border="0" /></a>);
+	print qq (</td>);
+    print qq (</table>);
+    print qq (</div>);
+    
+    my $ispref=XMLread($gACTIVEPATH.'basic.xml');
+    my $isplist=$ispref->{isp};
+    
+    print qq (<div style="width:380; height:20; background:#223344">);
+    print qq (<table id="wan_link" border="0" width="380" height="20">);
+    print qq (<tr height="20" bgcolor="#332211" >);
+    print qq (<td class="body" width="50" align="center" >&#32 ISP</td>); 
+    print qq (<td class="body" width="150" align="center" >&#32 Download</td>); 
+    print qq (<td class="body" width="150" align="center" >&#32 Upload</td>); 
+    my $index=0;
+    foreach my $isp ( @$isplist )
+    {
+        if ( $isp->{iid} eq 'system' ) { next; }
+        if ( $isp->{isptype} ne 'tunnel' &&  $isp->{isptype} ne 'ipsec' && $isp->{isptype} ne 'dtunnel' )
+        {
+            my $originalColor=$bgcolor=($index % 2) ? ( '#556677' ) : ( '#334455' );
+            print qq (<tr height="20" bgcolor="$bgcolor" originalColor="$originalColor">);
+            print qq (<td class="body" width="150" align="center" >&#32 $isp->{ispname} </td>);
+			
+			my @data = `/usr/local/apache/qb/setuid/run  /usr/local/apache/qb/status/rate.cgi`;
+			my $up=0;
+			my $down=0;
+			foreach my $o (@data)
+			{
+				if(!grep(/window.parent.gmaster.add/,$o)){next;}
+				$o=~s/window.parent.gmaster.add//;
+				$o=~s/\(||\)||;||"//g;
+				my @dd=split(/, /,$o);
+				if ($dd[0] eq $isp->{ispname} )
+				{
+					$up=$dd[3];
+					$down=$dd[4];
+				}
+			}
+			
+            print qq (<td class ="body" align="center" style="left: 0px; width: 155px; table-layout: fixed; word-break: normal; word-wrap: break-word;" >&#32 $down Kb</td>); 
+            print qq (<td class="body" width="40" align="center" >);
+            print qq ($up Kb</td>)
+        }
+        print qq (</tr>);
+        $index++;
+    }
+    print qq (</table>);
+    print qq (</div>);
+    
+    #--------------------------------------------------------------------
+    # URL
+    #--------------------------------------------------------------------
+    
+    print qq (<td align="center" valign="top" width="450">);
+    print qq (<div class="divframe" style="width:380">); 
+    print qq (<table bgcolor="#332211" width="380" border="0"><tr>);
+    print qq (<td width="100%">URL </td>);
+    print qq (<td class="body" width="20" align="right">);#<a href="javascript:gotocgi('zone.cgi?viewpoint=nat')" style="text-decoration:none" >);
+    #print qq (<img src="image/link.gif" width="12" height="12" border="0" /></a>);
+	print qq (</td>);
+    print qq (</table>);
+    print qq (</div>);
+    
+    my ($sec, $min, $hour, $day, $mon, $year) = localtime(time);
+	$year+=1900;
+	$mon+=1;
+	#my $year=2014;	my $mon=3;	my $day=4;
+	my @data;
+	my $check = `/usr/local/apache/qb/setuid/run  /bin/ls /mnt/tclog/squid/log/$year-$mon-$day`;
+  
+    print qq (<div style="width:380; height:40; background:#223344">);
+    print qq (<table id="lan" border="0" width="380" height="20">);
+    my $index=1;
+    print qq (<tr height="20" bgcolor="#332211" >);
+    print qq (<td class="body" width="50" align="center" >&#32 Top</td>); 
+    print qq (<td class="body" width="250" align="center" >&#32 URL</td>); 
+    print qq (<td class="body" width="50" align="center" >&#32 Count</td>); 
+	if($check ne '')
+	{
+		system ("/usr/local/apache/qb/setuid/run /bin/cat /mnt/tclog/squid/log/$year-$mon-$day | awk '{print\$1 \" \" \$3 \" \" \$7}' > /tmp/$year-$mon-$day.log");
+        system ("/usr/local/apache/qb/setuid/run /usr/bin/perl -p -e 's/^\\d+\.\\d+/localtime \$&/e' < /tmp/$year-$mon-$day.log > /tmp/tmp_squid.log");
+		@data = `/usr/local/apache/qb/setuid/run /bin/cat /tmp/tmp_squid.log | awk '\$7 ~ /^h/{print \$7}' |cut -s -f 1-3 -d / |sort|uniq -c|sort -nr|head -10`;
+		foreach my $result ( @data )
+		{
+			my @o=split(/\s+/,$result);
+			my $bgcolor=($index % 2) ? ( '#556677' ) : ( '#334455' );	
+			print qq (<tr height="20" bgcolor="$bgcolor" originalColor="$originalColor">);
+			print qq (<td class="body" width="100" align="center" >&#32 $index</td>); 
+			print qq (<td class="body" align="center" style="left: 0px; width: 155px; table-layout: fixed; word-break: normal; word-wrap: break-word;" >&#32 $o[2]</td>); 
+			print qq (<td class="body" align="center" style="left: 0px; width: 155px; table-layout: fixed; word-break: normal; word-wrap: break-word;" >&#32 $o[1]</td>); 
+			print qq (</tr>);
+			
+			$index++;
+		}
+	}
+    
+    print qq (</table>);
+	#==============================================================================================
+    
+    print qq (</table>);
 }
 
 sub scriptDashboard

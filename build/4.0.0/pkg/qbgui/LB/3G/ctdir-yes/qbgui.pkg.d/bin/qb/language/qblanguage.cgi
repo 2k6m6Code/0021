@@ -646,6 +646,8 @@ $qblanguage[579]="Import";
 $qblanguage[580]="Login Page";
 $qblanguage[581]="Logo Upload";
 $qblanguage[582]="Message";
+$qblanguage[583]="Network Scan";
+$qblanguage[584]="Netbios Scan";
 
 }
 if($langcookie eq "zh_TW")
@@ -1272,6 +1274,9 @@ $qblanguage[567]="認證群組";
 $qblanguage[568]="名稱";
 $qblanguage[569]="類型";
 $qblanguage[570]="編輯";
+
+$qblanguage[583]="網路掃描";
+$qblanguage[584]="Netbios 掃描";
 }
 
 if($langcookie eq "fr_FR")

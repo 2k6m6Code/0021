@@ -115,7 +115,7 @@ sub showl7log
     
     print qq (<tr><td align="center" class="bigtitle" colspan="3" onclick="table_display(this)"><a>System Log Configuration</a><img src="./image/down.png">); #</td></tr>);
     print qq (<tr><td colspan="3"><hr size="1"></td></tr>); 
-    print qq (<tr><td align="left" class="bigtitle" colspan="3">Select / Deselect All );
+    print qq (<tr><td align="left" class="bigtitle" colspan="3">@qblang[510] );
     print qq (<input type="checkbox" name="alll7" onClick="setAllCheckHashValue('system',this.checked);">);
     print qq (</tr>);
     print qq (<tr><td  style="vertical-align: top;"><table>);
@@ -143,9 +143,9 @@ sub showl7log
 =cut 
 #-------------------------------------------------------------------------------------------------------------------------    
     
-    print qq (<tr><td align="center" class="bigtitle" colspan="3" onclick="table_display(this)"><a>DoS Log Configuration</a><img src="./image/down.png"> ); #</td></tr>);
+    print qq (<tr><td align="center" class="bigtitle" colspan="3" onclick="table_display(this)">@qblang[509]<img src="./image/down.png"> ); #</td></tr>);
     print qq (<tr><td colspan="3"><hr size="1"></td></tr>); 
-    print qq (<tr><td align="left" class="bigtitle" colspan="3">Select / Deselect All );
+    print qq (<tr><td align="left" class="bigtitle" colspan="3">@qblang[510] );
     print qq (<input type="checkbox" name="alll7" onClick="setAllCheckHashValue('dos',this.checked);">);
     print qq (</tr>);
     print qq (<tr><td  style="vertical-align: top;"><table>);
@@ -201,16 +201,16 @@ sub showl7log
 
 #-----------------------------------------------------------------------------------------------------------
     
-    print qq (<tr><td align="center" class="bigtitle" colspan="3" onclick="table_display(this)"><a>Application</a><img src="./image/down.png">); #</td></tr>);
+    print qq (<tr><td align="center" class="bigtitle" colspan="3" onclick="table_display(this)">@qblang[511]<img src="./image/down.png">); #</td></tr>);
     print qq (<a href="javascript:qbShowHelp('l7log')"><image src="image/help.gif" border="0" title="Help"></a></td></tr>);
     print qq (<tr><td colspan="3"><hr size="1"></td></tr>);
 
-    print qq (<tr><td align="left" class="bigtitle" colspan="3">Select / Deselect All );
+    print qq (<tr><td align="left" class="bigtitle" colspan="3">@qblang[510] );
     print qq (<input type="checkbox" name="alll7" onClick="setAllCheckHashValue('All',this.checked);">);
     print qq (</tr>);
     #****************************************************************************************
     print qq (<tr><td  style="vertical-align: top;"><table>);
-			print qq (<tr><td align="left" class="bigtitle" colspan="2" ><span id="L7IMlogTT" style="display:none;">[+] </span><span id="L7IMlogSS">[-] </span><span id="L7IMlog">IM :</span> ); #</td></tr>);
+			print qq (<tr><td align="left" class="bigtitle" colspan="2" ><span id="L7IMlogTT" style="display:none;">[+] </span><span id="L7IMlogSS">[-] </span><span id="L7IMlog">@qblang[513] :</span> ); #</td></tr>);
 			print qq (<input type="checkbox" name="l7_IM" onClick="setAllCheckHashValue('IM',this.checked);">);
 			print qq (</tr>);
 			$adkjh = 1;
@@ -258,7 +258,7 @@ sub showl7log
 			# print qq (</tr>);  
 			#print qq (<tr><td colspan="2"><hr size="1"></td></tr>);
 			#****************************************************************************************
-			print qq (<tr><td align="left" class="bigtitle" colspan="2"><span id="L7GAMElogTT" style="display:none;">[+] </span><span id="L7GAMElogSS">[-] </span><span id ="L7GAMElog">Game : </span>); #</td></tr>);
+			print qq (<tr><td align="left" class="bigtitle" colspan="2"><span id="L7GAMElogTT" style="display:none;">[+] </span><span id="L7GAMElogSS">[-] </span><span id ="L7GAMElog">@qblang[514] : </span>); #</td></tr>);
 			print qq (<input type="checkbox" name="l7_GAME" onClick="setAllCheckHashValue('GAME',this.checked);">);
 			print qq (</tr>);
 			$adkjh = 1;
@@ -280,7 +280,7 @@ sub showl7log
 			$adkjh++;
 			}
 			#****************************************************************************************
-			print qq (<tr><td align="left" class="bigtitle" colspan="2"><span id="L7VOIClogTT" style="display:none;">[+] </span><span id="L7VOIClogSS">[-] </span><span id="L7VOIClog">Voice : </span>); #</td></tr>);
+			print qq (<tr><td align="left" class="bigtitle" colspan="2"><span id="L7VOIClogTT" style="display:none;">[+] </span><span id="L7VOIClogSS">[-] </span><span id="L7VOIClog">@qblang[515] : </span>); #</td></tr>);
 			print qq (<input type="checkbox" name="l7_VOICE" onClick="setAllCheckHashValue('VOICE',this.checked);">);
 			print qq (</tr>);
 			$adkjh= 1;
@@ -304,7 +304,7 @@ sub showl7log
 			}
 			#****************************************************************************************
 			
-			print qq (<tr><td align="left" class="bigtitle" colspan="2"><span id="L7OTHERlogTT" style="display:none;">[+] </span><span id="L7OTHERlogSS">[-] </span><span id="L7OTHERlog">Others : </span>); #</td></tr>);
+			print qq (<tr><td align="left" class="bigtitle" colspan="2"><span id="L7OTHERlogTT" style="display:none;">[+] </span><span id="L7OTHERlogSS">[-] </span><span id="L7OTHERlog">@qblang[516] : </span>); #</td></tr>);
 			print qq (<input type="checkbox" name="l7_OTHER" onClick="setAllCheckHashValue('OTHER',this.checked);">);
 			print qq (</tr>);
 			$dsfs = 1;
@@ -337,7 +337,7 @@ sub showl7log
     #************************************ Command Button  ********************************************
     print qq (<tr>);
     print qq (<td colspan="3" align="center">);
-    print qq (<input class="qb" type="button" value="Save" title="Save All Parameters and apply now !" onClick="goSubmit('APPLY')" style="width:120">);
+    print qq (<input class="qb" type="button" value="@qblang[517]" title="Save All Parameters and apply now !" onClick="goSubmit('APPLY')" style="width:120">);
     print qq (</td></tr>);
  
     print qq (</table>);

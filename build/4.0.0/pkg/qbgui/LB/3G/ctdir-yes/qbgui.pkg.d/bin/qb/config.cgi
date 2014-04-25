@@ -14,6 +14,8 @@ my %action;
 $action{action}=$form->param('action');
 $action{configname}=$form->param('configname');
 $action{cms}=$form->param('cmsname');
+$action{qblang}=$form->cookie('locale');
+
 
 #=========================================================================================
 print qq(<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"><link rel="stylesheet" href="gui.css" type="text/css"></head>);

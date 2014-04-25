@@ -24,6 +24,6 @@ print '</head><body style="margin: 0px; background-color:#336699;" scroll="no">'
 print '<script type="text/javascript" src="../qb.js"></script>';
 print '<table style="width: 100%; height: 100%;">';
 print '<tr style="height: 25px;"><td>';
-print '<button class="menu"  onclick="newmainframe.location=\'userflow.htm\'"     style="width: 14%">User Flow</button>';
-print '<button class="menu"  onclick="newmainframe.location=\'/status/report.htm\'"     style="width: 14%">Sessions</button>';
+print '<button class="menu"  onclick="newmainframe.location=\'userflow.htm\'"     style="width: 14%">'.$qblang[493].'</button>';
+print '<button class="menu"  onclick="newmainframe.location=\'/status/report.htm\'"     style="width: 14%">'.$qblang[494].'</button>';
 print '</td></tr><tr><td><iframe frameborder="0" style="height:100%;width:100%" src="userflow.htm" name="newmainframe"></iframe></td></tr></table></body></html>';

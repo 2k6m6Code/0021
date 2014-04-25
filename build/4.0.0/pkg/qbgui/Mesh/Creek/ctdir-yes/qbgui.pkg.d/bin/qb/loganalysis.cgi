@@ -1,6 +1,8 @@
 #!/usr/bin/perl
 use CGI;
 require ("qbmod.cgi");
+require ("/usr/local/apache/qb/language/qblanguage.cgi");
+@qblang = QBlanguage();
 
 #認證是否是經過正常且標準的程序登入進來的
 authenticate(action=>'RANDOMCHECK');

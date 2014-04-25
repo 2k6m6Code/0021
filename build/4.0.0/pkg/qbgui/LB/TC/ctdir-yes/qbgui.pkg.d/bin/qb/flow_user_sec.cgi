@@ -4,6 +4,8 @@ use CGI;
 require ("./qbmod.cgi");
 require ("./qblib/flow_user_sec.lib");
 require ("./qblib/newsflow_user_sec.lib");
+require ("/usr/local/apache/qb/language/qblanguage.cgi");
+@qblang = QBlanguage();
 
 
 #認證是否是經過正常且標準的程序登入進來的
@@ -21,11 +23,11 @@ $action{schedule}=\@schedule;
 print qq (<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" href="gui.css" type="text/css">);
 print qq (<style>button.menu{margin-right: 4px;height:18px;font:10px Verdana;color:white;background:#336699;border:1px solid black;cursor:hand;}</style>);
 print qq (</head><body bgcolor="#336699" text="#ffffff" link="#000040" >);
-print qq (<button  onclick="parent.mainFrame.location='l7log.cgi'" style="width:170" hidefocus="true" class="menu">Log Configuration</button>);
-print qq (<button  onclick="parent.mainFrame.location='flow_user.cgi'" style="width:170" hidefocus="true" class="menu">Unit</button>);
-print qq (<button  onclick="parent.mainFrame.location='flow_user_sec.cgi'" style="width:170" hidefocus="true" class="menu">Transparent Subnets</button>);
-print qq (<button  onclick="parent.mainFrame.location='storage_set.cgi'" style="width:170" hidefocus="true" class="menu">Storage</button>);
-print qq (<button  onclick="parent.mainFrame.location='backupdb.cgi'" style="width:170" hidefocus="true" class="menu">Backup Database</button>);
+print qq (<button  onclick="parent.mainFrame.location='l7log.cgi'" style="width:170" hidefocus="true" class="menu">@qblang[504]</button>);
+print qq (<button  onclick="parent.mainFrame.location='flow_user.cgi'" style="width:170" hidefocus="true" class="menu">@qblang[505]</button>);
+print qq (<button  onclick="parent.mainFrame.location='flow_user_sec.cgi'" style="width:170" hidefocus="true" class="menu">@qblang[506]</button>);
+print qq (<button  onclick="parent.mainFrame.location='storage_set.cgi'" style="width:170" hidefocus="true" class="menu">@qblang[507]</button>);
+print qq (<button  onclick="parent.mainFrame.location='backupdb.cgi'" style="width:170" hidefocus="true" class="menu">@qblang[508]</button>);
 #假如認證失敗，就直接結束
 if ( !$gLOGINRESULT ) { general_script(); exit;}
 

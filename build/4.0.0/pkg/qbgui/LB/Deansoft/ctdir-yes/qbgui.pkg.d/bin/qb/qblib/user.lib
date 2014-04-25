@@ -1,14 +1,16 @@
 #===================================================================================================
+require ("/usr/local/apache/qb/language/qblanguage.cgi");
+@qblang = QBlanguage();
 sub listUsers
 {
     my (%action)=@_;
     my $login=XMLread($gINITPATH."login.xml");
     my $userList=$login->{user};
     my %titleWidth=(Username=>'80',  Privilege=>'80', Status=>'80', 'Session ID'=>'80', 'Last Login'=>'120', 'Last Logout'=>'120', 'Kick Out'=>'50');
-    my @titleList=('Username', 'Privilege', 'Status', 'Session ID', 'Last Login', 'Last Logout', 'Kick Out');
+    my @titleList=(@qblang[545], @qblang[546], @qblang[547], @qblang[548], @qblang[549], @qblang[550], @qblang[551]);
     #20080220 Brian Remove "Basic >" 
-    #print qq (<font class="bigtitle">Basic &gt; User Account Management</font><hr size="1">);
-    print qq (<font class="bigtitle">User Account Management</font><hr size="1">);
+    #print qq (<font class="bigtitle">Basic &gt; @qblang[544]</font><hr size="1">);
+    print qq (<font class="bigtitle">@qblang[544]</font><hr size="1">);
     print qq (<table cellspacing="0" cellpadding="0" class="body" >);
     print qq (<tr bgcolor="#664422">);
     foreach my $title ( @titleList ) { print qq (<td class="body" width="$titleWidth{$title}" align="center">$title</td>); }
@@ -70,26 +72,27 @@ sub listUsers
 
     print qq (<tr><td colspan="8"><hr size="1"></td></tr>);
     print qq (<tr><td colspan="8" align="right" class="body">);
-    print qq (Username: <input class="qbtext" name="newusername" type="text" style="width:80" onChange="enableNewUser()"><font color="#336699">||</font>);
+    print qq (@qblang[545]: <input class="qbtext" name="newusername" type="text" style="width:80" onChange="enableNewUser()"><font color="#336699">||</font>);
     #20080220 Brian To modify "+/U/B" button become "Add/Update/Back".
     #print qq (User Password: <input class="qbtext" name="newpassword" type="password" style="width:80"><font color="#336699">||</font>);
-    print qq (Password: <input class="qbtext" name="newpassword" type="password" style="width:80"><font color="#336699">||</font>);
-    print qq (Confirm Password: <input class="qbtext" name="confirmpassword" type="password" style="width:80"><font color="#336699">||</font>);
-    print qq (Privilege: <select name="privilege" class="qbopt" style="width:60"><option value="1">Admin</optin><option value="0">User</option></select><font color="#336699">||</font>);
-    print qq (Multiple Login: <input type="checkbox" id="multi" name="multi" onClick="(this.form.multi.checked)?(this.form.multilog.value='1'):(this.form.multilog.value='0')">);
+    print qq (@qblang[553]: <input class="qbtext" name="newpassword" type="password" style="width:80"><font color="#336699">||</font>);
+    print qq (@qblang[554]: <input class="qbtext" name="confirmpassword" type="password" style="width:80"><font color="#336699">||</font>);
+    print qq (@qblang[555]: <select name="privilege" class="qbopt" style="width:60"><option value="1">Admin</optin><option value="0">User</option></select><font color="#336699">||</font>);
+    print qq (@qblang[556]: <input type="checkbox" id="multi" name="multi" onClick="(this.form.multi.checked)?(this.form.multilog.value='1'):(this.form.multilog.value='0')">);
     print qq (<input  type="hidden" name="multilog" value="0">);
     #print qq (<input type="button" name="NEWUSER" class="qb" onclick="goSubmit('NEWUSER')" value="+" title="Add New User" style="width:20;height:20">);
     #print qq (<input type="button" class="qb" onclick="updateUserInfo()" value="U" title="Update User Info" style="width:20;height:20">);
     #print qq (<input type="button" class="qb" onclick="goBackToConsole()" value="B" title="Back To Administration Console" style="width:20;height:20">);
-    print qq (<input type="button" name="NEWUSER" class="qb" onclick="goSubmit('NEWUSER')" value="Add" title="Add New User" style="width:40;height:20">);
-    print qq (<input type="button" class="qb" onclick="updateUserInfo()" value="Update" title="Update User Info" style="width:45;height:20">);
-    print qq (<input type="button" class="qb" onclick="goBackToConsole()" value="Back" title="Back To Administration Console" style="width:40;height:20">);
+    print qq (<input type="button" name="NEWUSER" class="qb" onclick="goSubmit('NEWUSER')" value="@qblang[557]" title="Add New User" style="width:40;height:20">);
+    print qq (<input type="button" class="qb" onclick="updateUserInfo()" value="@qblang[558]" title="Update User Info" style="width:45;height:20">);
+    print qq (<input type="button" class="qb" onclick="goBackToConsole()" value="@qblang[559]" title="Back To Administration Console" style="width:40;height:20">);
     print qq (</td></tr>);
     print qq (</table>);
 }
 #listUsers
 
 #===================================================================================================
+
 sub editUsers
 {
     my (%action)=@_;

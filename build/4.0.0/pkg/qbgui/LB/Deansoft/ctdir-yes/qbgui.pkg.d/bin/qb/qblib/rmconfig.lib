@@ -93,7 +93,7 @@ sub showRmupgrd
         print qq (<tr><td align="left"><input name="tool" type="radio" value="export"  checked onClick="switchOption('export');hidehide('adv2');showhide('adv1');">$qblang[321]</td></tr>); 
         print qq (<tr><td align="left"><input name="tool" type="radio" value="import" onClick="switchOption('import');hidehide('adv2');showhide('adv1');">$qblang[311]</td></tr>); 
         print qq (<tr><td align="left"><input name="tool" type="radio" value="ftpserver" onClick="switchOption('ftpserver');hidehide('adv1');showhide('adv2');">$qblang[322]</td></tr>); 
-        print qq (<tr><td align="left"><input name="tool" type="radio" value="autosave" onClick="switchOption('autosave');hidehide('adv1');showhide('adv2');">Auto Save</td></tr>); 
+        print qq (<tr><td align="left"><input name="tool" type="radio" value="autosave" onClick="switchOption('autosave');hidehide('adv1');showhide('adv2');">$qblang[560]</td></tr>); 
         #print qq (<tr><td align="left"><input name="tool" type="radio" value="emailalert" onClick="switchOption('emailalert');;hidehide('adv1');showhide('adv2');">Email Alert</td></tr>); 
     }
     elsif ( $action{viewpoint} eq 'cms' )

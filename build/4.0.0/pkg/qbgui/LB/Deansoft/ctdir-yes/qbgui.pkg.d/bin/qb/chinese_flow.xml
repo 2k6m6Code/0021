@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<treemenu>
+	<menu>
+	    <name>流量查詢</name>
+	    <child>
+		<menu>
+			<name>主機流量查詢</name>
+			<title></title>
+			<link>search.cgi?option=query_host</link>
+		</menu>
+	
+		<menu>
+			<name>即時流量查詢</name>
+			<title></title>
+			<link>query.php</link>
+		</menu>
+	
+	    </child>
+	</menu>
+	
+	<menu>
+	    <name>流量報告</name>
+	    <child>
+	    
+		<menu>
+			<name>每日圖表</name>
+			<title></title>
+			<link>Daily.php</link>
+		</menu>
+	
+		<menu>	
+			<name>累積圖表</name>
+			<title></title>
+			<link>Long_term.php</link>
+		</menu>
+	   	 
+		<menu>	
+			<name>服務流量排行</name>
+			<title></title>
+			<link>search_port.cgi?option=port</link>
+		</menu>	
+		
+		<menu>	
+			<name>來源端進入流量分析</name>
+			<title></title>
+			<link>search.cgi?option=in_src</link>
+		</menu>	
+		
+		<menu>	
+			<name>目的端進入流量分析</name>
+			<title></title>
+			<link>search.cgi?option=in_dst</link>
+		</menu>	
+		
+		<menu>
+			<name>單位進入流量分析</name>
+			<title></title>
+			<link>search.cgi?option=in_unit</link>
+		</menu>	
+		
+		<menu>
+			<name>來源端出口流量分析</name>
+			<title></title>
+			<link>search.cgi?option=out_src</link>
+		</menu>	
+		
+		<menu>
+			<name>目的端出口流量分析</name>
+			<title></title>
+			<link>search.cgi?option=out_dst</link>
+		</menu>	
+		
+		<menu>
+			<name>單位出口流量分析</name>
+			<title></title>
+			<link>search.cgi?option=out_unit</link>
+		</menu>	
+		
+		<menu>
+			<name>本地端流量分析報告</name>
+			<title></title>
+			<link>search_local.cgi?option=local_unit</link>
+		</menu>	
+		
+		<menu>
+			<name>雙向流量分析報告</name>
+			<title></title>
+			<link>search.cgi?option=bd_tr</link>
+		</menu>	
+		
+		<menu>
+			<name>各單位流量排行</name>
+			<title></title>
+			<link>search_topN.cgi?option=top_N</link>
+		</menu>	
+		
+		<!--<menu>-->
+			<!--<name>Fake IP</name>-->
+			<!--<title></title>-->
+			<!--<link></link>-->
+		<!--</menu>-->
+		
+		<!--<menu>-->
+			<!--<name>Worm Report</name>-->
+			<!--<title></title>-->
+			<!--<link></link>-->
+		<!--</menu>-->
+		
+		<!--<menu>-->
+			<!--<name>SSH Passwd Guess</name>-->
+			<!--<title></title>-->
+			<!--<link></link>-->
+		<!--</menu>	-->
+		
+		<!--<menu>-->
+			<!--<name>RDP Attack</name>-->
+			<!--<title></title>-->
+			<!--<link></link>-->
+		<!--</menu>-->	
+		
+		<menu>
+			<name>端口掃描日誌</name>
+			<title></title>
+			<link>search_icmp.cgi?option=port_scan</link>
+		</menu>	
+		
+		<!--<menu>-->
+			<!--<name>P2P Report</name>-->
+			<!--<title></title>-->
+			<!--<link></link>-->
+		<!--</menu>-->
+		
+		<menu>
+			<name>SYN 洪水攻擊日誌</name>
+			<title></title>
+			<link>search_icmp.cgi?option=syn_flood</link>
+		</menu>
+		
+		<menu>
+			<name>ICMP 洪水攻擊日誌</name>
+			<title></title>
+			<link>search_icmp.cgi?option=icmp</link>
+		</menu>
+
+		<menu>
+			<name>TCP連線限制日誌</name>
+			<title></title>
+			<link>search_icmp.cgi?option=t_connect</link>
+		</menu>
+			
+		<menu>
+			<name>UDP連線限制日誌</name>
+			<title></title>
+			<link>search_icmp.cgi?option=u_connect</link>
+		</menu>	
+
+		<menu>
+		        <name>網頁過濾日誌</name>
+		        <title></title>
+		        <link>search_squid.cgi?title=webfilter</link>
+		</menu>
+		
+                <menu>
+                    <name>網頁快取日誌</name>
+                    <title></title>
+                    <link>search_squid.cgi?title=webcache</link>
+                </menu>
+                
+                <menu>
+                    <name>關鍵字日誌</name>
+                    <title></title>
+                    <link>weburl_log.cgi</link>
+                </menu>
+                
+                <menu>
+                    <name>第七層應用日誌</name>
+                    <title></title>
+                    <link>layer7_log.cgi</link>
+                </menu>
+                
+                <menu>
+                    <name>認證使用者日誌</name>
+                    <title></title>
+                    <link>object_link.php?action=viewflow_auth</link>
+                </menu>
+                
+                <menu>
+                    <name>額度</name>
+                    <title></title>
+                    <link>search_quota.cgi</link>
+                </menu>
+		
+	    </child>
+	</menu>
+	
+</treemenu>
+

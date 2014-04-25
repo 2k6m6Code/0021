@@ -228,9 +228,9 @@ print qq (<table class="sortable" id="natinfo" width="100%" border="0"><tr bgcol
         { 
             print qq (<td width="10%">$qblang[97]</td>);
         }
-        print qq (<td style="left: 0px; width:160px; table-layout: fixed; word-break: normal; word-wrap: break-word;">Subnet</td>); # $qblang[98]
-        print qq (<td width="15%">Interface</td>);
-        print qq (<td style="left: 0px; width:160px; table-layout: fixed; word-break: normal; word-wrap: break-word;">IP</td>);
+        print qq (<td style="left: 0px; width:160px; table-layout: fixed; word-break: normal; word-wrap: break-word;">$qblang[33]</td>); # $qblang[98]
+        print qq (<td width="15%">$qblang[28]</td>);
+        print qq (<td style="left: 0px; width:160px; table-layout: fixed; word-break: normal; word-wrap: break-word;">$qblang[28] IP</td>);
         print qq (<td style="left: 0px; width:155px; table-layout: fixed; word-break: normal; word-wrap: break-word;">$qblang[30]</td>);
         print qq (<td width="5%">$qblang[99]</td>);
 
@@ -402,7 +402,7 @@ print qq (<table class="sortable" id="natinfo" width="100%" border="0"><tr bgcol
         print qq (<tr><td class="body"  align="left" >);
         ( $action{natroute} eq "ip" )   ?  print qq (<input type="radio" checked name="natroute" value="ip">)
                                         :  print qq (<input type="radio" name="natroute" value="ip">);
-        print qq (Interface IP: </td>);  
+        print qq ($qblang[28] IP: </td>);  
         print qq (<td class="body"  align="center">);
         print qq (<input class="qbtext" type="text" name="natip" style="WIDTH:160px"  value="$targetNAT->{ip}" onFocus="change_natroute_radio('ip')">);
         print qq (</td></tr>);
@@ -413,7 +413,7 @@ print qq (<table class="sortable" id="natinfo" width="100%" border="0"><tr bgcol
         print qq (<tr><td class="body"  align="left" >);
         ( $action{natroute} eq "gateway" )  ?   print qq (<input type="radio" checked name="natroute" value="gateway">)
                                             :   print qq (<input type="radio" name="natroute" value="gateway">);
-        print qq (Gateway: </td>);
+        print qq ($qblang[30]: </td>);
         print qq (<td class="body"  align="center" textcolor="#003366">);
         print qq (<input class="qbtext" type="text" name="natgateway" style="WIDTH:160px" value="$targetNAT->{gateway}" onFocus="change_natroute_radio('gateway')">);
         print qq (</td></tr>);

@@ -10,6 +10,7 @@ my $form=new CGI;
 my $action1 = $form->param(action);
 my $username=$form->param(username);
 my $password=$form->param(password);
+my $now_lang=$form->cookie('locale');
 my $TYPE=runCommand(command=>'cat', params=>'/opt/qb/registry|awk \'$1 == "TYPE" { print $2 }\'');
 authenticate( action=>'LOGIN', username=>$username, password=>$password );
 
@@ -28,6 +29,7 @@ print qq(<script type="text/javascript" src="qb.js"></script>);
 print qq(<script language="javascript">);
 print qq(window.onunload =function(){);
 print qq(var clearcookie=getcookie('clearcookie'););
+#print qq ( alert (getcookie('locale') ); );
 print qq(if ( clearcookie=='false' ) { return; });
 print qq(qbLogout(); });
 print qq(</script>);
@@ -38,9 +40,10 @@ print qq(<frameset rows="50,*" frameborder="NO" border="0" framespacing="0" cols
 print qq(<frame name="configFrame" src="config.cgi" scrolling="NO">);
 print qq(<frameset rows="*" cols="*" frameborder="NO">);
 
-if (grep(/Mesh/,$TYPE))
+#if (grep(/Mesh/,$TYPE))
+if ( grep(/Mesh/,$TYPE) || $now_lang eq "zh_TW" )
 {
-	print qq(<frame name="mainFrame" src="dashboard.cgi" frameborder="NO" noresize scrolling="AUTO">);
+    print qq(<frame name="mainFrame" src="dashboard.cgi" frameborder="NO" noresize scrolling="AUTO">);
 }
 elsif (!grep(/Mesh/,$TYPE) && $action1 > 8)
 {

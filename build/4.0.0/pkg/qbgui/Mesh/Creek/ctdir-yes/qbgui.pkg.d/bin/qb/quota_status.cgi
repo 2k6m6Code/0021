@@ -4,6 +4,8 @@ use CGI;
 require ("./qbmod.cgi");
 require ("./qblib/quotawork.lib");
 require ("./qblib/quota_status.lib");
+require ("/usr/local/apache/qb/language/qblanguage.cgi");
+@qblang = QBlanguage();
 print "Content-type:text/html\n\n";
 
 
@@ -21,9 +23,9 @@ print qq(<html><head><link rel="stylesheet" href="gui.css" type="text/css"><scri
 print qq(<style type="text/css">button.menu{width:70;height:18;font:10px Verdana;color:white;background:#336699;border:1px solid black;cursor:hand;margin-right: 5px;}</style></head>);
 print qq(<body bgcolor="#336699" text="#ffffff" link="#000040" vlink="#400040">);
 
-print qq (<button onclick="parent.mainFrame.location='quota_status.cgi?view=port'" style="width:200" hidefocus="true" class="menu">Quota by Link</button>);
-print qq (<button onclick="parent.mainFrame.location='quota_status.cgi?view=policy'" style="width:200" hidefocus="true" class="menu">Quota by Policy</button>);
-print qq (<button onclick="parent.mainFrame.location='quota_status.cgi?view=ip'" style="width:250" hidefocus="true" class="menu">Quota by Authenticated Users</button>);
+print qq (<button onclick="parent.mainFrame.location='quota_status.cgi?view=port'" style="width:200" hidefocus="true" class="menu">$qblang[495]</button>);
+print qq (<button onclick="parent.mainFrame.location='quota_status.cgi?view=policy'" style="width:200" hidefocus="true" class="menu">$qblang[496]</button>);
+print qq (<button onclick="parent.mainFrame.location='quota_status.cgi?view=ip'" style="width:250" hidefocus="true" class="menu">$qblang[497]</button>);
 #=================================================================================
 #print '<button class="menu"  onclick="mainframe.location=\'rttraffic.cgi?page_now=1&amp;ispnum=10&amp;spool=ID\'"     style="width:120">'.$qblang[408].'</button>';
 #print '<button class="menu"  onclick="mainframe.location=\'autoquery.htm\'"     style="width:200">'.$qblang[409].'</button>';

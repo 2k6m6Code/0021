@@ -9,7 +9,7 @@ sub showSyslog
     my $syslog=XMLread($gPATH.'backupdb.xml');
     #generating presentation format in TABLE 
     print qq (<table cellspacing="0" border="0">\n);
-    print qq (<tr><td align="center" class="bigtitle" colspan="2">External FTP Server); #</td></tr>);
+    print qq (<tr><td align="center" class="bigtitle" colspan="2">@qblang[529]); #</td></tr>);
     print qq (<a href="javascript:qbShowHelp('syslog')"><image src="image/help.gif" border="0" title="Help"></a></td></tr>);
     
     print qq (<tr><td colspan="2"><hr size="1"></td></tr>);
@@ -105,7 +105,7 @@ sub showSyslog
     print qq (<tr>);
     print qq (<td colspan="2" align="center">);
     print qq (<input class="qb" type="button" value="$qblang[139]" title="Save All Parameters and apply now !" onClick="goSubmit('APPLY')" style="width:100">);
-    print qq (<input class="qb" type="button" width="100" value="Restore File" onclick="MM_openBrWindow('../file_restore.cgi','Import',350,140)">);
+    print qq (<input class="qb" type="button" width="100" value="@qblang[530]" onclick="MM_openBrWindow('../file_restore.cgi','Import',350,140)">);
     print qq (</td></tr>);
  
     print qq (</table>);

@@ -9,7 +9,7 @@ sub showSyslog
     my $syslog=XMLread($gINITPATH.'syslog.xml');
     #generating presentation format in TABLE 
     print qq (<table cellspacing="0" border="0">\n);
-    print qq (<tr><td align="center" class="bigtitle" colspan="2">External Log Server); #</td></tr>);
+    print qq (<tr><td align="center" class="bigtitle" colspan="2">@qblang[543]); #</td></tr>);
     print qq (<a href="javascript:qbShowHelp('syslog')"><image src="image/help.gif" border="0" title="Help"></a></td></tr>);
     
     print qq (<tr><td colspan="2"><hr size="1"></td></tr>);

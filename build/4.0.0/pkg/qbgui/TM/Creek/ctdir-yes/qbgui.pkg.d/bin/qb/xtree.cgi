@@ -5,7 +5,7 @@ use Data::Dumper;
 use CGI;
 
 $cgi=new CGI;
-@filenamearray=('english.xml','french.xml','chinese.xml','english_flow.xml');  #limit filename to display 
+@filenamearray=('english.xml','french.xml','chinese.xml','english_flow.xml','chinese_flow.xml');  #limit filename to display 
 $filename = $cgi->param('name');
 if(! grep { $_ eq $filename} @filenamearray){
 	return;
@@ -19,7 +19,7 @@ $data = $xml->XMLin($filename);
 
 print "Content-Type:text/xml\n\n";
 
-if ($filename eq "english_flow.xml")
+if ($filename eq "english_flow.xml" || $filename eq "chinese_flow.xml" )
 {
     print $xml->XMLout($data, XMLDecl => $dec, RootName => 'treemenu');
 }
@@ -63,7 +63,7 @@ $data->{'menu'}[1]->{'child'}[0]->{'menu'}[5] ="";      #Link Setup -> IPSec
 $data->{'menu'}[1]->{'child'}[0]->{'menu'}[6] ="";      #Link Setup -> MAC
 $data->{'menu'}[1]->{'child'}[0]->{'menu'}[7] ="";      #Link Setup -> Quota
 $data->{'menu'}[2]->{'child'}[0]->{'menu'}[1] ="";      #LAN Setup -> Static ARP Setting
-$data->{'menu'}[2]->{'child'}[0]->{'menu'}[2] ="";      #LAN Setup -> Wireless LAN Setting
+#$data->{'menu'}[2]->{'child'}[0]->{'menu'}[2] ="";      #LAN Setup -> Wireless LAN Setting
 $data->{'menu'}[2]->{'child'}[0]->{'menu'}[3] ="";      #LAN Setup -> Transparent Setting
 $data->{'menu'}[2]->{'child'}[0]->{'menu'}[4] ="";      #LAN Setup -> Vlan Setting
 $data->{'menu'}[3]->{'name'}[0] ="";			#Interface
@@ -127,7 +127,7 @@ $data->{'menu'}[19]->{'child'}[0]->{'menu'}[12] =""; 	#System -> Web Proxy
 $data->{'menu'}[22] =""; 				#Central Management
 }
 
-if ($filename ne "english_flow.xml")
+if ($filename ne "english_flow.xml" && $filename ne "chinese_flow.xml" )
 {
 print $xml->XMLout($data, XMLDecl => $dec, RootName => 'treemenu');
 }

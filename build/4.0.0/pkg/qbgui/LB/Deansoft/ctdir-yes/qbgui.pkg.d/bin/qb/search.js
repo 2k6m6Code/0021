@@ -99,7 +99,11 @@ function title(sa)
 	$("#ip_option").append($("<option></option>").attr("value","-B").text("IP"));
     }else if (sa == "query_host")
     {
-        $("td[class='bigtitle']").html("Host Query");
+     	if ( getcookie('locale') == "zh_TW" )
+            $("td[class='bigtitle']").html("主機流量查詢");
+        else
+            $("td[class='bigtitle']").html("Host Query");
+            
         $("a[name='noquery']").attr("style","display:none");
    	$("select[name='noquery']").attr("style","display:none"); 
 	$("#ip_option option").remove();
@@ -107,6 +111,18 @@ function title(sa)
 	$("#ip_option").append($("<option></option>").attr("value","-A proto,srcip").text("Group by inbound destination port"));
 	$("#report_type option").val('6');
     }
+}
+
+function getcookie(name)
+{
+    var c=document.cookie.split("; ");
+    for (var i=0; i<c.length; i++)
+    {
+	var b=c[i].split("=");
+	if(name==b[0]) { return unescape(b[1]); }
+    }
+                                
+    return;
 }
 
 function list_action (oo)

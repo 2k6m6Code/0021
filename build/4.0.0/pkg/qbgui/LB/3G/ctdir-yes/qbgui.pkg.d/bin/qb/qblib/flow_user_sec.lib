@@ -8,7 +8,7 @@ sub showSchedule
     my $schlist=$schref->{user};
     
     print qq (<table bgcolor="#336699" cellspacing="3" border="0">);
-    print qq (<tr><td class="bigtitle">Transparent subnet);
+    print qq (<tr><td class="bigtitle">@qblang[506]);
     print qq (<tr><td>);
     print qq (<table cellspacing="0">);
     print qq (<tr>);
@@ -21,9 +21,9 @@ sub showSchedule
     print qq (<div class="divframe" style="height:200; width:800">);
     print qq (<table id="scheduleList" width="100%"  class="body" border="0">);
     print qq (<thead><tr bgcolor="#332211">);
-    print qq (<th width="300" align="center">Group</th>);
-    print qq (<th width="300" align="center">Description</th>);
-    print qq (<th width="100" align="center">Edit</th><th width="100" align="center"><a href="javascript:delSchedule()"><img border="0" title="Delete Checked Schdule(s)" src="../image/del.gif"></a><input type="checkbox" onclick="setAllCheckBoxValue('schedule', this.checked)" title="select or deselect all items"></th></tr></thead>);
+    print qq (<th width="300" align="center">@qblang[518]</th>);
+    print qq (<th width="300" align="center">@qblang[519]</th>);
+    print qq (<th width="100" align="center">@qblang[520]</th><th width="100" align="center"><a href="javascript:delSchedule()"><img border="0" title="Delete Checked Schdule(s)" src="../image/del.gif"></a><input type="checkbox" onclick="setAllCheckBoxValue('schedule', this.checked)" title="select or deselect all items"></th></tr></thead>);
     my $lineCount=0;
     foreach my $item ( @$schlist )
     {
@@ -49,8 +49,8 @@ sub showSchedule
     print qq (<table cellspacing="0" width="100%">);
     print qq (<tr><td align="center">);
     print qq (<input class="qb" type="button" width="100" value="$qblang[162]" onclick="NewSchedule();">);
-    print qq (<input class="qb" type="button" width="100" value="Import File" onclick="MM_openBrWindow('../file_import.cgi?sel=tp','Import',350,140)">);
-	print qq (<input class="qb" type="button" width="100" value="Export File" onclick="MM_openBrWindow('../file_export.cgi?sel=tp','Export',350,140)">);
+    print qq (<input class="qb" type="button" width="100" value="@qblang[521]" onclick="MM_openBrWindow('../file_import.cgi?sel=tp','Import',350,140)">);
+	print qq (<input class="qb" type="button" width="100" value="@qblang[522]" onclick="MM_openBrWindow('../file_export.cgi?sel=tp','Export',350,140)">);
 }
 #showSchedule
     

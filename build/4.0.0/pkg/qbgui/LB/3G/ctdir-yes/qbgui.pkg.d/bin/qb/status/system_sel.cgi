@@ -31,6 +31,6 @@ print '</head><body style="margin: 0px; background-color:#336699;" scroll="no">'
 print '<script type="text/javascript" src="../qb.js"></script>';
 print '<table style="width: 100%; height: 100%;">';
 print '<tr style="height: 25px;"><td>';
-print '<button class="menu"  onclick="mainframe.location=\'sys_status.php\'"     style="width: 14%">Real Time</button>';
-print '<button class="menu"  onclick="mainframe.location=\'../sys_status_history.cgi\'"     style="width: 14%">History</button>';
+print '<button class="menu"  onclick="mainframe.location=\'sys_status.php\'"     style="width: 14%">'.$qblang[488].'</button>';
+print '<button class="menu"  onclick="mainframe.location=\'../sys_status_history.cgi\'"     style="width: 14%">'.$qblang[489].'</button>';
 print qq (</td></tr><tr><td><iframe frameborder="0" style="height:100%;width:100%" src="$id" name="mainframe"></iframe></td></tr></table></body></html>);

@@ -120,7 +120,7 @@ function xTreeParseXml(tCont,root){
 		oLI.setAttribute("onclick", "javascript:tm_LIclick(this);");
 		oLI.title = myTitle;
 		oA.href = myUrl;
-		if (myName == "ViewFlow")
+		if (myName == "ViewFlow" | myName == "流量分析")
 		    oA.target = "_blank";
 		else
                     oA.target = tm_target;

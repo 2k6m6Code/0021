@@ -184,6 +184,12 @@
                     <link>object_link.php?action=viewflow_auth</link>
                 </menu>
 		
+                <menu>
+                    <name>Quota</name>
+                    <title></title>
+                    <link>search_quota.cgi</link>
+                </menu>
+                
 	    </child>
 	</menu>
 	

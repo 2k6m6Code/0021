@@ -93,12 +93,23 @@ for (i=0;i<ARRcookies.length;i++)
   }
 }
 var sslang = getCookie("locale");
-if(getCookie("flow")==1){
-document.cookie="flow=0";
-document.getElementById("myTree").style.display="none";
-document.getElementById("flowTree").style.display="block";
-xTree("flowTree","english_flow.xml");
-}else
+if(getCookie("flow")==1)
+{
+    document.cookie="flow=0";
+    document.getElementById("myTree").style.display="none";
+    document.getElementById("flowTree").style.display="block";
+    
+    if ( sslang=="en_US"){
+        xTree("flowTree","english_flow.xml");
+    }
+    else if ( sslang=="zh_TW"){
+        xTree("flowTree","chinese_flow.xml");
+    }
+    else if ( sslang=="fr_FR"){
+        xTree("flowTree","english_flow.xml");
+    }
+}
+else
 if(sslang=="en_US"){
 xTree("myTree","english.xml");
 }else

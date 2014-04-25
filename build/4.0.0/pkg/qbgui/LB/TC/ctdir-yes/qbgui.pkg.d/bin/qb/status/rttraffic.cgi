@@ -1,6 +1,8 @@
 #!/usr/bin/perl  
 use CGI;
 require ("/usr/local/apache/qb/qbmod.cgi");
+require ("/usr/local/apache/qb/language/qblanguage.cgi");
+@qblang = QBlanguage();
 
 authenticate(action=>'RANDOMCHECK');
 
@@ -52,6 +54,8 @@ print qq(<DIV>);
 print qq (<div align="center"><table border=0><tr>);
 print qq(<td><th><div id="total_down" style="width: 340px; height: 300px;" ></div></th></td>);
 print qq(<td><th><div id="total_up"   style="width: 340px; height: 300px;" ></div></th></td></tr>);
+$language=$form->cookie('locale');
+#print qq ( $language ) ;
 print qq (</table></div>);
 print qq(<div align="center"><table><tr><td>);
 print qq(<span style="width:100;color:white;font:12 Verdana;border:2px ridge white;filter:progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=white,endColorStr=green);background-image: -ms-linear-gradient(top, #FFFFFF 0%, #008000 100%);background: -moz-linear-gradient(center top , white, green) repeat scroll 0 0 transparent;background: -webkit-gradient(linear, left top, left bottom, from(white), to(green));"><b>INBOUND</b></span>);
@@ -61,8 +65,9 @@ print qq(<div id="graphspace" style="display: inline-block;">);
 print qq (</div>);
 print qq(<script></script>);
 print qq(<DIV class="qbCopy">);
-print qq(Auto Refresh Per&#32&#32);
-print qq(<select class="qbopt" id="refreshtime">);
+#print qq(Auto Refresh Per&#32&#32);
+print qq($qblang[0]&#32&#32);
+print qq(<select class="qbopt" id="refreshtime" style="font: 12px">);
 my @time=("9", "7", "5", "3");
 foreach my $tm ( @time )
 {
@@ -533,7 +538,7 @@ function auto_refresh(){
     	var refreshtimer=document.getElementById('refreshtime');
 		
         if(REF.innerHTML!="STOP"){
-                REF.innerHTML="STOP";
+                //REF.innerHTML="STOP";
                setTimeout("refresh()",100);
 	      
         }
@@ -718,11 +723,11 @@ QB_TRAFFIC
 #JS
 
 print qq(</select>);
-print qq(seconds&#32&#32);
-print qq(<button  type="button" ID=REF class="qb" style="font:9 Verdana;width:40;height:20" onclick="auto_refresh();">AUTO</button>);
+print qq($qblang[1]&#32&#32);
+print qq(<button  type="button" ID=REF class="qb" style="font:10 Verdana;width:50;height:25" onclick="auto_refresh();">$qblang[350]</button>);
 
 print qq(&#32&#32);
-print qq(<button ty pe="button" class="qb" style="font:9 Verdana;width:50;height:20" onclick="resetVolumn();">Reset</button>);
+print qq(<button ty pe="button" class="qb" style="font:10 Verdana;width:50;height:25" onclick="resetVolumn();">$qblang[499]</button>);
 print qq(&#32&#32);
 
 #count is numbers of isp
@@ -749,12 +754,12 @@ $page--;
 #-----------------------------------------------------------
 my %rtablehash=GETALLPOOL();
 
-print qq(Show);
-print qq(<select id="pool" class="qbopt"  onchange="ShowByPool();" style="font:9 Verdana;height:20;width:110">);
-print qq(<option id="ID" value="ID">Links By Default</option>);
-print qq(<option id="Name" value="Name">Links Alphabetically</option>);
-print qq(<option id="DEAD" Value="DEAD">Links Down</option>);
-print qq(<option id="WAN" Value="WAN">Physical Links</option>);
+print qq($qblang[498]);
+print qq(<select id="pool" class="qbopt"  onchange="ShowByPool();" style="font:12 Verdana;height:25;width:130">);
+print qq(<option id="ID" value="ID">$qblang[500]</option>);
+print qq(<option id="Name" value="Name">$qblang[501]</option>);
+print qq(<option id="DEAD" Value="DEAD">$qblang[502]</option>);
+print qq(<option id="WAN" Value="WAN">$qblang[503]</option>);
 
 foreach $key (sort num_sort keys %rtablehash )
 {

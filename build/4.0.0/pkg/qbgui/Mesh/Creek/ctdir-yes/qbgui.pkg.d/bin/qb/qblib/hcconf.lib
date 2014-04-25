@@ -249,7 +249,8 @@ sub showHCconf
 	my $status=( $HCMETHOD->{enable_latencychk} ) ? ( "checked" ) : ( "" );
     print qq (<tr>);
     print qq (<td align="left" class="body" colspan="2">);
-    print qq (And Optionally:);
+    #print qq (And Optionally:);
+    print qq ($qblanguage[504]:);
     print qq (</td>);
     print qq (</tr>);
     print qq (<tr>);

@@ -154,12 +154,12 @@ print qq(<style type="text/css">table.sortable thead{background-color:#eee;color
 print qq(button.menu{margin-right: 4px;height:18px;width:14%;font:10px Verdana;color:white;background:#336699;border:1px solid black;cursor:hand;});
 print qq(</style></head>);
 print qq(<body bgcolor="#336699" text="#ffffff" link="#000040" vlink="#400040">);
-print qq (<button  onclick="parent.mainFrame.location='l7log.cgi'" style="width:170" hidefocus="true" class="menu">Log Configuration</button>);
-print qq (<button  onclick="parent.mainFrame.location='flow_user.cgi'" style="width:170" hidefocus="true" class="menu">Unit</button>);
-print qq (<button  onclick="parent.mainFrame.location='flow_user_sec.cgi'" style="width:170" hidefocus="true" class="menu">Transparent Subnets</button>);
-print qq (<button  onclick="parent.mainFrame.location='storage_set.cgi'" style="width:170" hidefocus="true" class="menu">Storage</button>);
-print qq (<button  onclick="parent.mainFrame.location='backupdb.cgi'" style="width:170" hidefocus="true" class="menu">Backup Database</button>);
-#假如認證失敗，就直接結束
+print qq (<button  onclick="parent.mainFrame.location='l7log.cgi'" style="width:170" hidefocus="true" class="menu">@qblang[504]</button>);
+print qq (<button  onclick="parent.mainFrame.location='flow_user.cgi'" style="width:170" hidefocus="true" class="menu">@qblang[505]</button>);
+print qq (<button  onclick="parent.mainFrame.location='flow_user_sec.cgi'" style="width:170" hidefocus="true" class="menu">@qblang[506]</button>);
+print qq (<button  onclick="parent.mainFrame.location='storage_set.cgi'" style="width:170" hidefocus="true" class="menu">@qblang[507]</button>);
+print qq (<button  onclick="parent.mainFrame.location='backupdb.cgi'" style="width:170" hidefocus="true" class="menu">@qblang[508]</button>);
+#假如認證失敗，就直接結
 if ( !$gLOGINRESULT ) { general_script(); exit;}
 
 if ( $action{action} ) { maintainL7log( %action ); }

@@ -373,6 +373,74 @@ if ($id eq 'dashboard_0')
         p_td('&#32 '.$dmz->{ip});
         $index++;
     }
+}elsif ($id eq 'dashboard_11')
+{
+	my $ispref=XMLin('/usr/local/apache/active/basic.xml');
+    my $isplist=$ispref->{isp};
+    
+    p_td('&#32 ISP');
+    p_td('&#32 Download ');
+	p_td('&#32 Upload ');
+    my $index=0;
+    foreach my $isp ( @$isplist )
+    {
+        if ( $index > 2){p_tr($bgcolor);p_td('&#32:');p_td('&#32:');p_td('&#32:');last;}
+        if ( $isp->{iid} eq 'system' ) { next; }
+        if ( $isp->{isptype} ne 'tunnel' &&  $isp->{isptype} ne 'ipsec' && $isp->{isptype} ne 'dtunnel' )
+        {
+            my $bgcolor=($index % 2) ? ( '#556677' ) : ( '#334455' );
+            p_tr($bgcolor);
+       	    p_td('&#32 '.$isp->{ispname});
+			my @data = `/usr/local/apache/qb/setuid/run  /usr/local/apache/qb/status/rate.cgi`;
+			my $up=0;
+			my $down=0;
+			foreach my $o (@data)
+			{
+				if(!grep(/window.parent.gmaster.add/,$o)){next;}
+				$o=~s/window.parent.gmaster.add//;
+				$o=~s/\(||\)||;||"//g;
+				my @dd=split(/, /,$o);
+				if ($dd[0] eq $isp->{ispname} )
+				{
+					$up=$dd[3];
+					$down=$dd[4];
+				}
+			}
+       	    p_td('&#32 '.$down.' Kb'); 
+			p_td('&#32 '.$up.' Kb');
+    	    $index++;
+    	}
+    }
+}elsif ($id eq 'dashboard_12')
+{
+	my ($sec, $min, $hour, $day, $mon, $year) = localtime(time);
+	$year+=1900;
+	$mon+=1;
+	#my $year=2014;
+	#my $mon=3;
+	#my $day=4;
+	my @data;
+	my $check = `/usr/local/apache/qb/setuid/run  /bin/ls /mnt/tclog/squid/log/$year-$mon-$day`;
+    p_td('&#32 Top');
+	p_td('&#32 URL');
+    p_td('&#32 Count ');
+    my $index=1;
+	if($check ne '')
+	{
+		system ("/usr/local/apache/qb/setuid/run /bin/cat /mnt/tclog/squid/log/$year-$mon-$day | awk '{print\$1 \" \" \$3 \" \" \$7}' > /tmp/$year-$mon-$day.log");
+        system ("/usr/local/apache/qb/setuid/run /usr/bin/perl -p -e 's/^\\d+\.\\d+/localtime \$&/e' < /tmp/$year-$mon-$day.log > /tmp/tmp_squid.log");
+		@data = `/usr/local/apache/qb/setuid/run /bin/cat /tmp/tmp_squid.log | awk '\$7 ~ /^h/{print \$7}' |cut -s -f 1-3 -d / |sort|uniq -c|sort -nr|head -10`;
+		foreach my $result ( @data )
+		{
+			my @o=split(/\s+/,$result);
+			my $bgcolor=($index % 2) ? ( '#556677' ) : ( '#334455' );
+			p_tr($bgcolor);
+			p_td('&#32 '.$index);
+			p_td('&#32 '.$o[2]);
+			p_td('&#32 '.$o[1]);
+			$index++;
+		}
+	}
 }
 
 print qq(</tr></table>);

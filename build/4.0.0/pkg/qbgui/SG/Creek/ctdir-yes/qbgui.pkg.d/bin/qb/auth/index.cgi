@@ -157,7 +157,48 @@ if ($ENV{'HTTP_VIA'} && $ENV{'HTTP_X_FORWARDED_FOR'})
        foreach my $aa (@status)
        {
            if (!grep(/rad_recv:/,$aa)){next;}
-           if (grep(/Accept/,$aa)){$success = '1';}
+           if (grep(/Accept/,$aa))
+		   {
+				$success = '1';
+				foreach my $server (@$list)
+			   {
+				   if ($server->{description} eq 'None' || $server->{description} ne 'Radius'){next;}
+				   my $userlist = $server->{member};
+				   my $ttime=time()+(8*60*60);
+				   foreach my $user (@$userlist)
+				   {
+					   if (($user->{idd} eq $username && ($ip eq $user->{ip} || $user->{ip} eq '') && ($user->{time} eq '' || ($ttime - $user->{time}) > 0)))
+					   {
+						   $user->{time} = $ttime;
+						   if ($user->{iip} ne '')
+						   {
+								system("/usr/local/apache/qb/setuid/run /sbin/iptables -t nat -D AUTH -s $user->{iip} -j RETURN");
+						   }
+						   $user->{iip} = $ip;
+							foreach my $myquota (@$quotalist)
+							{
+								if($myquota->{name} eq $user->{idd})
+								{
+									system("/usr/local/apache/qb/setuid/run /sbin/iptables -t mangle -D PREROUTING -d $myquota->{ip} -j $myquota->{name}.down");
+									system("/usr/local/apache/qb/setuid/run /sbin/iptables -t mangle -D POSTROUTING -s $myquota->{ip} -j $myquota->{name}.up");
+									$myquota->{ip}=$user->{iip};
+									$enable_quota=$myquota->{bs};
+								}
+							}
+					   }
+				   }
+			   }
+			}
+			if ($success)
+			{
+				XMLwrite($quota,$gPATH.'quota.xml');
+				XMLwrite($reflist,$gPATH.'auth.xml');
+				foreach $new_ip (@$quotalist)
+				{
+					#print "$new_ip->{name}";
+					if($new_ip->{name} eq $username){quotawork(quotaaction=>'CREAT', LINK=>$new_ip->{name});}
+				}
+			}
        }
    }elsif ($type eq 'AD')
    {

@@ -70,7 +70,7 @@ t1:foreach my $data (@file)
 				if ('SRC='.$src eq $data_splic[8] && 'DST='.$dst eq $data_splic[9]){$count++;}
 			}
 		}
-		print qq(<td style="width: 200px;"><a href="javascript:search_icmp_detail('$start','$end','$tm_option','$src','$dst')">$count</a></td>); 
+		print qq(<td style="width: 200px;" onclick="javascript:search_icmp_detail('$start','$end','$tm_option','$src','$dst')">$count</td>); 
         print qq (</tr>);
         $top++;
     }

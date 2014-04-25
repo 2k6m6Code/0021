@@ -30,6 +30,31 @@ myapp.Model = function(){
   	    $("#query").attr('disabled', false);
   	});
    };
+   
+   this.output = function()
+	{
+		alert('asdfasdf');
+		var total_result = '';
+		var tr = document.getElementById('tables').rows;
+		var tr_total = tr.length;
+		for (var i = 0; i < tr_total; i++)
+		{
+			var result = '';
+			var td_total = tr[i].cells.length;
+			for (var d = 0; d < td_total; d++)
+			{
+				var trim = tr[i].cells[d].innerHTML;
+				if(d>1)
+				{
+				trim = tr[i].cells[d].innerHTML.replace(/(^[\s]*)|([\s]*$)/g, "");
+				}
+				result = result+trim+',';
+			}
+			total_result = total_result + result.replace(/,$/, '_');
+		}
+		//alert(total_result);
+		window.open('flow_export.cgi?action=SAVE&total_result='+total_result,'Save as CSV');
+	};
 };
 
 myapp.Presenter = function(){
@@ -67,6 +92,8 @@ myapp.view={
         });
     }
 };
+
+
 
 
 

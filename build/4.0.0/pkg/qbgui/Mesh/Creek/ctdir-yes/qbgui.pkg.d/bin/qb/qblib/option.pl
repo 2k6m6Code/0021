@@ -48,7 +48,7 @@ elsif ($action eq 'Timer')
         if ($user->{schname} eq 'system')
         {
            $user->{login_time} = ($login_time)?($login_time):('43200');
-           $user->{idle_time} = ($idle_time)?($login_time):('43200');
+           $user->{idle_time} = ($idle_time)?($idle_time):('43200');
            if ($user->{time_hr} ne $time_hr || $user->{time_sec} ne $time_sec){$creat = '1';}
            $user->{time_hr} = ($time_hr)?($time_hr):('23');
            $user->{time_sec} = ($time_sec)?($time_sec):('59');

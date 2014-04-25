@@ -31,10 +31,10 @@
 <?php
     $title=array('System Status'=>'','System Usage'=>'','Device Information'=>'','Security Status'=>'dos.cgi',
     		 'User Flow Ranking'=>'userflow.htm','Connections'=>'/status/report.htm','Register Information'=>'regist.cgi','WAN Link'=>'showbasic.cgi',
-    		 'LAN'=>'zone.cgi?viewpoint=nat','Bandwidth Management'=>'lantraffic.cgi','Transparent'=>'zone10.cgi');
+    		 'LAN'=>'zone.cgi?viewpoint=nat','Bandwidth Management'=>'lantraffic.cgi','Transparent'=>'zone10.cgi','Physical Links Traffic'=>'','URL'=>'');
     $title_ary=array('dashboard_0'=>'System Status','dashboard_1'=>'System Usage','dashboard_2'=>'Device Information','dashboard_3'=>'Security Status',
     		 'dashboard_4'=>'User Flow Ranking','dashboard_5'=>'Connections','dashboard_6'=>'Register Information','dashboard_7'=>'WAN Link',
-    		 'dashboard_8'=>'LAN','dashboard_9'=>'Bandwidth Management','dashboard_10'=>'Transparent');
+    		 'dashboard_8'=>'LAN','dashboard_9'=>'Bandwidth Management','dashboard_10'=>'Transparent','dashboard_11'=>'Physical Links Traffic','dashboard_12'=>'URL');
     $index=0;
     foreach ($title as $key => $value) 
     {
@@ -64,10 +64,10 @@
     */
 var title={'System Status':'','System Usage':'','Device Information':'','Security Status':'dos.cgi',
     		 'User Flow Ranking':'userflow.htm','Connections':'/status/report.htm','Register Information':'regist.cgi','WAN Link':'showbasic.cgi',
-    		 'LAN':'zone.cgi?viewpoint=nat','Bandwidth Management':'lantraffic.cgi','Transparent':'zone10.cgi'};
+    		 'LAN':'zone.cgi?viewpoint=nat','Bandwidth Management':'lantraffic.cgi','Transparent':'zone10.cgi','Physical Links Traffic':'','URL':''};
 var title_ary={'dashboard_0':'System Status','dashboard_1':'System Usage','dashboard_2':'Device Information','dashboard_3':'Security Status',
     		 'dashboard_4':'User Flow Ranking','dashboard_5':'Connections','dashboard_6':'Register Information','dashboard_7':'WAN Link',
-    		 'dashboard_8':'LAN','dashboard_9':'Bandwidth Management','dashboard_10':'Transparent'};
+    		 'dashboard_8':'LAN','dashboard_9':'Bandwidth Management','dashboard_10':'Transparent','dashboard_11':'Physical Links Traffic','dashboard_12':'URL'};
 $(document).ready(function() {
     clear_pl();
     
@@ -75,7 +75,7 @@ $(document).ready(function() {
     format_a.change(format_a.getsave());
     $( "#sortable" ).sortable();
     $( "#sortable" ).disableSelection();
-    show_table('dashboard_',11);
+    show_table('dashboard_',13);
 });
 
 function clear_pl()
@@ -150,7 +150,7 @@ function format()
             var num=name.length;
         }
         else
-            var num=11;
+            var num=13;
         for (var i=0;i<num;i++)
         {
             if (name[i])
@@ -187,7 +187,7 @@ function refresh()
         $("#sec").text(t);
         setTimeout("refresh();",1000);
     }else if (t==0)
-        show_table('dashboard_',11,'a');
+        show_table('dashboard_',13,'a');
 } 
 
 function show_table(oo,index,check)
@@ -195,7 +195,7 @@ function show_table(oo,index,check)
     if (index > 0)
     {
         index--;
-        if (check != 'a' || index == 0 || index == 1 || index == 4 || index == 5 || index == 9)
+        if (check != 'a' || index == 0 || index == 1 || index == 4 || index == 5 || index == 9|| index == 11)
             Ajax(oo+index);
         show_table(oo,index,check);
     }else

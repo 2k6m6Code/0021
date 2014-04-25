@@ -122,7 +122,7 @@ print qq (<tr><td colspan="5"><hr size=1></td></tr>);
 	print qq (<tr>);
 #########IP Address#################################################################
 	print qq (<td class="body"  valign="center" align="left">);
-    print qq (IP address:);
+    print qq (IP Subnet:);
     print qq (</td>);
     print qq (<td class="body"  valign="center" align="left">);
     print qq (<input type="text" id="ip" name="alldays" value="$ip" >);

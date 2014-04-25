@@ -35,10 +35,30 @@ $mon++;
 if ($mon < 10 ){$mon='0'.$mon;}
 $now_date=join("/",($year+1900,$mon,$day));
 print qq (<input type="text" id="datepicker" style="width:90px" value="$now_date"/>);
+print qq (&nbsp<select id="start_hr">);
+foreach my $tm (0..23 )
+{
+    if ($tm < 10 ){$tm = '0'.$tm;}
+    print qq(<option value="$tm" >$tm</option>);
+}
+print qq (</select>);
+print qq (<select id="start_sec" style="true">);
+foreach my $tm (0..59 )
+{
+    if ($tm < 10 ){$tm = '0'.$tm;}
+    print qq(<option value="$tm" >$tm</option>);
+}
+print qq (</select>);#$text);
+print qq (<a name="noquery" >Report Type : </a><select id="report_type" name="noquery">);
+print qq (<option value="1">Daily</option>);
+print qq (<option value="6">Per 5 minute</option>);
+print qq (</select>&nbsp;&nbsp;);
 print qq (&nbsp&nbsp&nbspSearch for IP : <input id="ip_search" value="">);
 print qq (</td></tr>);
 
-print qq (<tr><td align="center"><input type="button" id="query" value="Query" onclick="Submit();"></td></tr>);
+print qq (<tr><td align="center"><input type="button" id="query" value="Query" onclick="Submit();">);
+print qq (<input type="button" id="output" value="Save as CSV" onclick="dataCSV();">);
+print qq (</td></tr>);
 
 print qq (</table></div>);
 
@@ -143,6 +163,30 @@ function search_squid_detail(title,ip,symd,request)
 	\$("#load_gif").css('display','none');
 	\$("#query").attr('disabled', false);
     });
+}
+
+function dataCSV()
+{
+	var total_result = '';
+	var tr = document.getElementById('tables').rows;
+	var tr_total = tr.length;
+	for (var i = 0; i < tr_total; i++)
+    {
+		var result = '';
+		var td_total = tr[i].cells.length;
+        for (var d = 0; d < td_total; d++)
+		{
+			var trim = tr[i].cells[d].innerHTML;
+			if(d>1)
+			{
+			trim = tr[i].cells[d].innerHTML.replace(/(^[\\s]*)|([\s]*\$)/g, "");
+			}
+			result = result+trim+',';
+		}
+		total_result = total_result + result.replace(/,\$/, '_');
+    }
+	//alert(total_result);
+	window.open('flow_export.cgi?action=SAVE&total_result='+total_result,'Save as CSV');
 }
 
 </script>

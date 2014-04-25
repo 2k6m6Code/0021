@@ -58,13 +58,13 @@ if (!grep(/query/,$option))
    $goto ='';
 }
 
-print qq (<select id="start_sec" style="$display">);
+print qq (<select id="start_sec" style="true">);
 foreach my $tm (0..59 )
 {
     if ($tm < 10 ){$tm = '0'.$tm;}
     print qq(<option value="$tm" >$tm</option>);
 }
-print qq (</select>$text);
+print qq (</select>);#$text);
 
 print qq ($goto<input type="text" id="datepicker_1" style="width:90px;$display" value="$now_date"/>);
 print qq (&nbsp;<select id="end_hr" style="$display">);
@@ -91,6 +91,7 @@ foreach my $tm (0..59 )
 print qq (</select>);
 
 print qq (<a name="noquery" >Report Type : </a><select id="report_type" name="noquery">);
+print qq (<option value="6">Per 5 minute</option>);
 print qq (<option value="0">Hourly</option>);
 print qq (<option value="1">Daily</option>);
 print qq (<option value="2">Weekly</option>);
@@ -105,7 +106,9 @@ print qq (<option value="1">Work Time</option>);
 print qq (<option value="2">Off Time</option>);
 print qq (</select></td></tr>);
 
-print qq (<tr><td align="center"><input type="button" id="query" value="Query" onclick="Submit();"></td></tr>);
+print qq (<tr><td align="center"><input type="button" id="query" value="Query" onclick="Submit();">);
+print qq (<input type="button" id="output" value="Save as CSV" onclick="dataCSV();">);
+print qq (</td></tr>);
 
 print qq (</table></div>);
 
@@ -213,6 +216,13 @@ function Submit()
              if (tmp[1] < 10 ){tmp[2] = '0'+tmp[1];}
              \$("#datepicker_1").val(tmp[0] + "/" + tmp[1] + "/" + tmp[2]);
          break;
+		 
+		 case '6':
+             \$("#datepicker_1").val(\$("#datepicker").val());
+			 var five = parseInt(\$("#start_sec").val());
+			 five = five+5;
+			 \$("#end_sec").val(five);
+         break;
          
          deafult :
          
@@ -285,6 +295,30 @@ function search_flow(ip,time,option,symd)
 	});
 	\$("#load_gif").css('display','none');
     });
+}
+
+function dataCSV()
+{
+	var total_result = '';
+	var tr = document.getElementById('tables').rows;
+	var tr_total = tr.length;
+	for (var i = 0; i < tr_total; i++)
+    {
+		var result = '';
+		var td_total = tr[i].cells.length;
+        for (var d = 0; d < td_total; d++)
+		{
+			var trim = tr[i].cells[d].innerHTML;
+			if(d>1)
+			{
+			trim = tr[i].cells[d].innerHTML.replace(/(^[\\s]*)|([\s]*\$)/g, "");
+			}
+			result = result+trim+',';
+		}
+		total_result = total_result + result.replace(/,\$/, '_');
+    }
+	//alert(total_result);
+	window.open('flow_export.cgi?action=SAVE&total_result='+total_result,'Save as CSV');
 }
 
 </script>

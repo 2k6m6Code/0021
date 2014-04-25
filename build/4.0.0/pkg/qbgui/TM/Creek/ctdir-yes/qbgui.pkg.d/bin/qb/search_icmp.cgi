@@ -107,7 +107,9 @@ print qq (<option value="1">Work Time</option>);
 print qq (<option value="2">Off Time</option>);
 print qq (</select></td></tr>);
 =cut
-print qq (<tr><td align="center"><input type="button" id="query" value="Query" onclick="Submit();"></td></tr>);
+print qq (<tr><td align="center"><input type="button" id="query" value="Query" onclick="Submit();">);
+print qq (<input type="button" id="output" value="Save as CSV" onclick="dataCSV();">);
+print qq (</td></tr>);
 
 print qq (</table></div>);
 
@@ -296,6 +298,30 @@ function search_icmp_detail(start,end,option,src,dst)
 		});
 	    	\$("#load_gif").css('display','none');
 	});
+}
+
+function dataCSV()
+{
+	var total_result = '';
+	var tr = document.getElementById('tables').rows;
+	var tr_total = tr.length;
+	for (var i = 0; i < tr_total; i++)
+    {
+		var result = '';
+		var td_total = tr[i].cells.length;
+        for (var d = 0; d < td_total; d++)
+		{
+			var trim = tr[i].cells[d].innerHTML;
+			if(d>1)
+			{
+			trim = tr[i].cells[d].innerHTML.replace(/(^[\\s]*)|([\s]*\$)/g, "");
+			}
+			result = result+trim+',';
+		}
+		total_result = total_result + result.replace(/,\$/, '_');
+    }
+	//alert(total_result);
+	window.open('flow_export.cgi?action=SAVE&total_result='+total_result,'Save as CSV');
 }
 
 </script>

@@ -82,7 +82,7 @@ sub showNewSchedule
     print qq (Note :);
     print qq (<td colspan="2" class="body"  valign="center" align="left" style="height: 30px; width: 400px">);
     print qq (<textarea id="mail" value="" ></textarea></td>);
-    print qq (<td><input class="qb" type="button" style="width:50" value="Add" onclick="AddSchedule();"></td>);
+    #print qq (<td><input class="qb" type="button" style="width:50" value="Add" onclick="AddSchedule();"></td>);
     print qq (</td></tr>);
     
     print qq (</td></tr>);

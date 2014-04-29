@@ -25,8 +25,8 @@ print qq (<table cellspacing="0" border="0">);
 print qq (<tr><td class="bigtitle" align="center"></td></tr></table>);
 print qq (<div style="width:75%" align="center">);
 print qq (<table width="100%" border="1"><tr>);
-print qq (<td class="body" align="center" >Query Condition</td>);
-print qq (<tr><td class="body" align="center" >Date Time : );
+print qq (<td class="body" align="center" >$qblang[771]</td>);
+print qq (<tr><td class="body" align="center" >$qblang[772] : );
 my ($sec, $min, $hour, $day, $mon, $year) = localtime(time);
 if ($day < 10 ){$day='0'.$day;}
 $mon++;
@@ -92,7 +92,7 @@ foreach my $tm (0..59 )
 print qq (</select>);
 
 #print qq (&nbsp;&nbsp;Core Switch : <select id="core_switch"><option value="all">ALL</option></select>&nbsp;&nbsp;);
-print qq (<a name="noquery" >Report Type : </a><select id="report_type" name="noquery">);
+print qq (<a name="noquery" >$qblang[775] : </a><select id="report_type" name="noquery">);
 print qq (<option value="6">Per 5 minute</option>);
 print qq (<option value="0">Hourly</option>);
 print qq (<option value="1">Daily</option>);
@@ -102,16 +102,16 @@ print qq (<option value="4">Yearly</option>);
 print qq (<option value="5">Quarterly</option>);
 print qq (</select>&nbsp;&nbsp;);
 
-print qq (<a name="noquery" >Time Segment : </a><select id="time_seqment" name="noquery">);
+print qq (<a name="noquery" >$qblang[776] : </a><select id="time_seqment" name="noquery">);
 print qq (<option value="0">All Time</option>);
 print qq (<option value="1">Work Time</option>);
 print qq (<option value="2">Off Time</option>);
 print qq (</select></td></tr>);
 
-print qq (<tr><td align="center">);
+print qq (<tr><td class="body" align="center">);
 print qq (<a name="noquery">Packet Direction : </a><a id="ip_name" name="noquery"></a>&nbsp;&nbsp;&nbsp;);
-print qq (Group By : <select id="ip_option" ></select>&nbsp;&nbsp;);
-print qq (<a name="noquery">Unit : </a><select id="ip_unit" name="noquery"><option value="all">ALL</option>);
+print qq ($qblang[773] : <select id="ip_option" ></select>&nbsp;&nbsp;);
+print qq (<a name="noquery">$qblang[505] : </a><select id="ip_unit" name="noquery"><option value="all">ALL</option>);
 my $flow_tmp = XMLread("/usr/local/apache/qbconf/flow.xml");
 my $flow = $flow_tmp->{user};
 foreach my $oo (@$flow)
@@ -120,22 +120,22 @@ foreach my $oo (@$flow)
     print qq (<option value="$oo->{schname}">$oo->{schname}</option>);
 }
 print qq (</select>&nbsp;&nbsp;);
-print qq (Search for IP : <input id="ip_search" value="">);
+print qq ($qblang[774] : <input id="ip_search" value="">);
 print qq (</td></tr>);
 
-print qq (<tr><td align="center">);
+print qq (<tr><td class="body" align="center">);
 
-print qq (<a name="noquery">Protocol : </a><select id="protocol" name="noquery">);
+print qq (<a name="noquery">$qblang[847] : </a><select id="protocol" name="noquery">);
 print qq (<option value="all">ALL</option>);
 print qq (</select>&nbsp;&nbsp;);
 
-print qq (<a name="noquery">Order by : </a><select id="order" name="noquery">);
+print qq (<a name="noquery">$qblang[777] : </a><select id="order" name="noquery">);
 print qq (<option value="-s record/bytes">Bytes</option>);
 print qq (<option value="-s record/flows">Flows</option>);
 print qq (<option value="-s record/packets">Packets</option>);
 print qq (</select>&nbsp;&nbsp;);
 
-print qq (<a name="noquery">&nbsp; &nbsp;Top : </a>);
+print qq (<a name="noquery">&nbsp; &nbsp; $qblang[778] : </a>);
 print qq (<select id="top_1" name="noquery">);
 print qq (<option value="10">10</option>);
 print qq (<option value="20">20</option>);
@@ -145,8 +145,8 @@ print qq (<option value="200">200</option>);
 print qq (<option value="500">500</option>);
 print qq (</select></td></tr>);
 
-print qq (<tr><td align="center"><input type="button" id="query" value="Query" onclick="Submit();">);
-print qq (<input type="button" id="output" value="Save as CSV" onclick="dataCSV();">);
+print qq (<tr><td align="center"><input type="button" id="query" value="$qblang[712]" onclick="Submit();">);
+print qq (<input type="button" id="output" value="$qblang[713]" onclick="dataCSV();">);
 print qq (</td></tr>);
 
 print qq (</table></div>);

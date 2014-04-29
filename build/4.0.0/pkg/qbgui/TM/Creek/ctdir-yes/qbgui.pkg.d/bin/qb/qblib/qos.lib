@@ -39,7 +39,7 @@ sub showQoS
     print qq (<th width="200" align="center">$qblang[29]</th>);    #Name
     print qq (<th width="200" align="center">$qblang[155]</th>);   #Upload Bandwidth
     print qq (<th width="200" align="center">$qblang[154]</th>);   #Download Bandwidth
-    print qq (<th width="100" align="center">Qos Type</th>);       #Qos Type
+    print qq (<th width="100" align="center">$qblang[804]</th>);       #Qos Type
     print qq (<th width="50" align="center">$qblang[25]</th>);     #Edit
     print qq (<th width="100" align="center"><a href="javascript:delqos()"><img border="0" title="Delete Checked qos(s)" src="image/del.gif"></a><input type="checkbox" onclick="setAllCheckBoxValue('qos', this.checked)" title="select or deselect all items"></th></tr></thead>);
     my $lineCount=0;

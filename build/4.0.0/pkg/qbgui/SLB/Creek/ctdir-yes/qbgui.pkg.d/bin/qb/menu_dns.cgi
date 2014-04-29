@@ -24,6 +24,6 @@ print '</head><body style="margin: 0px; background-color:#336699;" scroll="no">'
 print '<script type="text/javascript" src="../qb.js"></script>';
 print '<table style="width: 100%; height: 100%;">';
 print '<tr style="height: 25px;"><td>';
-print '<button class="menu"  onclick="mainframe.location=\'sysdns.cgi\'"    	style="width: 15%">DNS Resolver</button>';
-print '<button class="menu"  onclick="mainframe.location=\'dns_relay.cgi\'"     style="width: 15%">DNS Relay</button>';
+print '<button class="menu"  onclick="mainframe.location=\'sysdns.cgi\'"    	style="width: 15%">'.$qblang[822].'</button>';
+print '<button class="menu"  onclick="mainframe.location=\'dns_relay.cgi\'"     style="width: 15%">'.$qblang[823].'</button>';
 print '</td></tr><tr><td><iframe frameborder="0" style="height:100%;width:100%" src="sysdns.cgi" name="mainframe"></iframe></td></tr></table></body></html>';

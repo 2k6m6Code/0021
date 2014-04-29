@@ -5,6 +5,8 @@ use CGI;
 my $cgi = new CGI;
 print "Content-type:text/html\n\n";
 #require ("/usr/local/apache/qb/qbmod.cgi");
+require ("/usr/local/apache/qb/language/qblanguage.cgi");
+@qblang = QBlanguage();
 
 my $xml;
 my $action = $cgi->param("action");
@@ -13,7 +15,7 @@ my $action = $cgi->param("action");
 # Display Title
 print qq (<div align="center">);
 print qq (<tr align="center"><td height="10" align="center">);
-print qq (<font class="bigtitle" align="center" >MAC Clone</font> );
+print qq (<font class="bigtitle" align="center" >$qblang[816]</font> );
 print qq (<br></td></tr>);
 print qq (<tr><td><hr size=1 style="width: 500px"></td></tr>);
 print qq (</div><br>);
@@ -67,7 +69,7 @@ if ($action eq "" && $action ne "SAVE")
     `/bin/rm /tmp/mac`;
     foreach my $isp (1..$max)
     {
-        my $port = "Port$isp";
+        my $port = "$qblang[817] $isp";
         $isp--;
    	print qq (<tr>);
    	print qq (<td class="body" align="right" width="6%"><a class="body">$port</a></td><td width="1%"></td>);
@@ -81,7 +83,7 @@ if ($action eq "" && $action ne "SAVE")
     print qq (<table border="0" width="50%">);
     print qq (<br>);
     print qq (<tr><td align="center"><hr size="1" width="500px"></td></tr>);
-    print qq(<tr><td colspan=2 align="center"><input id="ok" type="button" class="qb" value="SAVE" style="width:10%"></td>);
+    print qq(<tr><td colspan=2 align="center"><input id="ok" type="button" class="qb" value="$qblang[821]" style="width:10%"></td>);
     foreach my $mac (@$macref)
     { 
         if ($mac->{mac} && $mac->{nic})

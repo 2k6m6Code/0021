@@ -1,6 +1,8 @@
 #!/usr/bin/perl
 require ("qbmod.cgi");
 require "./qblib/extroute.lib";
+require ("/usr/local/apache/qb/language/qblanguage.cgi");
+@qblang = QBlanguage();
 
 #認證是否是經過正常且標準的程序登入進來的
 authenticate( action=>'RANDOMCHECK' );
@@ -30,8 +32,8 @@ if ( $action{action} ) { maintainEXTROUTE(%action); }
 
 #------- start to draw every form object to interact with users ------------------------------------
 showEXTROUTEScript();
-print qq (<button  onclick="parent.mainFrame.location='zone10.cgi'" hidefocus="true" class="menu">Subnet on DMZ</button>);
-print qq (<button  onclick="parent.mainFrame.location='extroute.cgi'" hidefocus="true" class="menu">Subnet on WAN</button>);
+print qq (<button  onclick="parent.mainFrame.location='zone10.cgi'" hidefocus="true" class="menu">$qblang[805]</button>);
+print qq (<button  onclick="parent.mainFrame.location='extroute.cgi'" hidefocus="true" class="menu">$qblang[806]</button>);
   
 print qq (<div align="center">);
 print qq (<form name="extrouteform" method="post" action="extroute.cgi">);

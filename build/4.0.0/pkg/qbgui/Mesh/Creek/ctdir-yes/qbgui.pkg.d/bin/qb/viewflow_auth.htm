@@ -28,11 +28,11 @@
 	    <div style="width:75%" >
 		<table width="100%" border="1" >
 		    <tr>
-			<td class="body" align="center">Query Condition</td>
+			<td class="body" align="center" id="querycondition">Query Condition</td>
 		    <tr>
 		    	<td class="body" align="center" >
-			    Date Time :<input type="text" id="datepicker" style="width:90px" value=""/>
-			    &nbsp&nbsp&nbspSearch for IP : <input id="ip_search" value="">
+			    <span id="datetime">Date Time :</span><input type="text" id="datepicker" style="width:90px" value=""/>
+			    &nbsp&nbsp&nbsp <span id="searchforip">Search for IP</span> : <input id="ip_search" value="">
 			</td>
 		    </tr>
 
@@ -47,5 +47,31 @@
 	    <div class="divframe" style="width:75%" id="table"></div>
 	</table>
     </div>
+    
+    <script language="javascript">
+    
+    	function getcookie(name)
+    	{
+    	    var c=document.cookie.split("; ");
+    	    for (var i=0; i<c.length; i++)
+    	    {
+    	       var b=c[i].split("=");
+    	       if(name==b[0]) { return unescape(b[1]); }
+    	    }
+    	                              
+    	    return;
+    	}
+    	
+    	if ( getcookie('locale') == "zh_TW" )
+    	{
+    	    $("td[class='bigtitle']").html("認證使用者日誌");
+    	    $("#querycondition").html("查詢條件");
+    	    $("#datetime").html("時間:");
+    	    $("#searchforip").html("搜尋IP");
+    	    $("#query").val("查詢");
+    	    $("#output").val("儲存成CSV");
+    	}
+    	                                  
+    </script>
                                             
 </body></html>

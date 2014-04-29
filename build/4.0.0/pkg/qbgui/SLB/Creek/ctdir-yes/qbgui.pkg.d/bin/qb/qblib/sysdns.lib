@@ -10,7 +10,7 @@ sub showSysdns
     
     print qq (<table cellspacing="0" border="0">);
     print qq (<tr><td class="bigtitle" valign="top" align="center" colspan="2" style="height: 30px">);
-    print qq ( DNS Reslover );
+    print qq ( $qblang[824] );
     #print qq (</td></tr>);
     #print qq (</table>); 
     
@@ -19,7 +19,7 @@ sub showSysdns
     #print qq (<table cellspacing="0" border="0">\n);
     #print qq (<tr><td align="center" class="bigtitle" colspan="2" > $qblang[352] ); 
     print qq (<tr>);
-    print qq (<td class="body" valign="top" align="center" >DNS Reslover  </td>); 
+    print qq (<td class="body" valign="top" align="center" >$qblang[825]  </td>); 
     print qq (<td class="body" align="center" >);
     print qq ( : <input type="text" class="qbtext" maxlength="15" id="resolve" name="resolve" value="$overview->{resolve}" style="width:130" onChange="checkAndSetDNS(this.value)">); 
     print qq (</td></tr>);

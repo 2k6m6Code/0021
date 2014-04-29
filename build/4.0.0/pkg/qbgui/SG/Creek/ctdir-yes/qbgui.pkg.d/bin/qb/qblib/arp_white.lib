@@ -59,7 +59,7 @@ sub showARP_W
         @$arparray=sort sort_arp_ip @$arparray;
 
         print qq (<br><table border=0>);
-        print qq (<tr><td class="bigtitle" colspan="3">Privileged List</td></tr>); 
+        print qq (<tr><td class="bigtitle" colspan="3">$qblang[688]</td></tr>); 
         print qq (<tr><td class="bigtitle" colspan="3"><hr size="1"></td></tr>); 
 		print qq (<tr><td align="center" colspan="3">);
         print qq (<input type="button" class="qb" value="$qblang[115]" onclick="addArpRecs()" title="Add several new arp records" >);
@@ -73,10 +73,10 @@ sub showARP_W
 	print qq (<thead>);
 	print qq (<tr><td align="right" colspan="3">);
         #print qq (<td width=40><a href="javascript:delArpRec()"><image src="image/del.gif" title="Delete checked arp list" border="0"></a>);
-        #print qq (<tr bgcolor="#332211" align="center" width=100%><td width=130>IP</td><td width=130>Mac</td>);
+        #print qq (<tr bgcolor="#332211" align="center" width=100%><td width=130>IP</td><td width=130>$qblang[693]</td>);
         #print qq (<tr bgcolor="#332211" align="center" width=100%><td width=40><a href="javascript:delArpRec()"><image src="image/del.gif" title="Delete checked arp list" border="0"><td width=130>IP</td><td width=130>Mac</td>);
         print qq (<tr bgcolor="#332211" align="center" width=100%>);
-        print qq (<td width=130>Mac</td>);
+        print qq (<td width=130>$qblang[693]</td>);
         #print qq (<tr bgcolor="#332211" align="center" width=100%><td width=30>DHCP</td><td width=130>IP</td><td width=130>Mac</td>);
         print qq (<td width=40><a href="javascript:delArpRec()"><image src="image/del.gif" title="Delete checked arp list" border="0"></a>);
         print qq (<input type="checkbox" name="delallarp" title="select or deselect all items" onClick="setAllCheckBoxValue('arpstodel', this.checked)">);

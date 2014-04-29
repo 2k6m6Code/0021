@@ -23,7 +23,7 @@ sub showAccessControl
     
     print qq (<td align="center" width="$titleWidth{'Enable'}" >);
 #    print qq (<input type="checkbox" title="select or deselect all items" onClick="setAllCheckBoxValue('enabled', this.checked)">);
-    print qq (Enable</td>);
+    print qq ($qblang[694]</td>);
     
     my %portlist2;#GET SERVICE DETAIL
     foreach $service3 ( @$servicelist )
@@ -43,7 +43,15 @@ sub showAccessControl
     ## Show title list
     ##
     ################################################################# 
-    foreach my $title ( @titleList ) { print qq (<td  align="center" width="$titleWidth{$title} !important"><font color="#ffffff">$title</font></td>); }
+    #foreach my $title ( @titleList ) { print qq (<td  align="center" width="$titleWidth{$title} !important"><font color="#ffffff">$title</font></td>); }
+    print qq (<td  align="center" width="$titleWidth{Name} !important"><font color="#ffffff">$qblang[695]</font></td>); 
+    print qq (<td  align="center" width="$titleWidth{Source} !important"><font color="#ffffff">$qblang[696]</font></td>); 
+    print qq (<td  align="center" width="$titleWidth{Destination} !important"><font color="#ffffff">$qblang[697]</font></td>); 
+    print qq (<td  align="center" width="$titleWidth{Service} !important"><font color="#ffffff">$qblang[698]</font></td>); 
+    print qq (<td  align="center" width="$titleWidth{Action} !important"><font color="#ffffff">$qblang[699]</font></td>); 
+    print qq (<td  align="center" width="$titleWidth{Schedule} !important"><font color="#ffffff">$qblang[700]</font></td>); 
+    print qq (<td  align="center" width="$titleWidth{Edit} !important"><font color="#ffffff">$qblang[701]</font></td>); 
+    
     print qq (<td align="center" width="50" ><a href="javascript:delAccess()"><image src="image/del.gif" title="Delete checked policies" border="0"></a>);
     print qq (<input type="checkbox" title="select or deselect all items" onClick="setAllCheckBoxValue('rule', this.checked)">);
     print qq (</td></tr></table></div>);

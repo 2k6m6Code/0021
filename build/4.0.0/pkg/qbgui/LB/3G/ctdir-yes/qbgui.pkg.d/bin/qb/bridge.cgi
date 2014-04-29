@@ -4,6 +4,9 @@ use CGI;
 my $cgi = new CGI;
 print "Content-type:text/html\n\n";
 require ("/usr/local/apache/qb/qbmod.cgi");
+require ("/usr/local/apache/qb/language/qblanguage.cgi");
+@qblang = QBlanguage();
+
 my $zone = XMLread($gPATH.'zonecfg.xml');
 my $action = $cgi->param("action");
 if ($action ne "SAVE")
@@ -14,8 +17,8 @@ if ($action ne "SAVE")
     print qq(<body bgcolor="#336699" text="#ffffff" link="#000040" vlink="#400040">);
     print qq(<style type="text/css">button.menu{margin-right: 4px;height:18px;font:10px Verdana;color:white;background:#336699;border:1px solid black;cursor:hand;}</style>);
     if($gENABLETUNNEL){
-    	print qq (<button id="return" onclick="parent.location='zone10.cgi'" hidefocus="true" class="menu">Subnet on DMZ</button>);
-    	print qq (<button  onclick="parent.location='extroute.cgi'" hidefocus="true" class="menu">Subnet on WAN</button>);
+    	print qq (<button id="return" onclick="parent.location='zone10.cgi'" hidefocus="true" class="menu">$qblang[805]</button>);
+    	print qq (<button  onclick="parent.location='extroute.cgi'" hidefocus="true" class="menu">$qblang[806]</button>);
     }
     my $ispref=XMLread($gPATH.'basic.xml');
     my $ref=$zone->{dmz};
@@ -56,8 +59,13 @@ if ($action ne "SAVE")
     $arp=~s/,$//;
     print qq(<input type="hidden" id="arp" value="$arp">);
     print qq (<div class="divframe" align="center" id="all"><table class="sortable" cellspacing="0" border="0" width="50%" id="mytable">);
-    print qq (<tr><td class="bigtitle" colspan="4" align="left">Bridge Mode<hr size=1></td></tr><tr bgcolor="#332211"> );
-    foreach my $title (@titlename){print qq(<td width="25%">$title</td>);}
+    print qq (<tr><td class="bigtitle" colspan="4" align="left">$qblang[807]<hr size=1></td></tr><tr bgcolor="#332211"> );
+    #foreach my $title (@titlename){print qq(<td width="25%">$title</td>);}
+    print qq(<td width="25%">$qblang[808]</td>);
+    print qq(<td width="25%">$qblang[809]</td>);
+    print qq(<td width="25%">$qblang[810]</td>);
+    print qq(<td width="25%">$qblang[811]</td>);
+    
     print qq (<input id="total" value="$max" type="hidden">);
     print qq (<select class="qbopt" id="Tname" style="display:none"><option value=None>None</option>);
     foreach my $num (1..$max)
@@ -91,7 +99,7 @@ if ($action ne "SAVE")
     	print qq(</td></tr>);
     	$lineCount++;
     }
-    print qq(<tr><td></td><td colspan=2><input class="qb" type="button" id="ok" value="SAVE" style="width:100%"></td><td></td></tr></div><tr bgcolor="#332211">);
+    print qq(<tr><td></td><td colspan=2><input class="qb" type="button" id="ok" value="$qblang[812]" style="width:100%"></td><td></td></tr></div><tr bgcolor="#332211">);
     foreach my $title1 (@titlelist)
     {
         if($title1 eq "")
@@ -123,7 +131,8 @@ if ($action ne "SAVE")
     print qq(<input type="hidden" id="restart">);
 	print qq(<div class="dragDiv">);
 	print qq(<blockquote style="color:#000000;font-size:13px;background-color:#ffffcc;margin-left:0px;margin-right:0px;-webkit-box-shadow:#333333 4px 4px 6px;padding:0px;border:1px dashed #aabbcc;" draggable=true>);
-	print qq(<FONT SIZE="3"><B>Note:</B></FONT><br>If you wish to view the traffic detail from transparent subnets on Viewflow, please go to <I>Logs and Reports->General Setting->Transparent Subnets</I> to complete the setup.);
+	#print qq(<FONT SIZE="3"><B>Note:</B></FONT><br>If you wish to view the traffic detail from transparent subnets on Viewflow, please go to <I>Logs and Reports->General Setting->Transparent Subnets</I> to complete the setup.);
+	print qq(<FONT SIZE="3"><B>$qblang[815]:</B></FONT><br>$qblang[815]);
 	print qq(</blockquote>);
 	print qq(</div>);
 	print qq(</body></html>);

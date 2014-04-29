@@ -24,8 +24,8 @@ print qq (<table cellspacing="0" border="0">);
 print qq (<tr><td class="bigtitle"></td></tr></table>);
 print qq (<div style="width:75%" >);
 print qq (<table width="100%" border="1" ><tr>);
-print qq (<td class="body" align="center">Query Condition</td>);
-print qq (<tr><td class="body" align="center" >Date Time : );
+print qq (<td class="body" align="center" id="querycondition">Query Condition</td>);
+print qq (<tr><td class="body" align="center" >$qblang[772] : );
 my ($sec, $min, $hour, $day, $mon, $year) = localtime(time);
 if ($day < 10 ){$day='0'.$day;}
 $mon++;
@@ -90,7 +90,7 @@ foreach my $tm (0..59 )
 }
 print qq (</select>);
 
-print qq (<a name="noquery" >Report Type : </a><select id="report_type" name="noquery">);
+print qq (<a name="noquery" >$qblang[775] : </a><select id="report_type" name="noquery">);
 print qq (<option value="6">Per 5 minute</option>);
 print qq (<option value="0">Hourly</option>);
 print qq (<option value="1">Daily</option>);
@@ -100,7 +100,7 @@ print qq (<option value="4">Yearly</option>);
 print qq (<option value="5">Quarterly</option>);
 print qq (</select>&nbsp;&nbsp;);
 
-print qq (<a name="noquery" >Time Segment : </a><select id="time_seqment" name="noquery">);
+print qq (<a name="noquery" >$qblang[776] : </a><select id="time_seqment" name="noquery">);
 print qq (<option value="0">All Time</option>);
 print qq (<option value="1">Work Time</option>);
 print qq (<option value="2">Off Time</option>);

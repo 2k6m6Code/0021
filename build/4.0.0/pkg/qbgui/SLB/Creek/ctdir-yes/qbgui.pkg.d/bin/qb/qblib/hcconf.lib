@@ -258,7 +258,7 @@ sub showHCconf
     #print qq (<table class="body" width="100%" cellspacing="0" border="0">);
 	print qq (<input type="checkbox" $status name="enable_latencychk" value="1">);
 	#print qq (Enable );
-    print qq (Eliminate link );
+    print qq ($qblang[766] );
     #print qq (</table>);
     #print qq (</td>);
     #print qq (</tr>);
@@ -267,9 +267,9 @@ sub showHCconf
     #print qq (<tr>);
     #print qq (<td align="left" class="body">);
     #print qq (<table class="body" width="100%" cellspacing="0" border="0">);
-	print qq (when latency is > );
-    print qq (<input class="qbtext" type=text name="latency_rate" style="WIDTH:30px" value="$HCMETHOD->{latency_rate}"> ms in );
-    print qq (<input class="qbtext" type=text name="latency_time" style="WIDTH:30px" value="$latency_total_times">consecutive checks. );
+	#print qq (when latency is > );
+    print qq (<input class="qbtext" type=text name="latency_rate" style="WIDTH:30px" value="$HCMETHOD->{latency_rate}"> ms $qblang[770] );
+    print qq (<input class="qbtext" type=text name="latency_time" style="WIDTH:30px" value="$latency_total_times">$qblang[768]. );
     #print qq (eliminate the link.);
     #print qq (</table>);
     print qq (</td>);
@@ -283,7 +283,7 @@ sub showHCconf
     #print qq (<table class="body" width="100%" cellspacing="0" border="0">);
 	print qq (<input type="checkbox" $status name="enable_pktlosschk" value="1">);
 	#print qq (Enable );
-    print qq (Eliminate link );
+    print qq ( $qblang[767] );
     #print qq (</table>);
     #print qq (</td>);
     #print qq (</tr>);
@@ -297,9 +297,9 @@ sub showHCconf
     #print qq (</td>);
     #print qq (<td align="left" class="body">);
     #print qq (<table class="body" width="100%" cellspacing="0" border="0">);
-	print qq (when packet loss is > );
-    print qq (<input class="qbtext" type=text name="pktloss_rate" style="WIDTH:30px" value="$HCMETHOD->{pktloss_rate}"> % in );
-    print qq (<input class="qbtext" type=text name="pktloss_time" style="WIDTH:30px" value="$times">consecutive checks. );
+	#print qq (when packet loss is > );
+    print qq (<input class="qbtext" type=text name="pktloss_rate" style="WIDTH:30px" value="$HCMETHOD->{pktloss_rate}"> % $qblang[770] );
+    print qq (<input class="qbtext" type=text name="pktloss_time" style="WIDTH:30px" value="$times">$qblang[768]. );
     #print qq (eliminate the link.);
     #print qq (</table>);
     print qq (</td>);
@@ -329,7 +329,7 @@ sub showHCconf
     #print qq (<td>);
 		#print qq (<table class="body" width="100%" cellspacing="0" border="0">);
 		#print qq (<tr>);
-		print qq (<td>Packet-loss Check Duration:</td>);
+		print qq (<td>$qblang[769]:</td>);
 		print qq (<td align="left">);
 		print qq (<select class="qbopt" name="pktloss_base_time" style="width:80">); 
 		foreach my $num (10,20,30,60,120,180,240,300) 

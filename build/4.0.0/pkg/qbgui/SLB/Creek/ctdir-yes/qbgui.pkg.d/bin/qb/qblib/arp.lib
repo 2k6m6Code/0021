@@ -73,7 +73,7 @@ sub showARP
 	{
 	    $cc = ($aa->{enabled})?('checked'):();
 	}
-	print qq (<input type="checkbox" id="rule" onclick="updateArp()" class="qb" title="Enabled/Disabled Rule" $cc><span class="body">Drop Packet if not on the list</span>);
+	print qq (<input type="checkbox" id="rule" onclick="updateArp()" class="qb" title="Enabled/Disabled Rule" $cc><span class="body">$qblang[689]</span>);
         print qq (<tr><td colspan="3">);
 
 	print qq (<div class="divframe">);
@@ -86,7 +86,7 @@ sub showARP
         print qq (<tr bgcolor="#332211" align="center" width=100%>);
         print qq (<td width=60>DHCP<title="Checked IP/MAC for DHCP Server" border="0">);
         print qq (<input type="checkbox" name="addalldhcparp" title="select or deselect all items for DHCP Server" onClick="setAllCheckBoxValue('arpdhcpadd', this.checked)">);
-        print qq (<td width=130>IP</td><td width=130>Mac</td>);
+        print qq (<td width=130>$qblang[690]</td><td width=130>$qblang[691]</td>);
         #print qq (<tr bgcolor="#332211" align="center" width=100%><td width=30>DHCP</td><td width=130>IP</td><td width=130>Mac</td>);
         print qq (<td width=40><a href="javascript:delArpRec()"><image src="image/del.gif" title="Delete checked arp list" border="0"></a>);
         print qq (<input type="checkbox" name="delallarp" title="select or deselect all items" onClick="setAllCheckBoxValue('arpstodel', this.checked)">);

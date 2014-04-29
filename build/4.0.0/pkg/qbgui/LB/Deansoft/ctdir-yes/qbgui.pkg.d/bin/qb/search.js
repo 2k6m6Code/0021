@@ -73,7 +73,13 @@ function title(sa)
 	$("#ip_option option").remove();
 //	$("td[class='bigtitle']").html("Traffic Summary");
      	if ( getcookie('locale') == "zh_TW" )
+     	{
             $("td[class='bigtitle']").html("服務流量排行");
+            $("#querycondition").html("查詢條件");
+            $("#query").val("查詢");
+            $("#output").val("儲存成CSV");
+            
+        }
         else
 	    $("td[class='bigtitle']").html("Service");
     }

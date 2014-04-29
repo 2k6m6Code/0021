@@ -322,7 +322,7 @@
 				<link>schedule.cgi</link>
 			</menu>
 			<menu>
-				<name>對外連接池</name>
+				<name>對外連線演算法</name>
 				<title>Configure outbound routing pool</title>
 				<link>rtable.cgi</link>
 			</menu>

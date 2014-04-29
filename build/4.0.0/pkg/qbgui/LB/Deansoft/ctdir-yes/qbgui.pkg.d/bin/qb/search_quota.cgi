@@ -25,8 +25,8 @@ print qq (<table cellspacing="0" border="0">);
 print qq (<tr><td class="bigtitle">$qblang[655]</td></tr></table>);
 print qq (<div style="width:75%" >);
 print qq (<table width="100%" border="1" ><tr>);
-print qq (<td class="body" align="center">Query Condition</td>);
-print qq (<tr><td class="body" align="center" >Date Time : );
+print qq (<td class="body" align="center">$qblang[771]</td>);
+print qq (<tr><td class="body" align="center" >$qblang[772] : );
 my ($sec, $min, $hour, $day, $mon, $year) = localtime(time);
 if ($day < 10 ){$day='0'.$day;}
 $mon++;
@@ -107,8 +107,8 @@ print qq (<option value="1">Work Time</option>);
 print qq (<option value="2">Off Time</option>);
 print qq (</select></td></tr>);
 =cut
-print qq (<tr><td align="center"><input type="button" id="query" value="Query" onclick="Submit();">);
-print qq (<input type="button" id="output" value="Save as CSV" onclick="dataCSV();">);
+print qq (<tr><td align="center"><input type="button" id="query" value="$qblang[712]" onclick="Submit();">);
+print qq (<input type="button" id="output" value="$qblang[713]" onclick="dataCSV();">);
 print qq (</td></tr>);
 
 print qq (</table></div>);

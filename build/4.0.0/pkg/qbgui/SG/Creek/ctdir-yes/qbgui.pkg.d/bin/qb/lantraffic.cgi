@@ -69,10 +69,10 @@ print qq(<div align="center" style="width: 600px; margin: 12px auto 5px auto;">)
 print qq(<form name="lantgaffic" method="post" action="lantraffic.cgi" style="width:600">);
 print qq (<table cellspacing="0" border="0">);
 # print qq (<tr><td class="bigtitle">LAN Traffic Status</td></tr></table>);
-print qq (<tr><td class="bigtitle">Real Time Traffic</td></tr></table>);
+print qq (<tr><td class="bigtitle">$qblang[880]</td></tr></table>);
 print qq (<div style="width:600">);
 print qq (<table width="100%" border="0"><tr>);
-print qq (<td class="body" align="left">Host&nbsp&nbsp);
+print qq (<td class="body" align="left">$qblang[881] : &nbsp&nbsp);
 print qq (<select name="interface" id="interface" style="width:220"> );
 print qq (<option value="ALL">ALL);
 print qq (<option>SUBNET);
@@ -102,7 +102,7 @@ foreach my $dmz ( @$dmzlist )
     }
 }
 print qq (</select>);
-print qq (&nbsp&nbspAuto Refresh Per);
+print qq (&nbsp&nbsp $qblang[882]);
 print qq (<select name="refreshtime" id="refreshtime">);
 my @time=(3,5,7,9);
 foreach my $tm ( @time )
@@ -110,7 +110,7 @@ foreach my $tm ( @time )
     my $status = ( $action{refreshtime} eq $tm ) ? ( 'selected' ) : ( '' );
     print qq(<option value="$tm" $status>$tm</option>);
 }
-print qq (</select>seconds&nbsp&nbsp);
+print qq (</select>$qblang[883] &nbsp&nbsp);
 print qq (<input type="button" value="Stop" class="qb" style="width:60" id="switch" onclick="Switch(this.value)">);
 print qq (</td></tr></table>);
 print qq (</div>);

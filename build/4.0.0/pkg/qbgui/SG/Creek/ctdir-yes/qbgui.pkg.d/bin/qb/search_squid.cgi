@@ -28,8 +28,8 @@ print qq (<table cellspacing="0" border="0">);
 print qq (<tr><td class="bigtitle">$mytitle</td></tr></table>);
 print qq (<div style="width:75%" >);
 print qq (<table width="100%" border="1" ><tr>);
-print qq (<td class="body" align="center">Query Condition</td>);
-print qq (<tr><td class="body" align="center" >Date Time : );
+print qq (<td class="body" align="center">$qblang[771]</td>);
+print qq (<tr><td class="body" align="center" >$qblang[772] : );
 my ($sec, $min, $hour, $day, $mon, $year) = localtime(time);
 if ($day < 10 ){$day='0'.$day;}
 $mon++;
@@ -50,15 +50,15 @@ foreach my $tm (0..59 )
     print qq(<option value="$tm" >$tm</option>);
 }
 print qq (</select>);#$text);
-print qq (<a name="noquery" >Report Type : </a><select id="report_type" name="noquery">);
+print qq (<a name="noquery" >$qblang[775] : </a><select id="report_type" name="noquery">);
 print qq (<option value="1">Daily</option>);
 print qq (<option value="6">Per 5 minute</option>);
 print qq (</select>&nbsp;&nbsp;);
-print qq (&nbsp&nbsp&nbspSearch for IP : <input id="ip_search" value="">);
+print qq (&nbsp&nbsp&nbsp $qblang[774] : <input id="ip_search" value="">);
 print qq (</td></tr>);
 
-print qq (<tr><td align="center"><input type="button" id="query" value="Query" onclick="Submit();">);
-print qq (<input type="button" id="output" value="Save as CSV" onclick="dataCSV();">);
+print qq (<tr><td align="center"><input type="button" id="query" value="$qblang[712]" onclick="Submit();">);
+print qq (<input type="button" id="output" value="$qblang[713]" onclick="dataCSV();">);
 print qq (</td></tr>);
 
 print qq (</table></div>);

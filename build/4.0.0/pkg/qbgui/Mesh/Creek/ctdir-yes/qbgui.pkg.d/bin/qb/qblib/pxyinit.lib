@@ -336,8 +336,8 @@ sub showPxyinit
     my $view_parent = $pxyinit->{parent};
     my $num=0;
     print qq (<tr>);
-    print qq (<td class="body"  valign="top" align="left">Parent:</td>);
-    print qq (<td><input class="qb" type="button" style="width: 40" value="Add" onclick="add_new_data();"></td>);
+    print qq (<td class="body"  valign="top" align="left">$qblang[765]:</td>);
+    print qq (<td><input class="qb" type="button" style="width: 40" value="$qblang[57]" onclick="add_new_data();"></td>);
     foreach my $view(@$view_parent)
     {
 	print qq (<tr id="$num">);

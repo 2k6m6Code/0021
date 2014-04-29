@@ -24,6 +24,6 @@ print '</head><body style="margin: 0px; background-color:#336699;" scroll="no">'
 print '<script type="text/javascript" src="../qb.js"></script>';
 print '<table style="width: 100%; height: 100%;">';
 print '<tr style="height: 25px;"><td>';
-print '<button class="menu"  onclick="mainframe.location=\'arp.cgi\'"     style="width: 14%">Static MAC Binding</button>';
-print '<button class="menu"  onclick="mainframe.location=\'arp_white.cgi\'"     style="width: 14%">Privileged List</button>';
+print '<button class="menu"  onclick="mainframe.location=\'arp.cgi\'"     style="width: 14%">'.$qblang[687].'</button>';
+print '<button class="menu"  onclick="mainframe.location=\'arp_white.cgi\'"     style="width: 14%">'.$qblang[688].'</button>';
 print '</td></tr><tr><td><iframe frameborder="0" style="height:100%;width:100%" src="arp.cgi" name="mainframe"></iframe></td></tr></table></body></html>';

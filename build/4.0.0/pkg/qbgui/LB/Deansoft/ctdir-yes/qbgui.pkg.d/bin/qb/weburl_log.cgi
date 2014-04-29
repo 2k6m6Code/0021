@@ -25,10 +25,10 @@ print qq (</table>);
 
 print qq (<div class="divframe" style="width=950; " >);
 print qq (<table class="sortable" width="80%" border="0"><tr bgcolor="#332211">);
-print qq (<td align="center" width="100" style="white-space: nowrap;">Time</td>);
-print qq (<td align="center" width="100" style="white-space: nowrap;">Keyword</td>);
-print qq (<td align="center" width="100" style="white-space: nowrap;">Source</td>);
-print qq (<td align="center" width="100" style="white-space: nowrap;">Destination</td>);
+print qq (<td align="center" width="100" style="white-space: nowrap;">$qblang[597]</td>);
+print qq (<td align="center" width="100" style="white-space: nowrap;">$qblang[632]</td>);
+print qq (<td align="center" width="100" style="white-space: nowrap;">$qblang[665]</td>);
+print qq (<td align="center" width="100" style="white-space: nowrap;">$qblang[666]</td>);
 
 my $lineCount=0;
 

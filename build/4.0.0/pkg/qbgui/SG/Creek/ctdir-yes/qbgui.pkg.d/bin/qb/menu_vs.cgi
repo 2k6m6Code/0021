@@ -25,5 +25,5 @@ print '<script type="text/javascript" src="../qb.js"></script>';
 print '<table style="width: 100%; height: 100%;">';
 print '<tr style="height: 25px;"><td>';
 print '<button class="menu"  onclick="mainframe.location=\'vs.cgi\'"     		style="width: 15%">'.$qblang[183].'</button>';
-print '<button class="menu"  onclick="mainframe.location=\'policy.cgi?viewpoint=lvs\'"    	style="width: 15%">Advanced Setting</button>';
+print '<button class="menu"  onclick="mainframe.location=\'policy.cgi?viewpoint=lvs\'"    	style="width: 15%">'.$qblang[759].'</button>';
 print '</td></tr><tr><td><iframe frameborder="0" style="height:100%;width:100%" src="vs.cgi?page_now=1&amp;ispnum=10&amp;spool=ID" name="mainframe"></iframe></td></tr></table></body></html>';

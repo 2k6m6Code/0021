@@ -42,8 +42,8 @@ sub showService
     print qq (<table width="900" bgcolor="#336699" cellspacing="10" border="0">);
     print qq (<tr><td class="bigtitle">$qblang[163] ); #<hr size="1">);
 	print qq (<a href="javascript:qbShowHelp('service')"><image src="image/help.gif" border="0" title="Help"></a>);
-	print qq (<input type="button" class="qb" value="Add a Service" title="Add a New Service" onclick="MM_openBrWindow('newservice.cgi','Add_a_New_Service','510','300')" style="width:150">);
-	print qq (<input type="button" class="qb" value="Add a Service Group" title="Add a New Service Grouping" onclick="MM_openBrWindow('newsergroup.cgi','Add_a_New_Service_Group','700','550')" onClick="new_sg()" style="width:150">);
+	print qq (<input type="button" class="qb" value="$qblang[782]" title="Add a New Service" onclick="MM_openBrWindow('newservice.cgi','Add_a_New_Service','510','300')" style="width:150">);
+	print qq (<input type="button" class="qb" value="$qblang[783]" title="Add a New Service Grouping" onclick="MM_openBrWindow('newsergroup.cgi','Add_a_New_Service_Group','700','550')" onClick="new_sg()" style="width:150">);
 	print qq (<hr size="1"></td></tr>); 
 	
     #********************************************************
@@ -61,8 +61,8 @@ sub showService
     print qq (<td width="10%">$qblang[153]</td>);
 	#print qq (<td width="15%">Protocol</td>);
 	#print qq (<td width="20%">Port</td>);
-	print qq (<td width="30%">Description</td>);
-	print qq (<td width="5%">Edit</td>);
+	print qq (<td width="30%">$qblang[784]</td>);
+	print qq (<td width="5%">$qblang[785]</td>);
 	print qq (<td width="5%"><a href="javascript:del_service()"><img border="0" title="Delete Checked Service" src="image/del.gif"></a><input type="checkbox" onclick="setAllCheckBoxValue('service_del', this.checked)" title="select or deselect all items"></td>);
     print qq (</tr>);
     #print qq (</div>);
@@ -209,8 +209,8 @@ sub showService
     my $enable=( $targetservice->{type} ne "user") ? ('disabled') : ('');
     #print qq (<input type="button" class="qb" value="Add Service" title="Add a New Service" onclick="newwindow()" style="width:130">);
     #print qq (<input type="button" $enable class="qb" value="$qblang[165]" title="Delete this Service" onClick="delService()" style="width:80">);
-	print qq (<input type="button" class="qb" value="Add a Service" title="Add a New Service" onclick="MM_openBrWindow('newservice.cgi','Add_a_New_Service','510','300')" style="width:150">);
-	print qq (<input type="button" class="qb" value="Add a Service Group" title="Add a New Service Grouping" onclick="MM_openBrWindow('newsergroup.cgi','Add_a_New_Service_Group','700','550')" onClick="new_sg()" style="width:150">);
+	print qq (<input type="button" class="qb" value="$qblang[782]" title="Add a New Service" onclick="MM_openBrWindow('newservice.cgi','Add_a_New_Service','510','300')" style="width:150">);
+	print qq (<input type="button" class="qb" value="$qblang[783]" title="Add a New Service Grouping" onclick="MM_openBrWindow('newsergroup.cgi','Add_a_New_Service_Group','700','550')" onClick="new_sg()" style="width:150">);
     print qq (<input name="newservice" type="hidden" value="">);
     print qq (</td></tr>);
     

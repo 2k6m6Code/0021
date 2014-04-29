@@ -1,6 +1,8 @@
 #!/usr/bin/perl
 require ("qbmod.cgi");
 require "./qblib/sysdns.lib";
+require ("/usr/local/apache/qb/language/qblanguage.cgi");
+@qblang = QBlanguage();
 
 
 #認證是否是經過正常且標準的程序登入進來的
@@ -42,7 +44,7 @@ print qq(<script type="text/javascript" src="qb.js"></script>);
 # 1. Display Title
 #===================================================================================================
 print qq (<div style="margin: auto; text-align: center;" width="100%">);
-print qq (<font class="bigtitle" align="center">DNS Relay</font>);
+print qq (<font class="bigtitle" align="center">$qblang[823]</font>);
 print qq (<br><hr size=1 style="width: 710px;">);
 print qq (</div>);
 

@@ -17,9 +17,9 @@ sub showAppGroup
     my %titleWidth=('Name'=>150, 'List'=>300, 'Description'=>300, 'Edit'=>50);
     
     print qq (<table bgcolor="#336699" cellspacing="3" border="0">);
-    print qq (<tr><td class="bigtitle">Application);
-	print qq (<input class="qb" type="button" width="100" value="Add an Application" onclick="MM_openBrWindow('l7-edit.cgi','Add_an_New_Application','400','420')">);
-    print qq (<input class="qb" type="button" width="100" value="Add an Application Group" onclick="MM_openBrWindow('newappgroup.cgi','Add_an_New_Application_Grouping','700','550')">);
+    print qq (<tr><td class="bigtitle">$qblang[791]);
+    print qq (<input class="qb" type="button" width="100" value="$qblang[792]" onclick="MM_openBrWindow('l7-edit.cgi','Add_an_New_Application','400','420')">);
+    print qq (<input class="qb" type="button" width="100" value="$qblang[793]" onclick="MM_openBrWindow('newappgroup.cgi','Add_an_New_Application_Grouping','700','550')">);
     print qq (</td></tr><tr><td>);
     print qq (<table cellspacing="0">);
     print qq (<tr>);
@@ -43,8 +43,8 @@ sub showAppGroup
     # print qq (</div>);
     print qq (<div class="divframe" style="height:200px; width:800px;">);
     print qq (<table id="groupList" width="800"  class="body" border="0" style="table-layout:fixed;"><thead><tr style="background-color:#332211;">);
-	print qq (<th width="150" align="center">Group Name</th>);
-	print qq (<th width="300" align="center">List</th>);
+	print qq (<th width="150" align="center">$qblang[794]</th>);
+	print qq (<th width="300" align="center">$qblang[795]</th>);
 	print qq (<th width="250" align="center">$qblang[169]</th>);
 	print qq (<th width="50" align="center">$qblang[25]</th>);
 	print qq (<th width="50" align="center"><a href="javascript:DelAppGroup()"><img border="0" title="Delete Checked sergdule(s)" src="image/del.gif"></a><input type="checkbox" onclick="setAllCheckBoxValue('appgroupname', this.checked)" title="select or deselect all items"></th></tr></thead>);
@@ -69,8 +69,8 @@ sub showAppGroup
 	
 	########################################################################
 	print qq (<table id="appList" width="800" class="body" border="0" style="table-layout:fixed;"><thead><tr style="background-color:#332211;">);
-	print qq (<th width="150" align="center">Application Name</th>);
-	print qq (<th width="554" align="center">Description</th>);
+	print qq (<th width="150" align="center">$qblang[796]</th>);
+	print qq (<th width="554" align="center">$qblang[797]</th>);
 	#print qq (<th width="300" align="center">Description</th>);
 	print qq (<th width="50" align="center">$qblang[25]</th>);
 	print qq (<th width="50" align="center"><a href="javascript:DelApp()"><img border="0" title="Delete Checked sergdule(s)" src="image/del.gif"></a><input type="checkbox" onclick="setAllCheckBoxValue('appname', this.checked)" title="select or deselect all items"></th></tr></thead>);
@@ -123,8 +123,8 @@ sub showAppGroup
     print qq (<div>); 
     print qq (<table cellspacing="0" width="100%">);
     print qq (<tr><td align="center">);
-	print qq (<input class="qb" type="button" width="100" value="Add an Application" onclick="MM_openBrWindow('l7-edit.cgi','Add_an_New_Application','400','420')">);
-    print qq (<input class="qb" type="button" width="100" value="Add an Application Group" onclick="MM_openBrWindow('newappgroup.cgi','Add_an_New_Application_Grouping','700','550')">);
+    print qq (<input class="qb" type="button" width="100" value="$qblang[792]" onclick="MM_openBrWindow('l7-edit.cgi','Add_an_New_Application','400','420')">);
+    print qq (<input class="qb" type="button" width="100" value="$qblang[793]" onclick="MM_openBrWindow('newappgroup.cgi','Add_an_New_Application_Grouping','700','550')">);
 }
 #showappgroup
     

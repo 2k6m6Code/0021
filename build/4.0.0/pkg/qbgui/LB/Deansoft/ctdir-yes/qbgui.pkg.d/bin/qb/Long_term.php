@@ -13,8 +13,8 @@
 <tr><td class="bigtitle" align="center">Long-term Traffic Graphic</td></tr></table>
 <div style="width:75%" align="center">
 <table width="100%" border="1"><tr>
-<td class="body" align="center">Query Condition</td>
-<tr><td class="body" align="center">Date Time :
+<td class="body" align="center" id="querycondition" >Query Condition</td>
+<tr><td class="body" align="center"><span id="datetime">Date Time</span> :
 <?php
 date_default_timezone_set("Asia/Taipei");
 $now_TW=time();
@@ -61,7 +61,12 @@ function getcookie(name)
 }
 
 if ( getcookie('locale') == "zh_TW" )
+{
     $("td[class='bigtitle']").html("累積圖表");
+    $("#querycondition").html("查詢條件");
+    $("#query").val("查詢");
+    $("#datetime").html("時間");
+}
 else
     $("td[class='bigtitle']").html("Long-term Traffic Graphic");
 

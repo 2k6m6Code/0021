@@ -11,20 +11,23 @@ sub showQuotaInfo
 	my $postena=0;
 	my $postquota='';
 	my @titleName=('Quota by Link','Quota by Policy','Quota by Authenticated Users');
-	my @title=('Enable','Name','Available Down/Up','Reset','Quota Down/Up','Cycle','Interface','Gateway');	#link
-	my @title2=('Enable','Source','Destination','Available Down/Up','Reset','Quota Down/Up','Cycle');		#policy
-	my @title3=('Enable','Name','Host','Available Down/Up','Reset','Quota Down/Up','Cycle');				#auth
+	my @title= ($qblang[897],$qblang[898],$qblang[899],$qblang[900],$qblang[901],$qblang[902],$qblang[903],$qblang[904]);	#link
+	my @title2=($qblang[897],$qblang[150],$qblang[373],$qblang[899],$qblang[499],$qblang[901],$qblang[902]);		#policy
+	my @title3=($qblang[897],$qblang[898],$qblang[243],$qblang[899],$qblang[900],$qblang[901],$qblang[902]);				#auth
 	my @week=("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat");
 	my $viewtitle;
 	my @viewitem;
 	my $viewtype;
-	if($action{view} eq 'port'){@viewitem=@title;$viewtype='port';$viewtitle=@titleName[0];}
-	if($action{view} eq 'policy'){@viewitem=@title2;$viewtype='policy';$viewtitle=@titleName[1];}
-	if($action{view} eq 'ip'){@viewitem=@title3;$viewtype='ip';$viewtitle=@titleName[2];}
+	if($action{view} eq 'port')     {@viewitem=@title; $viewtype='port';  $viewtitle=$qblang[896];}
+	if($action{view} eq 'policy')   {@viewitem=@title2;$viewtype='policy';$viewtitle=$qblang[496];}
+	if($action{view} eq 'ip')	{@viewitem=@title3;$viewtype='ip';    $viewtitle=$qblang[497];}
 	
 	print qq(<table id="quota_list" width="80%" class="sortable" cellspacing="0" border="0">);
 	print qq(<tr><td class="bigtitle" colspan="12" align="left">$viewtitle<hr size=1></td></tr><tr bgcolor="#332211"> );
-	foreach my $title (@viewitem ){print qq(<td width="auto" align="center" style="white-space: nowrap;">$title);}
+	foreach my $title (@viewitem )
+	{
+	    print qq(<td width="auto" align="center" style="white-space: nowrap;">$title );
+	}
 	print qq(</td>);
 	print qq(<td align="center" width="auto" height="25"><a href="javascript:delQuota('$viewtype')"><img border="0" title="Delete Checked Quota" src="image/del.gif"></a><input type="checkbox" onclick="setAllCheckBoxValue('quota', this.checked)" title="select or deselect all items"></td>);
 	print qq(</tr>);

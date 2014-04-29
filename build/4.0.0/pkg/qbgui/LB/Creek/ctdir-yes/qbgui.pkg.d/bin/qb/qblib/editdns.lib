@@ -1,3 +1,6 @@
+require ("/usr/local/apache/qb/language/qblanguage.cgi");
+@qblang = QBlanguage();
+
 sub showDnsPolicyTitle
 {
     my (%action)=@_;
@@ -16,9 +19,9 @@ sub showDnsPolicyTitle
     print qq (<thead>);
     print qq (<tr style="background-color:#332211;">);
     print qq (<td width="$titleWidth{'Source'}" align="center">);
-    print qq (Source</td>);
-    print qq (<td width="$titleWidth{'Schedule'}" align="center">Schedule</td>);
-    print qq (<td width="$titleWidth{'Edit'}" align="center">Edit</td>);
+    print qq ($qblang[150]</td>);
+    print qq (<td width="$titleWidth{'Schedule'}" align="center">$qblang[170]</td>);
+    print qq (<td width="$titleWidth{'Edit'}" align="center">$qblang[520]</td>);
     print qq (<td width="$titleWidth{'Del'}" align="center"><a href="javascript:delPolicy()">);
     print qq (<img border="0" title="Delete checked policies" src="image/del.gif"></a>);
     print qq (<input type="checkbox" onclick="setAllCheckBoxValue('rule', this.checked)" title="select or deselect all items"></td>);

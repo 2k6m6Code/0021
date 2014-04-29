@@ -35,7 +35,7 @@ print qq (<button onclick="parent.mainFrame.location='quota_status.cgi?view=ip'"
 #print '<button class="menu"  onclick="mainframe.location=\'sessions_status_nat.php\'"     style="width:180">'.$qblang[413].'</button>';
 #================================================================================
 print qq (<table width="100%" border="0"><tr><td class="qbCopy" align="center">);
-print qq (Auto Refresh Per);
+print qq ($qblang[893]);
 print qq (<select name="refreshtime" id="refreshtime">);
 my @time=(5,10,15,20,25,30);
 foreach my $tm ( @time )
@@ -43,8 +43,8 @@ foreach my $tm ( @time )
     my $status = ( $action{refreshtime} eq $tm ) ? ( 'selected' ) : ( '' );
     print qq(<option value="$tm" $status>$tm</option>);
 }
-print qq (</select>seconds);
-print qq (<input type="button" value="Stop" class="qb" style="width:60" id="switch" onclick="Switch(this.value)">);
+print qq (</select> $qblang[894]);
+print qq (<input type="button" value="$qblang[895]" class="qb" style="width:60" id="switch" onclick="Switch(this.value)">);
 print qq (<select name="myfilter" id="filter" onchange="myfilter();">);
 print qq (<option value="0">All</option>);
 print qq (<option value="1">Blacklist</option>);

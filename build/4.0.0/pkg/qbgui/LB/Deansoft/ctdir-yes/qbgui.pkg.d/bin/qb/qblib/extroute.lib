@@ -46,13 +46,13 @@ sub showEXTROUTE
         @$extroutearray=sort sort_extroute_ip @$extroutearray;
 
         print qq (<br><table border=0>);
-        print qq (<tr><td class="bigtitle" colspan="3">Subnet on WAN</td></tr>); 
+        print qq (<tr><td class="bigtitle" colspan="3">$qblang[805]</td></tr>); 
         print qq (<tr><td class="bigtitle" colspan="3"><hr size="1"></td></tr>); 
 	print qq (<tr><td align="center" colspan="3">);
-        print qq (<input type="button" class="qb" value="Multi-Add" onclick="addRouteRecs()" title="Add several new extroute records" style="width:70">);
-        print qq (<input type="button" class="qb" value="Add" onclick="addRouteRec(1)" title="Add new extroute record" style="width:70">);
-        print qq (<input type="button" class="qb" value="Update" onclick="updateRoute()" title="Update as viewing" style="width:70">);
-	print qq (<input type="button" class="qb" value="Restore" onClick="goSubmit()" title="Restore original extroute list" style="width:70">);
+        print qq (<input type="button" class="qb" value="$qblang[59]" onclick="addRouteRecs()" title="Add several new extroute records" style="width:70">);
+        print qq (<input type="button" class="qb" value="$qblang[79]" onclick="addRouteRec(1)" title="Add new extroute record" style="width:70">);
+        print qq (<input type="button" class="qb" value="$qblang[58]" onclick="updateRoute()" title="Update as viewing" style="width:70">);
+	print qq (<input type="button" class="qb" value="$qblang[116]" onClick="goSubmit()" title="Restore original extroute list" style="width:70">);
         print qq (<tr><td colspan="3">);
 
 	print qq (<div class="divframe">);
@@ -62,7 +62,7 @@ sub showEXTROUTE
         print qq (<tr bgcolor="#332211" align="center" width=100%>);
         #print qq (<td width=60>DHCP<title="Checked IP/MAC for DHCP Server" border="0">);
         #print qq (<input type="checkbox" name="addalldhcpextroute" title="select or deselect all items for DHCP Server" onClick="setAllCheckBoxValue('extroutedhcpadd', this.checked)">);
-        print qq (<td width=130>IP/Subnet</td><td width=130>ISP</td>);
+        print qq (<td width=130>IP/Subnet</td><td width=130>$qblang[853]</td>);
         print qq (<td width=40><a href="javascript:delRouteRec()"><image src="image/del.gif" title="Delete checked extroute list" border="0"></a>);
         print qq (<input type="checkbox" name="delallextroute" title="select or deselect all items" onClick="setAllCheckBoxValue('extroutestodel', this.checked)">);
         print qq (</td></tr>);

@@ -30,7 +30,7 @@ sub showHost
 	
     if ( $action{showkeyword} eq '1' )
     {
-        print qq (<tr><td class="bigtitle">Keyword );
+        print qq (<tr><td class="bigtitle">$qblang[788] );
 	print qq (<input class="qb" type="button" width="100" value="$qblang[162]" onclick="Newhost(1);">);
         if ($action{type} eq 'fqdn')
         {
@@ -80,7 +80,7 @@ sub showHost
     if ( $action{showkeyword} eq '1' )
     {
     #print qq (<th width="" align="center">$qblang[484]</th>);
-    print qq (<th width="" align="center">Keyword list</th>);
+    print qq (<th width="" align="center">$qblang[789]</th>);
     }
     else
     {

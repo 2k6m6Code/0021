@@ -19,7 +19,7 @@ sub showCountry
 #    }
 
     print qq (<table bgcolor="#336699" cellspacing="3" border="0" style="table-layout:fixed;word-break:break-all">);
-    print qq (<tr><td class="bigtitle">Country  <input class="qb" type="button" width="100" value="$qblang[162]" onclick="Newcountry();">);
+    print qq (<tr><td class="bigtitle">$qblang[779]  <input class="qb" type="button" width="100" value="$qblang[162]" onclick="Newcountry();">);
     print qq (<tr><td>);
     print qq (<table cellspacing="0">);
     print qq (<tr>);
@@ -41,14 +41,14 @@ sub showCountry
     {
         $status = ( $item->{countryname} eq "system" && $item->{allbyPolicy} eq '1' ) ? ('CHECKED') : ('');
     }
-    print qq (<th width="110" align="center">Used by Policy);
+    print qq (<th width="110" align="center">$qblang[780]);
     print qq (<input type="checkbox" onclick="setAllCheckBoxValue('byPolicy', this.checked);allusedPolicy(this.checked)" $status title="select or deselect all items">);
     
     foreach my $item ( @$countrylist )
     {
         $status = ( $item->{countryname} eq "system" && $item->{allbyGSLB} eq '1' ) ? ('CHECKED') : ('');
     }
-    print qq (<th width="110" align="center">Used by GSLB);
+    print qq (<th width="110" align="center">$qblang[781]);
     print qq (<input type="checkbox" onclick="setAllCheckBoxValue('byGSLB', this.checked);allusedGSLB(this.checked)" $status title="select or deselect all items">);
 
     print qq (<th width="100" align="center"><a href="javascript:delcountry()">);
@@ -68,7 +68,7 @@ sub showCountry
         #print qq (<td style="center: 0px; width: 350px; table-layout: fixed;  word-wrap: break-word;">$item->{countryaddress}</td>);
         #print qq (<td style="center: 0px; width: 350px; table-layout: fixed;  word-wrap: break-word;" onclick="showdetail();">);
         print qq (<td style="center: 0px; width: 350px; table-layout: fixed;  word-wrap: break-word;">);
-        print qq (<a href="javascript:showdetail('$item->{countryname}')" title="touch me to show detial">view </a></td>);
+        print qq (<a href="javascript:showdetail('$item->{countryname}')" title="touch me to show detial">$qblang[790] </a></td>);
         print qq (</td>);
         print qq (<td align="center" width="50px" height="25">);
         #print qq (<a href="editcountry.cgi?schname=$item->{countryname}";selectedColor(natList.rows[$lineCount])" ><image src="image/edit.gif" title="Edit country properties" border="0"></a></td>);

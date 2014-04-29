@@ -18,8 +18,8 @@ button.menu{margin-right: 4px;height:18px;font:10px Verdana;color:white;backgrou
 <tr><td class="bigtitle" align="center"></td></tr></table>
 <div style="width:75%" align="center">
 <table width="100%" border="1"><tr>
-<td class="body" align="center">Query Condition</td>
-<tr><td class="body" align="center">Date Time : 
+<td class="body" id="querycondition" align="center">Query Condition</td>
+<tr><td class="body" align="center"><span id="datetime">Date Time </span> : 
 <?php
 date_default_timezone_set("Asia/Taipei");
 $now_TW=time();
@@ -75,12 +75,13 @@ echo '</select>';
 //echo '<select id="core_switch"><option value="all">ALL</option></select>&nbsp;&nbsp;';
 echo '</td></tr>';
 ?>
-<tr><td align="center">
-<a>Source IP : </a><input id="srcip" value="" size=15>
-<a> Src Port : </a><input id="srcport" value="" size=3>
-<a> Destination IP : </a><input id="dstip" value="" size=15>
-<a> Dst Port : </a><input id="dstport" value="" size=3>
-<a> Flow Direction : </a><select id="flow_dst">
+<tr><td class="body" align="center">
+<span id="sourceip"> Source IP </span>:<input id="srcip" value="" size=15>
+<span id="srcportkey"> Src Port </span>:<input id="srcport" value="" size=3>
+<span id="destinationip"> Destination IP </span>:<input id="dstip" value="" size=15>
+<span id="dstportkey"> Dst Port </span>:<input id="dstport" value="" size=3>
+<span id="flowdirection"> Flow Direction </span>:<select id="flow_dst">
+
 <option value="-A srcip,dstip">Any</option>
 <option value="-A srcip,dstip">Inbound</option>
 <option value="-A srcip,dstip">Outbound</option>
@@ -88,7 +89,7 @@ echo '</td></tr>';
 <option value="-B ">BiDirection</option>
 </select>
 </td></tr>
-<tr><td align="center">
+<tr><td class="body" align="center">
 <a>Group By : </a><select id="flow_dst_1" >
 <option value="">IP</option>
 <option value=",srcport">Src Port</option>
@@ -270,7 +271,14 @@ function getcookie(name)
 }
 
 if ( getcookie('locale') == "zh_TW" )
+{
     $("td[class='bigtitle']").html("即時流量查詢");
+    $("#querycondition").html("查詢條件"); 
+    $("#query").val("查詢") ;
+    $("#output").val("儲存成CSV") ;
+    $("#datetime").html("時間");
+    
+}
 else
     $("td[class='bigtitle']").html("Realtime Query");
 

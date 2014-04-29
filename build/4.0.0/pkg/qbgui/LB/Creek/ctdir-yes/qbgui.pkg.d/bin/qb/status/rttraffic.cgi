@@ -90,6 +90,17 @@ var myform;
 //GraphCard.show()
 //GraphCard.del()
 
+function getcookie(name)
+{
+    var c=document.cookie.split("; ");
+    for (var i=0; i<c.length; i++)
+    {
+        var b=c[i].split("=");
+        if(name==b[0]) { return unescape(b[1]); }
+    }
+                              
+    return;
+}
 
 function graphcard(GraphMasterObj){
 
@@ -151,16 +162,34 @@ function graphcard(GraphMasterObj){
         this.obj3.style.font = "12 Verdana";
 	this.obj3.style.backgroundColor ="#336699";
         this.obj3.appendChild(this.nameobj);
-        this.obj3.appendChild(document.createTextNode(" Interface: [ "));
-        this.obj3.appendChild(this.portobj);
-        this.obj3.appendChild(document.createTextNode(" ] GateWay: [ "));
-        this.obj3.appendChild(this.gwayobj);
-        this.obj3.appendChild(document.createTextNode(" ]"));
-        this.obj3.appendChild(this.alink);
-        this.obj3.appendChild(document.createTextNode(" Latency : [ "));
-        this.obj3.appendChild(this.latency);
-        this.obj3.appendChild(document.createTextNode(" ]"));
-        this.obj3.appendChild(document.createTextNode(" Loss : [ "));
+        
+        if ( getcookie('locale') == "zh_TW" )
+        {
+        
+            this.obj3.appendChild(document.createTextNode(" 介面: [ "));
+            this.obj3.appendChild(this.portobj);
+            this.obj3.appendChild(document.createTextNode(" ] 閘道: [ "));
+            this.obj3.appendChild(this.gwayobj);
+            this.obj3.appendChild(document.createTextNode(" ]"));
+            this.obj3.appendChild(this.alink);
+            this.obj3.appendChild(document.createTextNode(" 延遲 : [ "));
+            this.obj3.appendChild(this.latency);
+            this.obj3.appendChild(document.createTextNode(" ]"));
+            this.obj3.appendChild(document.createTextNode(" 遺失 : [ "));
+        }
+        else
+        {
+            this.obj3.appendChild(document.createTextNode(" Interface: [ "));
+            this.obj3.appendChild(this.portobj);
+            this.obj3.appendChild(document.createTextNode(" ] GateWay: [ "));
+            this.obj3.appendChild(this.gwayobj);
+            this.obj3.appendChild(document.createTextNode(" ]"));
+            this.obj3.appendChild(this.alink);
+            this.obj3.appendChild(document.createTextNode(" Latency : [ "));
+            this.obj3.appendChild(this.latency);
+            this.obj3.appendChild(document.createTextNode(" ]"));
+            this.obj3.appendChild(document.createTextNode(" Loss : [ "));
+        }
         this.obj3.appendChild(this.pktloss);
         this.obj3.appendChild(document.createTextNode(" ]"));
         this.obj.appendChild(this.obj3);
@@ -292,6 +321,9 @@ graphcard.prototype.set=function set(name,port,gway,tx,rx,TX,RX,DL,UL,alive,remo
             var gotofunction = "javascript:openclient('" + remote + "')";
             this.alink.setAttribute("href", gotofunction);
             //this.alink.setAttribute('style', 'text-decoration:none; font-weight:bold');
+            if ( getcookie('locale') == "zh_TW" )
+            this.alink.innerHTML = " 遠端IP: [ " + remote + " ]";
+            else
             this.alink.innerHTML = " Remote: [ " + remote + " ]";
         } 
 
@@ -775,9 +807,9 @@ if ( $page_now ne "" )
 {
 	print qq(<DIV class="qbCopy">);
 	#print qq(<DIV class="body">);
-	print qq(Show); 
+	print qq($qblang[878]); 
 	print qq(<input class="qb" id="ispnum" name="ispnum" style="WIDTH: 30px"  value="$ispnum" title="Records Range 10 - 100" onchange="ChangeISPnum();">);
-	print qq(Records Per Page);
+	print qq($qblang[879]);
 
 	print qq(<button class="qb" ID=FIRST style="font:9 Verdana;width:25;height:20" onclick="gotopage(1);">&lt&lt</button>);
 	print qq(&#32&#32);

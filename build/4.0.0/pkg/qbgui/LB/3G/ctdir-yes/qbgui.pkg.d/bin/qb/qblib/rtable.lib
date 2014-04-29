@@ -47,7 +47,7 @@ sub showRtable
 
     # Print Summary Lists of Routing Tables
     print qq (<div class="divframe" style="height:160">);
-    print qq (<table  id="rtableList" width="100%"><thead><tr  style="background-color:#332211";><th width="8%">$qblang[172]</th><th width="20%">$qblang[173]</th><th width="10%">$qblang[174]</th><th width="10%">$qblang[175]</th><th width="12%">$qblang[176]</th><th width="15%">$qblang[177]</th><th width="15%">$qblang[178]</th><th width="5%">$qblang[25]</th><th width="5%">Speed Test</th><th><a href="javascript:deleteTables()"><img border="0" title="Delete Selected Pools" src="image/del.gif"></a><input type="checkbox" onclick="setAllCheckBoxValue('tablestodel', this.checked)" title="select or deselect all items"></th></tr></thead>);
+    print qq (<table  id="rtableList" width="100%"><thead><tr  style="background-color:#332211";><th width="8%">$qblang[172]</th><th width="20%">$qblang[173]</th><th width="10%">$qblang[174]</th><th width="10%">$qblang[175]</th><th width="12%">$qblang[176]</th><th width="15%">$qblang[177]</th><th width="15%">$qblang[178]</th><th width="5%">$qblang[25]</th><th width="5%">$qblang[800]</th><th><a href="javascript:deleteTables()"><img border="0" title="Delete Selected Pools" src="image/del.gif"></a><input type="checkbox" onclick="setAllCheckBoxValue('tablestodel', this.checked)" title="select or deselect all items"></th></tr></thead>);
     my $lineCount=1;
     foreach my $table ( @sortedTables )
     {
@@ -110,7 +110,7 @@ sub showRtable
         print qq (<td width="15%">$balancemode</td>);
         print qq (<td width="15%">$showNote</td>);
         print qq (<td width="5%"><a href="javascript:selectRtable('$table->{table_num}');selectedColor(rtableList.rows[$lineCount])"><image src="image/edit.gif" title="Edit Pool properties" border="0"></a></td>);
-        print qq (<td width="15%"><input type="button" value="Go" name="speed" onclick="tunnel_speed(\'$nic\')"></td>);
+        print qq (<td width="15%"><input type="button" value="$qblang[801]" name="speed" onclick="tunnel_speed(\'$nic\')"></td>);
         print qq (<td><input type="checkbox" name="tablestodel" value="$table->{table_num}"></td>);
         print qq (</tr>);
         if ( $table->{table_num} eq $table_num ) { print qq (<script>initSelect(rtableList.rows[$lineCount]);</script>); }
@@ -172,7 +172,7 @@ sub showRtable
     #-------- Information Table of Backup_table and Note -------------------
     print qq (<td align="left">);
     print qq (<fieldset class="fieldset">);
-    print qq (<legend class="subtitle">Option</legend>);
+    print qq (<legend class="subtitle">$qblang[802]</legend>);
     print qq (<table width="100%">);
     $backup_table=$target->{backup_table};
     print qq (<tr>);
@@ -379,7 +379,7 @@ sub showRtable
     #-------- Information Table of Backup_table and Note -------------------
     print qq (<td align="left">);
     print qq (<fieldset class="fieldsetb">);
-    print qq (<legend class="subtitle">Option</legend>);
+    print qq (<legend class="subtitle">$qblang[802]</legend>);
     print qq (<table width="100%">);
     $backup_table=$target->{backup_table};
     print qq (<tr>);

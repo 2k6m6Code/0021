@@ -257,6 +257,22 @@ function dataCSV()
 	//alert(total_result);
 	window.open('flow_export.cgi?action=SAVE&total_result='+total_result,'Save as CSV');
 }
+function getcookie(name)
+{
+    var c=document.cookie.split("; ");
+    for (var i=0; i<c.length; i++)
+    {
+       var b=c[i].split("=");
+       if(name==b[0]) { return unescape(b[1]); }
+    }
+                          
+    return;
+}
+
+if ( getcookie('locale') == "zh_TW" )
+    $("td[class='bigtitle']").html("即時流量查詢");
+else
+    $("td[class='bigtitle']").html("Realtime Query");
 
 </script>
 

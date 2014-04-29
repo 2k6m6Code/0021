@@ -3,6 +3,8 @@
 BEGIN { unshift (@INC,"/usr/local/apache/qb/perl_lib"); }
 
 require ("/usr/local/apache/qb/qbmod.cgi");
+require ("/usr/local/apache/qb/language/qblanguage.cgi");
+@qblang = QBlanguage();
 
 use CGI;
 use Data::Dumper;
@@ -54,7 +56,7 @@ if ($tm ne '')
 XMLwrite($reflist, $gPATH."auth.xml");
 }
 print qq (<table bgcolor="#332211" width="100%" border="0" id="tables">);
-print qq (<thead><tr><th style="width: 200px;">IP</th><th style="width: 200px;">Name</th><th style="width: 200px;">Time</th><th style="width: 200px;"><input type="button" value="Kick" onclick="kick();"><input type="checkbox" name="box" onClick="setAllCheckBoxValue('box', this.checked)"></th></tr></thead>);
+print qq (<thead><tr><th style="width: 200px;">$qblang[595]</th><th style="width: 200px;">$qblang[596]</th><th style="width: 200px;">$qblang[597]</th><th style="width: 200px;"><input type="button" value="$qblang[598]" onclick="kick();"><input type="checkbox" name="box" onClick="setAllCheckBoxValue('box', this.checked)"></th></tr></thead>);
 my $lineCount = 0;
 my $now_time = time()+(8*60*60);
 foreach my $group (@$list)

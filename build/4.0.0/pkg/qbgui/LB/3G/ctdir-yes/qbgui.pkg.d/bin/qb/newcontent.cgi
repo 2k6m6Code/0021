@@ -2,6 +2,8 @@
 require ("qbmod.cgi");
 require "./qblib/squidgen.lib";
 require "./qblib/newcontent.lib";
+require ("/usr/local/apache/qb/language/qblanguage.cgi");
+@qblang = QBlanguage();
 
 
 #認證是否是經過正常且標準的程序登入進來的
@@ -78,11 +80,11 @@ print qq(<form name="squidgenform" method="post" action="newcontent.cgi">);
 print qq (<table width="760" cellspacing="0" border="0">);
 print qq (<tr><td>);
 
-print qq (<tr><td colspan="8" class="bigtitle">HTTP Content Filtering</td></tr>);
+print qq (<tr><td colspan="8" class="bigtitle">$qblang[624]</td></tr>);
 print qq (<tr><td colspan="8"><hr size=1></td></tr>);
 my $squid=XMLread($gPATH.'squidgen.xml');
 print qq (<tr>);
-print qq (<td class="body" valign="center" align="left" style="height: 50pxi; width: 150px">Enable Content Filtering</td>);
+print qq (<td class="body" valign="center" align="left" style="height: 50pxi; width: 150px">$qblang[625]</td>);
 print qq (<td class="body"  valign="center" align="left" style="height: 50px; width: 105px">);
 my $status=( $squid->{isenable} ) ? ('checked') : ('');
 print qq (<INPUT type="checkbox" name="isenable"  $status >);
@@ -98,7 +100,7 @@ print qq (</table>);
 
 #------- start to draw every form object to interact with users ------------------------------------
 print qq (<table width="760" cellspacing="0" border="0">);
-print qq (<tr><td colspan="8" class="body" onclick="showview()">&raquo; Other Setting : );
+print qq (<tr><td colspan="8" class="body" onclick="showview()">&raquo; $qblang[634] : );
 #print qq (<button class="qb" type="button" align="left" value="Other Setting : " title="Apply All Parameters now !" onClick="showview();" style="width:80">);
 print qq (</td></tr>);
 print qq (</table>);
@@ -114,7 +116,7 @@ showSquidgen( %action );
 print qq (</div>);
 print qq (<div style="width:760;" align="center">);
 print qq (<hr size=1>);
-print qq (<input class="qb" type="button" align="center" value="Apply" title="Apply All Parameters now !" onClick="goSubmit('SAVE');" style="width:80">);
+print qq (<input class="qb" type="button" align="center" value="$qblang[635]" title="Apply All Parameters now !" onClick="goSubmit('SAVE');" style="width:80">);
 print qq (</div>);
 print qq(<input type="hidden" name="action" value="">);
 print qq(</form></div>);

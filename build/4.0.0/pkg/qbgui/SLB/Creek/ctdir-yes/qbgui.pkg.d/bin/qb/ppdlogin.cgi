@@ -3,6 +3,8 @@ use CGI;
 use Data::Dumper;
 require ("qbmod.cgi");
 require "./qblib/ppdlogin.lib";
+require ("/usr/local/apache/qb/language/qblanguage.cgi");
+@qblang = QBlanguage();
 
 #認證是否是經過正常且標準的程序登入進來的
 #authenticate( action=>'RANDOMCHECK' );
@@ -27,8 +29,8 @@ print qq(<style type="text/css">button.menu{margin-right: 4px;height:18px;font:1
 if ( !$gLOGINRESULT ) { general_script(); exit;}
 elsif ( !$gENABLEPPTPSERVER) { noneFunctionExit('PPTP Server is an Option');} #No PPTP server
 userScript();
-print qq (<button  onclick="parent.mainFrame.location='pptpinit.cgi'" hidefocus="true" class="menu">PPTP Server Configuration</button>);
-print qq (<button  onclick="parent.mainFrame.location='ppdlogin.cgi'" hidefocus="true" class="menu">PPTP User Authentication</button>);
+print qq (<button  onclick="parent.mainFrame.location='pptpinit.cgi'" hidefocus="true" class="menu">$qblang[604]</button>);
+print qq (<button  onclick="parent.mainFrame.location='ppdlogin.cgi'" hidefocus="true" class="menu">$qblang[605]</button>);
 editUsers( %action );
 print qq (<div align="center">);
 print qq (<form name="editUser" method="post" action="ppdlogin.cgi">);

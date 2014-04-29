@@ -28,6 +28,7 @@ my $conlimit='0';
 my $enable_quota='';
 my $tcp='';
 my $udp='';
+my $mac='';
 authenticate(action=>'RANDOMCHECK');
 
 print "Content-type:text/html\n\n";
@@ -40,6 +41,8 @@ if ($ENV{'HTTP_VIA'} && $ENV{'HTTP_X_FORWARDED_FOR'})
 {
    $ip = $ENV{'REMOTE_ADDR'};
 }
+   $mac = `/sbin/arp -a|grep $ip | awk '{print \$4}'`;
+   $mac =~ s/://g;
    $username =~s/\s+//g;
    $password =~s/\s+//g;
    my $list = $reflist->{user};
@@ -65,6 +68,7 @@ if ($ENV{'HTTP_VIA'} && $ENV{'HTTP_X_FORWARDED_FOR'})
            }
        }
    }
+   if($username eq ''&&$password eq ''){$type = 'Radius'}
    my $ser=$reflist->{server};
    foreach my $name (@$ser)
    {
@@ -142,6 +146,7 @@ if ($ENV{'HTTP_VIA'} && $ENV{'HTTP_X_FORWARDED_FOR'})
    }elsif ($type eq 'Radius')
    {
        #RADIUS
+	   my @status='';
        my $list_r = $reflist->{server};
        my $ip,$group,$port;
        foreach my $ss  (@$list_r)
@@ -150,9 +155,16 @@ if ($ENV{'HTTP_VIA'} && $ENV{'HTTP_X_FORWARDED_FOR'})
            $ip=$ss->{ip};
            $group=$ss->{group};
            $port=$ss->{port};
-       } 
+       }
        #my $status = system("/usr/local/apache/qb/setuid/run /usr/local/bin/radtest $username $password 123.51.217.239 0 testing123 ");
-       my @status = `/usr/local/apache/qb/setuid/run /usr/local/bin/radtest $username $password $ip $port $group`;
+	   if($username eq '' && $password eq '')
+       {
+           @status = `/usr/local/apache/qb/setuid/run /usr/local/bin/radtest $mac $mac $ip $port $group`;
+           $success = '5';
+       }else
+       {
+           @status = `/usr/local/apache/qb/setuid/run /usr/local/bin/radtest $username $password $ip $port $group`;
+       }
        #my @status = `/usr/local/apache/qb/setuid/run /tmp/radtest $username $password $ip $port $group`;
        foreach my $aa (@status)
        {
@@ -365,7 +377,11 @@ if ($ENV{'HTTP_VIA'} && $ENV{'HTTP_X_FORWARDED_FOR'})
     }elsif ($success eq '2')
     {
         print  "$ip,$success"
+    }elsif($success eq '5')
+    {
+        print "$mac,$success"
+
     }else
     {
-        print  "$ip"
+        print  "$ip,$success"
     }

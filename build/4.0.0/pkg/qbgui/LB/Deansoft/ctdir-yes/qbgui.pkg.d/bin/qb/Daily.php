@@ -35,7 +35,7 @@ color:#0000;
 <div align="center" style="width: 100%; margin: 12px auto 5px auto;">
 <form name="lantgaffic" method="post" action="query.php" style="width:100%">
 <table cellspacing="0" border="0">
-<tr><td class="bigtitle" align="center">Daily Graphic</td></tr></table>
+<tr><td class="bigtitle" align="center">Daily Graphic_org</td></tr></table>
 <div style="width:75%" align="center">
 <table width="100%" border="1"><tr>
 <td class="body" align="center">Query Condition</td>
@@ -103,6 +103,24 @@ $( "#datepicker" ).datepicker({
     numberOfMonths: 1,
     showButtonPanel: true
 });
+
+
+function getcookie(name)
+{
+    var c=document.cookie.split("; ");
+    for (var i=0; i<c.length; i++)
+    {
+       var b=c[i].split("=");
+       if(name==b[0]) { return unescape(b[1]); }
+    }
+                          
+    return;
+}
+
+if ( getcookie('locale') == "zh_TW" )
+    $("td[class='bigtitle']").html("每日圖表");
+else
+    $("td[class='bigtitle']").html("Daily Graphic");
 
 function Submit()
 {
@@ -389,5 +407,7 @@ function search_group(ip,time,option,symd,proto)
         $("label").attr("style","display:none");
         });
 }
+
+
 </script>
 </body></html>

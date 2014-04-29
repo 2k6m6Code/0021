@@ -9,8 +9,8 @@ sub showWeburlTitle
     my $iniroute=XMLread($gPATH."weburl.xml");
 	
     my %titleWidth=(Source=>'140', FilterType=>'100', Destination=>'150', ListName=>'80', Schedule=>'100', Edit=>'30');
-    my @titleList=( 'FilterType', 'ListName', 'Schedule', 'Edit' );
-	print qq (<table><tr><td class="body">Enabled Keyword Filtering : </td><td>);
+    my @titleList=( $qblang[618], $qblang[619], $qblang[620], $qblang[615] );
+	print qq (<table><tr><td class="body">$qblang[609] : </td><td>);
 	foreach $weburl_enable($iniroute)
 	{
 		if($iniroute->{enable} eq '1'){print qq (<input type="checkbox" name="enable" value="0" onclick="selenable()" checked>);}
@@ -20,8 +20,8 @@ sub showWeburlTitle
     print qq (<div class="divframe">);
     print qq (<table width="100%" bgcolor="#332211" border="0" align="center"> );
     print qq (<tr>);
-    print qq (<td align="center" width="$titleWidth{'Source'}" ><a href="javascript:sortPolicy('BYSOURCE')" title="Sort by Source" border="0">Source</a></td>);
-    print qq (<td align="center" width="$titleWidth{'Destination'}" >Destination</td>);
+    print qq (<td align="center" width="$titleWidth{'Source'}" ><a href="javascript:sortPolicy('BYSOURCE')" title="Sort by Source" border="0">$qblang[610]</a></td>);
+    print qq (<td align="center" width="$titleWidth{'Destination'}" >$qblang[611]</td>);
     foreach my $title ( @titleList ) { print qq (<td  align="center" width="$titleWidth{$title}"><font color="#ffffff">$title</font></td>); }
     print qq (<td align="center" width="50" ><a href="javascript:delWeburl()"><image src="image/del.gif" title="Delete checked policies" border="0"></a>);
     print qq (<input type="checkbox" title="select or deselect all items" onClick="setAllCheckBoxValue('rule', this.checked)">);
@@ -426,7 +426,7 @@ sub edit_weburl
             my $addresslist=maintainHost( action=>'GETADDRESSLIST', hostname=>$displaysource);
             print qq (<option value="$sourceitem" title="$addresslist" $status>$displaysource</option>); 
         }
-        print qq (</select><br>Source</td>); 
+        print qq (</select><br>$qblang[616]</td>); 
 
     
     #**************************************************************************************
@@ -452,7 +452,7 @@ sub edit_weburl
         print qq (<option $status value="$dest">$dest</option>);
     }
     print qq (</select><br>);
-    print qq (Destination);
+    print qq ($qblang[617]);
     print qq (</td>);
     #20101228 
     $action{advance} = ( $action{destination} eq 'system' ) ? ( '0' ) : ( '1' );
@@ -473,7 +473,7 @@ sub edit_weburl
         print qq (<option value="$filter_type" title="$filter_type" $status >$showtype</option>); 
     }
     print qq (</select><br>);
-    print qq (Filter Type);
+    print qq ($qblang[618]);
     print qq (</td>);
     
     #**************************************************************************************
@@ -488,7 +488,7 @@ sub edit_weburl
         $weburl_obj =~ s/host-//g; print qq (<option value="$weburl_obj" title="$weburl_obj" $status >$weburl_obj</option>); 
     }
     print qq (</select><br>);
-    print qq (Keyword List);
+    print qq ($qblang[619]);
     print qq (</td>);
     #**************************************************************************************
     
@@ -505,15 +505,15 @@ sub edit_weburl
         print qq (<option $status value="$seq->{schname}" $status>$seq->{schname}</option>); 
     }
 	print qq (</select><br>);
-	print qq (Schedule);
+	print qq ($qblang[620]);
 	print qq (</td>);
     
     
     
     print qq (<td class="body" align="right" valign="top">);
     
-    print qq (<input type="button" class="qb" value="Add"    title="Add Policy"    onClick="updateWeburl('ADD')" style="height:20 width:25">);
-    print qq (<input type="button" class="qb" value="Update" title="Save Changes"  onClick="updateWeburl('UPDATE')" style="height:20 width:35">);
+    print qq (<input type="button" class="qb" value="$qblang[621]"    title="Add Policy"    onClick="updateWeburl('ADD')" style="height:20 width:25">);
+    print qq (<input type="button" class="qb" value="$qblang[622]" title="Save Changes"  onClick="updateWeburl('UPDATE')" style="height:20 width:35">);
             
     print qq (<br>);
     

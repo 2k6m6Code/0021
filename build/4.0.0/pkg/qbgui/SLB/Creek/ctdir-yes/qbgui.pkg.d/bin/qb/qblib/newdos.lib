@@ -12,7 +12,11 @@ sub showDos
     
     print qq (<table bgcolor="#336699" cellspacing="3" border="0">);
     $action{option}=uc($action{option});
-    print qq (<tr><td class="bigtitle">$action{option} Connection Limit);
+    
+    my $bigtitle;
+    if ( $action{option} eq "TCP" ) { $bigtitle=$qblang[682]; }
+    elsif ( $action{option} eq "UDP" ) { $bigtitle=$qblang[683]; }
+    print qq (<tr><td class="bigtitle">$bigtitle);
 
     print qq (<hr size=1>);
 
@@ -22,7 +26,7 @@ sub showDos
     #===============================================================
     print qq (<div class="divframe" style="height:200; width:200">);
     print qq (<table id="dosList" width="100%"  class="body" border="0"><thead><tr bgcolor="#332211">);
-	print qq (<th width="100" align="center">Enable</th>);
+	print qq (<th width="100" align="center">$qblang[686]</th>);
 	print qq (<th width="300" align="center">$qblang[29]</th>);
 	print qq (<th width="300" align="center">$qblang[169]</th>);
 	print qq (<th width="100" align="center">$qblang[25]</th>);

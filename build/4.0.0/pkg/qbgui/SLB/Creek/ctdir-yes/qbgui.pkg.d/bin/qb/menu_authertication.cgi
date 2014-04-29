@@ -30,10 +30,10 @@ print '	</style>';
 print '</head><body style="margin: 5px; background-color:#336699;" scroll="no">';
 #print '<table style="width: 100%; height: 100%;">';
 print '<tr style="height: 25px;"><td>';
-print '<button class="menu"  onclick="mainframe.location=\'auth_server.cgi\'		"style="width: 170">Server</button>';
-print '<button class="menu"  onclick="mainframe.location=\'auth_user.cgi\'		"style="width: 170">Group</button>';
-print '<button class="menu"  onclick="mainframe.location=\'auth_option.cgi\'		"style="width: 170">Option</button>';
-print '<button class="menu"  onclick="mainframe.location=\'auth_status.cgi\'		"style="width: 170">Status</button>';
+print '<button class="menu"  onclick="mainframe.location=\'auth_server.cgi\'		"style="width: 170">'.$qblang[562].'</button>';
+print '<button class="menu"  onclick="mainframe.location=\'auth_user.cgi\'		"style="width: 170">'.$qblang[563].'</button>';
+print '<button class="menu"  onclick="mainframe.location=\'auth_option.cgi\'		"style="width: 170">'.$qblang[564].'</button>';
+print '<button class="menu"  onclick="mainframe.location=\'auth_status.cgi\'		"style="width: 170">'.$qblang[565].'</button>';
 
 print '<script type="text/javascript" src="../qb.js"></script>';
 #print '<a href="javascript:qbShowHelp(\'traffic\')"><img src="/image/help.gif" title="Help" alt="help image" ></a>';

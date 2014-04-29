@@ -10,9 +10,9 @@ sub showContent
     
     #********************************** Block Web Content ********************************************
     #ADD keyword
-    print qq (<tr><td colspan="8" bgcolor="#332211" align="left" class="subtitle">[ Block Web Content ]</td></tr>);
+    print qq (<tr><td colspan="8" bgcolor="#332211" align="left" class="subtitle">[ $qblang[626] ]</td></tr>);
     
-    print qq (<td class="body" valign="center" align="center" style="height: 50px; width: 230px">Block</td>);
+    print qq (<td class="body" valign="center" align="center" style="height: 50px; width: 230px">$qblang[627]</td>);
     
     print qq (<td  class="body" valign="center" align="left" style="height: 50px; width: 105px">);
     my $status=( $squid->{activex} ) ? ('checked') : ('');
@@ -40,9 +40,9 @@ sub showContent
     print qq (</td>);
     #**********************************Prohibit Multi-thread Download ********************************************
     #
-    print qq (<tr><td colspan="8" bgcolor="#332211" align="left" class="subtitle" >[ Prohibit Multi-thread Download ]</td></tr>);
+    print qq (<tr><td colspan="8" bgcolor="#332211" align="left" class="subtitle" >[ $qblang[628] ]</td></tr>);
     print qq (<tr>);
-    print qq (<td class="body" valign="center" align="center" style="height: 50px; width: 230px">Prohibit Multi-thread Download</td>);
+    print qq (<td class="body" valign="center" align="center" style="height: 50px; width: 230px">$qblang[629]</td>);
     print qq (<td class="body" valign="center" align="left" style="height: 50px; width: 100px">); 
     my $status=( $squid->{prohibitmulti} ) ? ('checked') : ('');
     print qq (<INPUT type="checkbox" name="prohibitmulti"  $status >);
@@ -51,7 +51,7 @@ sub showContent
     
     #********************************** Block Web Content ********************************************
     #ADD keyword
-    print qq (<tr><td colspan="8" bgcolor="#332211" align="left" class="subtitle">[ Block Content Keyword ]</td></tr>);
+    print qq (<tr><td colspan="8" bgcolor="#332211" align="left" class="subtitle">[ $qblang[630] ]</td></tr>);
     print qq (</table>);
 	
 	print qq (<table width="760" bgcolor="#336699" cellspacing="3" border="0" style="table-layout:fixed;word-break:break-all">);
@@ -88,7 +88,7 @@ sub showContent
 	my $kwref=XMLread($gPATH.'keyword.xml');
     my $kwlist=$kwref->{keyword}->[0]->{name};
 	print qq (<tr bgcolor="#332211">);
-	print qq (<td class="body" align="center" width="250">Name</td><td class="body" align="center" width="250">Keyword list</td><td class="body" align="center" width="250">);
+	print qq (<td class="body" align="center" width="250">$qblang[631]</td><td class="body" align="center" width="250">$qblang[632]</td><td class="body" align="center" width="250">);
 	print qq (<a href="javascript:delkw()"><img border="0" title="Delete Checked Host(s)" src="image/del.gif"></a>);
     print qq (<input type="checkbox" onclick="setAllCheckBoxValue('kwname', this.checked)" title="select or deselect all items"></td>);
 	print qq (</tr>);
@@ -121,7 +121,7 @@ sub showContent
         print qq (<option value="$item->{hostname}">$showname</optin>);
 	}
     print qq (</select>);
-	print qq (<input class="qb" type="button" value="Add" title="Add Keyword!" onClick="goSubmit('ADDKEYWORD')" style="width:auto");
+	print qq (<input class="qb" type="button" value="$qblang[633]" title="Add Keyword!" onClick="goSubmit('ADDKEYWORD')" style="width:auto");
 	print qq (</td><td></td><td></td></tr>);
 	#############################################################################
 }

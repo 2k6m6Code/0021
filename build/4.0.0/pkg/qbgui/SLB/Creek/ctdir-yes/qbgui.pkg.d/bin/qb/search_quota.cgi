@@ -22,7 +22,7 @@ print qq (<input id="option" value="$option" type="hidden">);
 #------- start to draw every form object to interact with users --------------------------------
 print qq(<form name="lantgaffic" method="post" action="lantraffic.cgi" style="width:100%">);
 print qq (<table cellspacing="0" border="0">);
-print qq (<tr><td class="bigtitle">Quota</td></tr></table>);
+print qq (<tr><td class="bigtitle">$qblang[655]</td></tr></table>);
 print qq (<div style="width:75%" >);
 print qq (<table width="100%" border="1" ><tr>);
 print qq (<td class="body" align="center">Query Condition</td>);

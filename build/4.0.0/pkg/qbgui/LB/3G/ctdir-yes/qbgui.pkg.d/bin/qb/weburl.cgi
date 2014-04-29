@@ -19,7 +19,7 @@ print qq (<table cellspacing="0" cellpadding="0" width="100%" height="100%" bord
 # 1. Display Title 
 #==================================================================================================
 print qq (<tr><td height="10">);
-print qq (<br><font class="bigtitle" align="center" >Keyword Filtering<font> );
+print qq (<br><font class="bigtitle" align="center" >$qblang[608]<font> );
 print qq(</form>);
 #print qq (<a href="javascript:qbShowHelp('policy')"><image src="image/help.gif" border="0" title="Help"></a><hr size=1>);
 print qq (<hr size=1>);

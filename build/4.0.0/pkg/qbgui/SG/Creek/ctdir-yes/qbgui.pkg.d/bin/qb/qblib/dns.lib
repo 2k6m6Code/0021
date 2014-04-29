@@ -271,7 +271,7 @@ sub showDNS
 
     if ( $gENABLEFULLINBOUND )
     {
-        print qq (<td align="left" >Mode:</td>);
+        print qq (<td align="left" >$qblang[600]:</td>);
         my %modehash=('WRR'=>'Weighted Round Robin', 'WLT'=>'Weighted Least Traffic', 'BTK'=>'Bottleneck Monitor', 'FAILOVER'=>'Fail Over'); 
         print qq (<td colspan="3" align="left">);
         print qq (<select name="mode" onChange="goSubmit('CHANGEMODE')" class="qbopt" style="width:120">);
@@ -474,9 +474,9 @@ sub showDNS
 
     #************************** Command Button to Set Domain MX and NS  ***************** 
     print qq (<td colspan="2" align="right">);
-    print qq (<input type="button"  class="qb" value="Set MX" title="Set MX" onClick="getAndSetMX('$targetdomain->{d_name}','$action{countryname}')" style="width:60">);
+    print qq (<input type="button"  class="qb" value="$qblang[601]" title="Set MX" onClick="getAndSetMX('$targetdomain->{d_name}','$action{countryname}')" style="width:60">);
     #print qq (<input type="button"  class="qb" value="Set NS" title="Set NS" onClick="getAndSetNS('$targetdomain->{d_name}')" style="width:60">);
-    print qq (<input type="button"  class="qb" value="Set NS" title="Set NS" onClick="getAndSetNS('$targetdomain->{d_name}','$action{countryname}')" style="width:60">);
+    print qq (<input type="button"  class="qb" value="$qblang[602]" title="Set NS" onClick="getAndSetNS('$targetdomain->{d_name}','$action{countryname}')" style="width:60">);
     
 
     #*********************** Host Information List of selected ISP.Domain ***************** 
@@ -600,7 +600,7 @@ sub showDNS
     }
     else
     {
-    print qq (<td width="20%">Value</td>);
+    print qq (<td width="20%">$qblang[603]</td>);
     print qq (<td><a href="javascript:delHostRec(4)"><image src="image/del.gif" title="Delete Selected Host Entries" border="0"></a>);
     }
     print qq (<input type="checkbox" name="allhost" title="select or deselect all host(s)" onClick="setAllCheckBoxValue('host', this.checked)">);

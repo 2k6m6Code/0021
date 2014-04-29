@@ -174,8 +174,8 @@ print qq (<option value="500">500</option>);
 print qq (</select></td></tr>);
 
 print qq (<tr>);
-print qq (<td align="center"><input type="button" id="query" value="Query" onclick="Submit();">);
-print qq (<input type="button" id="output" value="Save as CSV" onclick="dataCSV();"></td>);
+print qq (<td align="center"><input type="button" id="query" value="$qblang[712]" onclick="Submit();">);
+print qq (<input type="button" id="output" value="$qblang[713]" onclick="dataCSV();"></td>);
 print qq (</tr>);
 
 print qq (</table></div>);
@@ -200,7 +200,7 @@ var mind = \$("#mind").val();
 \$( "#datepicker" ).datepicker({
     regional:"en-AU",
     defaultDate: "+1w",
-	changeYear: true,
+    changeYear: true,
     changeMonth: true,
     numberOfMonths: 1,
     showButtonPanel: true,

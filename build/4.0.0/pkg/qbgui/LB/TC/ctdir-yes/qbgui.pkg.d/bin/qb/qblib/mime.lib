@@ -1,3 +1,6 @@
+require ("/usr/local/apache/qb/language/qblanguage.cgi");
+@qblang = QBlanguage();
+
 #=============================================================================================
 sub showMIME
 {
@@ -9,7 +12,7 @@ sub showMIME
     my %titleWidth=('MIME'=>250, 'Block'=>100, 'Description'=>250, 'Edit'=>100);
     
     print qq (<table bgcolor="#336699" cellspacing="3" border="0">);
-    print qq (<tr><td class="bigtitle">MIME Types);
+    print qq (<tr><td class="bigtitle">$qblang[656]);
     print qq (<tr><td>);
     print qq (<table cellspacing="0">);
     print qq (<tr>);
@@ -33,7 +36,11 @@ sub showMIME
     
     print qq (<div class="divframe" style="width:800">);
     print qq (<table bgcolor="#332211" width="100%" border="0"><tr>);
-    foreach my $title ( @titleHeadList ) { print qq (<td align="center" width="$titleWidth{$title}">$title</td>); }
+    #foreach my $title ( @titleHeadList ) { print qq (<td align="center" width="$titleWidth{$title}">$title</td>); }
+    print qq (<td align="center" width="250">$qblang[657]</td>);
+    print qq (<td align="center" width="100">$qblang[658]</td>);
+    print qq (<td align="center" width="250">$qblang[659]</td>);
+    print qq (<td align="center" width="100">$qblang[660]</td>);
     print qq (<td>);
     print qq (<a href="javascript:delmime()"><image src="image/del.gif" title="Delete Checked MIME Type(s)" border="0"></a>);
     print qq (<input type="checkbox" title="select or deselect all items" onClick="setAllCheckBoxValue('mimetypes', this.checked)">);
@@ -112,12 +119,12 @@ CONTROLS
     print qq (<div>); 
     print qq (<table cellspacing="0" width="100%">);
     print qq (<tr><td align="right" width="500">);
-    print qq (<input class="qb" type="button" width="100" value="Select All" onclick="checkmime(true);">);
-    print qq (<input class="qb" type="button" width="100" value="Clear All" onclick="checkmime(false);">);
-    print qq (<input class="qb" type="button" width="100" value="Apply" onclick="goSubmit('APPLY');">);
+    print qq (<input class="qb" type="button" width="100" value="$qblang[661]" onclick="checkmime(true);">);
+    print qq (<input class="qb" type="button" width="100" value="$qblang[662]" onclick="checkmime(false);">);
+    print qq (<input class="qb" type="button" width="100" value="$qblang[663]" onclick="goSubmit('APPLY');">);
     print qq (</td>);
     print qq (<td align="right" >);
-    print qq (<input class="qb" type="button" width="100" value="Add mime Type" onclick="Newmime();">);
+    print qq (<input class="qb" type="button" width="100" value="$qblang[664]" onclick="Newmime();">);
     print qq (</td>);
 }
 #showMIME

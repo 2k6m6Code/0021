@@ -11,7 +11,7 @@ sub showSchedule
     my %titleWidth=('Name'=>300, 'Description'=>300, 'Edit'=>100);
     
     print qq (<table bgcolor="#336699" cellspacing="3" border="0" style="TABLE-LAYOUT: fixed" width="100%">);
-    print qq (<tr><td class="bigtitle">Authentication Server);
+    print qq (<tr><td class="bigtitle">$qblang[561]);
     print qq (<tr><td>);
     print qq (<table cellspacing="0" style="TABLE-LAYOUT: fixed" width="100%">);
     print qq (<tr>);
@@ -24,7 +24,7 @@ sub showSchedule
     print qq (<div class="divframe" style="height:200; width:800">);
     print qq (<table id="scheduleList" width="100%"  class="body" border="0">);
     print qq (<thead><tr bgcolor="#332211">);
-    print qq (<th width="60" align="center">Enabled</th>);
+    print qq (<th width="60" align="center">$qblang[566]</th>);
     print qq (<th width="300" align="center">$qblang[29]</th>);
     print qq (<th width="300" align="center">$qblang[169]</th>);
     print qq (<th width="100" align="center">$qblang[25]</th>);

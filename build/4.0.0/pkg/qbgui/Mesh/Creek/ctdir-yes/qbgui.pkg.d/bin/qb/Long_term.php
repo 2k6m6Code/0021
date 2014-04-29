@@ -48,6 +48,24 @@ echo '<input type="radio" id="30" name="option" value='.$now_TW.'> Monthly Graph
 
 Submit();
 
+function getcookie(name)
+{
+    var c=document.cookie.split("; ");
+    for (var i=0; i<c.length; i++)
+    {
+       var b=c[i].split("=");
+       if(name==b[0]) { return unescape(b[1]); }
+    }
+                          
+    return;
+}
+
+if ( getcookie('locale') == "zh_TW" )
+    $("td[class='bigtitle']").html("累積圖表");
+else
+    $("td[class='bigtitle']").html("Long-term Traffic Graphic");
+
+
 $( "#datepicker" ).datepicker({
     regional:"zh-TW",
     defaultDate: "+1w",

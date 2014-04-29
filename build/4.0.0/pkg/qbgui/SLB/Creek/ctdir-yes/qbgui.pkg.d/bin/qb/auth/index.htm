@@ -21,28 +21,25 @@
 <TABLE width="400" align="center" border="0" cellspacing="0" cellpadding="1">
   <TBODY>
   <TR>
-    <TD></TD>
     <TD height="5" colspan="2"><SPAN class="prompt"><STRONG><LABEL id="err_info"></LABEL></STRONG></SPAN>
       <DIV class="prompt" id="alarm" style="display: none;">Warning: The user is 
       not authorized! <BR>Declaration</DIV>
       <DIV class="prompt" id="authInfo" style="display: none;"><SPAN id="authUser" 
       style="color: white;">Authorized User:</SPAN><BR>Declaration</DIV></TD></TR>
       </DIV></TD></TR>
-  <TR>
-    <TD width="80" align="right">
-      <P class="txt">Username</P>
-      <P class="txt">Password</P></TD>
-    <TD width="204">
-      <P class="user_on" id="user_a"><INPUT name="user" class="user" id="user" 
+  <TR width="100%">
+    <TD id="check_user" width="100%" align="center" style="display:none">
+	<P class="txt" align="center" style="width:100%;">Username <INPUT name="user" class="user" id="user" 
       onfocus="change_user_off()" onblur="change_user_on()" type="text" 
-      maxlength="95">             </P>
-      <P class="password_on" id="password_a"><INPUT name="password" class="user" 
+      maxlength="95"></P>
+      <P class="txt" align="center" style="width:100%;">Password <INPUT name="password" class="user" 
       id="password" onfocus="this.value='';change_pw_off()" onblur="change_pw_on()" 
-      type="password" maxlength="49">             </P></TD>
-    <TD width="145" align="left" valign="middle"><INPUT name="button" class="buttons" id="button" onclick="JavaScript:if(KeyDownTime==0)onDo();" onfocus="this.className='buttons_off buttons'" onblur="this.className='buttons_on buttons'" type="button" value="Login"> 
-                </TD></TR>
+      type="password" maxlength="49"></P>
+	  </TD>
+    </TD></TR>
+	<TR><TD width="100%" align="center" valign="middle"><INPUT name="button" class="buttons" id="button" onclick="JavaScript:if(KeyDownTime==0)onDo();" onfocus="this.className='buttons_off buttons'" onblur="this.className='buttons_on buttons'" type="button" value="Login"></TD></TR>
+
   <TR>
-    <TD></TD>
     <TD height="20" align="right"><A id="mail_view" href="mailto:sales@creek.com.tw">Contact Us
     </A></TD> 
     <TD></TD></TR></TBODY></TABLE></DIV></DIV></DIV>
@@ -205,6 +202,7 @@ function fno(txt)
 	if( (queryReqHandler.readyState == 4) && (queryReqHandler.status == 200) ){
 	var msg=queryReqHandler.responseText;
 	var repeat = new Array;
+	var user = document.getElementById("check_user");
 	repeat = msg.split(/,/);
 	if (repeat[1] == '1')
 	{
@@ -216,6 +214,11 @@ function fno(txt)
 	{
 		alert("Quota exceeded");
 	    return;
+	}
+	else if (repeat[1] == '5')
+	{
+		alert("Your MAC is not on the Privileged list.");
+		user.style.display='table-row';
 	}
 	else
 	{

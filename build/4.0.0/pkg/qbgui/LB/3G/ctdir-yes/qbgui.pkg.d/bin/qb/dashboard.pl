@@ -441,6 +441,72 @@ if ($id eq 'dashboard_0')
 			$index++;
 		}
 	}
+}elsif ($id eq 'dashboard_13')
+{
+	my ($sec, $min, $hour, $day, $mon, $year) = localtime(time);
+	$year+=1900;
+	$mon+=1;
+	my $start_min = $min-1;
+	if($mon <10){$mon='0'.$mon;}
+	if($day <10){$day='0'.$day;}
+	if($hour <10){$hour='0'.$hour;}
+	if($start_min <10){$start_min='0'.$start_min;}
+	if($min <10){$min='0'.$min;}
+	my $start = $year.$mon.$day.$hour.$start_min;
+	my $stop = $year.$mon.$day.$hour.$min;
+	#my $year=2014;
+	#my $mon=3;
+	#my $day=4;
+	#print qq (/usr/local/apache/qb/setuid/run  /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$year/$mon/$day/nfcapd.$start:nfcapd.$stop -s record/bytes -n 10 -A proto,dstport|tail +4 |head -9);
+	my @check = `/usr/local/apache/qb/setuid/run  /usr/local/bin/nfdump -R /mnt/tclog/nfcapd/$year/$mon/$day/nfcapd.$start:nfcapd.$stop -s record/bytes -n 10 -A proto,dstport 'not proto icmp and not proto gre'|tail +4 |head -10`;
+    p_td('&#32 Top');
+	p_td('&#32 Application');
+    p_td('&#32 Bytes');
+    my $index=1;
+	if(@check ne '')
+	{
+		foreach my $result ( @check )
+		{
+			my @o=split(/\s{2,}/,$result);
+			my $bgcolor=($index % 2) ? ( '#556677' ) : ( '#334455' );
+			p_tr($bgcolor);
+			p_td('&#32 '.$index);
+			my $app=$o[2].':'.$o[3];
+			my $str = lc($o[2]);
+			my $eq = $o[3].'/'.$str;
+			#print qq([$eq]);
+			open(FILE,"/etc/services");
+			foreach my $data (<FILE>)
+			{
+				if (grep(/^#/,$data)||grep(/^$/,$data)){next;}
+				my @tmp = split(/\s+/,$data);
+				#print qq([$tmp[1]] [$eq]<br>);
+				if ($eq eq $tmp[1])
+				{
+					#print qq([$tmp[0]]);
+					if($tmp[0] eq 'terabase'){$tmp[0]='maintain'}
+					$app = $tmp[0];
+				}
+			}
+			close(FILE);
+			my @data = `/usr/local/apache/qb/setuid/run /bin/cat /proc/net/nf_conntrack|grep 'l7proto'|grep '$str'|grep 'dport=$o[3]'`;
+			#print qq(cat /proc/net/nf_conntrack|grep 'l7proto'|grep '$str'|grep 'dport=$o[3]');
+			foreach my $result (@data)
+			{
+				#print qq($result);
+				my @tmp = split(/\s+/,$result);
+				if($tmp[20] eq 'l7proto=unknown'){next;}
+				$tmp[20] =~ s/l7proto=//g;
+				$app=$tmp[20];
+				#print qq($tmp[2] $tmp[9] $tmp[20]<br>);
+			}
+			p_td('&#32 '.$app);
+			p_td('&#32 '.$o[5]);
+			$app='';
+			$index++;
+		}
+	}
+	close(FILE);
 }
 
 print qq(</tr></table>);

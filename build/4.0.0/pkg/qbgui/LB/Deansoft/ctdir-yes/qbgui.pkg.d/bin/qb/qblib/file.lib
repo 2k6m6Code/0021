@@ -1,3 +1,6 @@
+require ("/usr/local/apache/qb/language/qblanguage.cgi");
+@qblang = QBlanguage();
+
 #=============================================================================================
 sub showFile
 {
@@ -9,7 +12,7 @@ sub showFile
     my %titleWidth=('File'=>250, 'Block'=>100, 'Description'=>250, 'Edit'=>100);
     
     print qq (<table bgcolor="#336699" cellspacing="3" border="0">);
-    print qq (<tr><td class="bigtitle">File Types);
+    print qq (<tr><td class="bigtitle">$qblang[648]);
     print qq (<tr><td>);
     print qq (<table cellspacing="0">);
     print qq (<tr>);
@@ -25,7 +28,12 @@ sub showFile
     #===============================================================
     print qq (<div class="divframe" style="width:800">);
     print qq (<table bgcolor="#332211" width="100%" border="0"><tr>); 
-    foreach my $title ( @titleHeadList ) { print qq (<td align="center" width="$titleWidth{$title}">$title</td>); }
+    #foreach my $title ( @titleHeadList ) { print qq (<td align="center" width="$titleWidth{$title}">$title</td>); }
+    print qq (<td align="center" width="$titleWidth{File}">$qblang[647]</td>);
+    print qq (<td align="center" width="$titleWidth{Block}">$qblang[638]</td>);
+    print qq (<td align="center" width="$titleWidth{Description}">$qblang[639]</td>);
+    print qq (<td align="center" width="$titleWidth{Edit}">$qblang[640]</td>);
+    
     print qq (<td align="center" width="100">);
     print qq (<a href="javascript:delFile()"><image src="image/del.gif" title="Delete Checked Schdule(s)" border="0"></a>);
     print qq (<input type="checkbox" title="select or deselect all items" onClick="setAllCheckBoxValue('files', this.checked)">);
@@ -60,12 +68,12 @@ sub showFile
     print qq (<div>); 
     print qq (<table cellspacing="0" width="100%">);
     print qq (<tr><td align="right" width="500">);
-    print qq (<input class="qb" type="button" width="100" value="Select All" onclick="checkfile(true);">);
-    print qq (<input class="qb" type="button" width="100" value="Clear All" onclick="checkfile(false);">);
-    print qq (<input class="qb" type="button" width="100" value="Apply" onclick="goSubmit('APPLY');">);
+    print qq (<input class="qb" type="button" width="100" value="$qblang[649]" onclick="checkfile(true);">);
+    print qq (<input class="qb" type="button" width="100" value="$qblang[650]" onclick="checkfile(false);">);
+    print qq (<input class="qb" type="button" width="100" value="$qblang[651]" onclick="goSubmit('APPLY');">);
     print qq (</td>);
     print qq (<td align="right" >);
-    print qq (<input class="qb" type="button" width="100" value="Add File Type" onclick="NewFile();">);
+    print qq (<input class="qb" type="button" width="100" value="$qblang[652]" onclick="NewFile();">);
     print qq (</td>);
 }
 #showFile

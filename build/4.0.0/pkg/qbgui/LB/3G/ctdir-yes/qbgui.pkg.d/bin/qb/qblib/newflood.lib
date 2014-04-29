@@ -12,7 +12,12 @@ sub showDos
     
     print qq (<table bgcolor="#336699" cellspacing="3" border="0" style="width:100%">);
     
-    print qq (<tr><td class="bigtitle"></td></tr>);
+    my $bigtitle;
+    if ( $action{option} eq "ICMP" ) { $bigtitle="$qblang[623]"; }
+    elsif ( $action{option} eq "SYN" ) { $bigtitle="$qblang[680]"; }
+    elsif ( $action{option} eq "UDP" ) { $bigtitle="$qblang[681]"; }
+    
+    print qq (<tr><td class="bigtitle">$bigtitle</td></tr>);
 
     print qq (<tr><td><hr size=1></td></tr>);
 
@@ -22,7 +27,7 @@ sub showDos
     #===============================================================
     print qq (<div class="divframe" style="height:200; width:200;">);
     print qq (<table id="dosList" width="100%"  class="body" border="0"><thead><tr bgcolor="#332211">);
-	print qq (<th width="100" align="center">Enable</th>);
+	print qq (<th width="100" align="center">$qblang[686]</th>);
 	print qq (<th width="300" align="center">$qblang[29]</th>);
 	print qq (<th width="300" align="center">$qblang[169]</th>);
 	print qq (<th width="100" align="center">$qblang[25]</th>);
@@ -74,7 +79,7 @@ sub scriptDos
     var myform;
     
 
-    \$("td[class='bigtitle']").text(\$("#option").val()+" Flood");
+    //\$("td[class='bigtitle']").text(\$("#option").val()+" Flood");
     \$("#gogo").click(function(){
         location.href='neweditflood.cgi?option='+\$("#option").val();
     });

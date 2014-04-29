@@ -1,6 +1,8 @@
 #!/usr/bin/perl
 require ("qbmod.cgi");
 require "./qblib/pptpinit.lib";
+require ("/usr/local/apache/qb/language/qblanguage.cgi");
+@qblang = QBlanguage();
 
 
 #認證是否是經過正常且標準的程序登入進來的
@@ -56,8 +58,8 @@ if ( !$gLOGINRESULT ) { general_script(); exit;}
 if ( $action{action} ) { maintainPptpinit( %action ); }
 elsif ( !$gENABLEPPTPSERVER) { noneFunctionExit('PPTP Server is an Option');} #No PPTP server
 #------- start to draw every form object to interact with users ------------------------------------
-print qq (<button  onclick="parent.mainFrame.location='pptpinit.cgi'" hidefocus="true" class="menu">PPTP Server Configuration</button>);
-print qq (<button  onclick="parent.mainFrame.location='ppdlogin.cgi'" hidefocus="true" class="menu">PPTP User Authentication</button>);
+print qq (<button  onclick="parent.mainFrame.location='pptpinit.cgi'" hidefocus="true" class="menu">$qblang[604]</button>);
+print qq (<button  onclick="parent.mainFrame.location='ppdlogin.cgi'" hidefocus="true" class="menu">@qblang[605]</button>);
 print qq (<div align="center">);
 print qq (<form name="pptpinitform" method="post" action="pptpinit.cgi">);
 

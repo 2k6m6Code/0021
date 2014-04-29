@@ -24,10 +24,10 @@ print '</head><body style="margin: 0px; background-color:#336699;" scroll="no">'
 print '<script type="text/javascript" src="../qb.js"></script>';
 print '<table style="width: 100%; height: 100%;">';
 print '<tr style="height: 25px;"><td>';
-print '<button class="menu"  onclick="mainframe.location=\'newflood.cgi?option=icmp\'"     style="width: 14%">ICMP Flood</button>';
-print '<button class="menu"  onclick="mainframe.location=\'newflood.cgi?option=syn\'"     style="width: 14%">SYN Flood</button>';
-print '<button class="menu"  onclick="mainframe.location=\'newflood.cgi?option=udp\'"     style="width: 14%">UDP Flood</button>';
-print '<button class="menu"  onclick="mainframe.location=\'newdos.cgi?option=tcp\'"	style="width: 14%">TCP Connection Limit</button>';
-print '<button class="menu"  onclick="mainframe.location=\'newdos.cgi?option=udp\'"	style="width: 14%">UDP Connection Limit</button>';
-print '<button class="menu"  onclick="mainframe.location=\'newportscan.cgi\'"	style="width: 14%">Port Scan</button>';
+print '<button class="menu"  onclick="mainframe.location=\'newflood.cgi?option=icmp\'"     style="width: 14%">'.$qblang[679].'</button>';
+print '<button class="menu"  onclick="mainframe.location=\'newflood.cgi?option=syn\'"     style="width: 14%">'.$qblang[680].'</button>';
+print '<button class="menu"  onclick="mainframe.location=\'newflood.cgi?option=udp\'"     style="width: 14%">'.$qblang[681].'</button>';
+print '<button class="menu"  onclick="mainframe.location=\'newdos.cgi?option=tcp\'"	style="width: 14%">'.$qblang[682].'</button>';
+print '<button class="menu"  onclick="mainframe.location=\'newdos.cgi?option=udp\'"	style="width: 14%">'.$qblang[683].'</button>';
+print '<button class="menu"  onclick="mainframe.location=\'newportscan.cgi\'"	style="width: 14%">'.$qblang[684].'</button>';
 print '</td></tr><tr><td><iframe frameborder="0" style="height:100%;width:100%" src="newflood.cgi?option=icmp" name="mainframe"></iframe></td></tr></table></body></html>';

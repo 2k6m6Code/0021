@@ -1,6 +1,9 @@
 ###############################################################################################
 #                                           Pptpinit Management Console
 ###############################################################################################
+require ("/usr/local/apache/qb/language/qblanguage.cgi");
+@qblang = QBlanguage();
+
 sub showSquidgen 
 {
     my (%action)=@_;
@@ -9,7 +12,7 @@ sub showSquidgen
     my $login_time;
     my $idle_time;
     my $time_out;
-    print qq (<tr><td colspan="8" class="bigtitle">Authentication Setting</td></tr>);
+    print qq (<tr><td colspan="8" class="bigtitle">$qblang[571]</td></tr>);
    
     foreach my $timer (@$list)
     {
@@ -21,17 +24,17 @@ sub showSquidgen
            $time_sec = $timer->{time_sec};
         }
     }
-    print qq (<tr><td colspan="8" bgcolor="#332211" align="left" class="subtitle">[ Timer Setting]</td></tr>);
+    print qq (<tr><td colspan="8" bgcolor="#332211" align="left" class="subtitle">[ $qblang[572]]</td></tr>);
     print qq (<tr><div>);
     print qq (<td class="body"  valign="center" align="left" style="height: 50px; width: 150px">);
-    print qq (Login Time Out</td>);
+    print qq ($qblang[573]</td>);
     print qq (<td class="body"  valign="center" align="left" style="height: 50px; width: 150px">);
-    print qq (<INPUT type="text" class="qb" name="login_time" id="login_time" value="$login_time">Sec.);
+    print qq (<INPUT type="text" class="qb" name="login_time" id="login_time" value="$login_time">$qblang[574].);
     print qq (</td></tr>);
     print qq (<td class="body"  valign="center" align="left" style="height: 50px; width: 150px">);
-    print qq (Idle Interval </td>);
+    print qq ($qblang[575] </td>);
     print qq (<td class="body"  valign="center" align="left" style="height: 50px; width: 150px">);
-    print qq (<INPUT type="text" class="qb" name="idle_time" id="idle_time" value="$idle_time">Sec.);
+    print qq (<INPUT type="text" class="qb" name="idle_time" id="idle_time" value="$idle_time">$qblang[574].);
     print qq (</td></tr>);
     if ($time_hr eq '' )
     {
@@ -43,7 +46,7 @@ sub showSquidgen
     }
     
     print qq (<td class="body"  valign="center" align="left" style="height: 50px; width: 150px">);
-    print qq (Time to Reset </td>);
+    print qq ($qblang[576] </td>);
     print qq (<td class="body"  valign="center" align="left" style="height: 50px; width: 150px">);
     print qq (<INPUT type="text" class="qb" name="time_out" id="time_hr" value="$time_hr" style="width:40px">);
     print qq (:<INPUT type="text" class="qb" name="time_out" id="time_sec" value="$time_sec" style="width:40px">);
@@ -53,10 +56,10 @@ sub showSquidgen
     print qq (<tr>);
     print qq (<td colspan=2 align="center">);
     print qq (<hr size="1">);
-    print qq (<input class="qb" type="button" align="center" name="apply" value="Apply" title="Apply All Parameters now !" onClick="savedata('Timer')" style="width:80">);
+    print qq (<input class="qb" type="button" align="center" name="apply" value="$qblang[139]" title="Apply All Parameters now !" onClick="savedata('Timer')" style="width:80">);
     print qq (</td></tr>);
     
-    print qq (<tr><td colspan="8" bgcolor="#332211" align="left" class="subtitle">[ Multi-Add User ]</td></tr>);
+    print qq (<tr><td colspan="8" bgcolor="#332211" align="left" class="subtitle">[ $qblang[577] ]</td></tr>);
 #    print qq (<tr><div>);
 #    print qq (<td class="body" valign="center" align="left" style="height: 50pxi; width: 150px"></td>);
 #    print qq (<td class="body"  valign="center" align="left" style="height: 50px; width: 150px">);
@@ -68,7 +71,7 @@ sub showSquidgen
     
 #    print qq (</div></td></tr>);
     print qq (<td class="body" valign="center" align="left" style="height: 50pxi; width: 150px">);
-    print qq (Export</td>);
+    print qq ($qblang[578]</td>);
     print qq (<td class="body"  valign="center" align="left" style="height: 50px; width: 150px">);
     print qq (<select class="qbopt" name="export" id="export" style="width:100px">);
     print qq (<option value="example" >Example</option>);
@@ -78,10 +81,10 @@ sub showSquidgen
         print qq (<option value="$user->{schname}">$user->{schname}</option>);
     } 
     print qq (</select>);
-    print qq (<INPUT type="button" class="qb" value="Export" onclick="go('export')"></td></tr>);
+    print qq (<INPUT type="button" class="qb" value="$qblang[578]" onclick="go('export')"></td></tr>);
     
     print qq (<tr><td class="body" valign="center" align="left" style="height: 50pxi; width: 150px">);
-    print qq (Import</td>);
+    print qq ($qblang[579]</td>);
     print qq (<td class="body"  valign="center" align="left" style="height: 50px; width: 150px">);
     print qq (<select class="qbopt" id="import_name" name="import_name" style="width:100px">);
     foreach my $user (@$list)
@@ -91,7 +94,7 @@ sub showSquidgen
     }
     print qq (</select>);
     print qq (<INPUT type="file" name="user" id="user">);
-    print qq (<INPUT type="button" class="qb" value="Import" onclick="go('user')"></td>);
+    print qq (<INPUT type="button" class="qb" value="$qblang[579]" onclick="go('user')"></td>);
     print qq (<tr><td colspan=2><iframe name="result" style="background-color:#C2D1E1; width:100%; height:100; filter:alpha(opacity=70);"></iframe>);
     print qq (</td></div></tr>);
     
@@ -101,15 +104,15 @@ sub showSquidgen
     
     print qq (<tr><div>);
     print qq (<td class="body" valign="center" align="left" style="height: 50pxi; width: 150px">);
-    print qq (Logo Upload</td>);
+    print qq ($qblang[581]</td>);
     print qq (<td class="body"  valign="center" align="left" style="height: 50px; width: 150px">);
     print qq (<INPUT type="file" name="logo" id="logo">);
-    print qq (<INPUT type="button" class="qb" value="Upload" onclick="go('logo')">);
+    print qq (<INPUT type="button" class="qb" value="$qblang[148]" onclick="go('logo')">);
     
     print qq (</td></div></tr>);
     
     print qq (<tr><td class="body" valign="center" align="left" style="height: 50pxi; width: 150px">);
-    print qq (Message </td>);
+    print qq ($qblang[582] </td>);
     print qq (<td class="body"  valign="center" align="left" style="height: 50px; width: 150px">);
     my $data;
     open(FILE,"/usr/local/apache/qb/auth/message.htm");
@@ -131,13 +134,13 @@ sub showSquidgen
     print qq (<tr>);
     print qq (<td colspan=2 align="center">);
     print qq (<hr size="1">);
-    print qq (<input class="qb" type="button" name="apply" align="center" value="Apply" title="Apply All Parameters now !" onClick="savedata('LOGO')" style="width:80">);
+    print qq (<input class="qb" type="button" name="apply" align="center" value="$qblang[139]" title="Apply All Parameters now !" onClick="savedata('LOGO')" style="width:80">);
     
     #********************************** Schedule to Block ********************************************
     
     print qq(<input type="hidden" name="orischedule" value="$squid->{schedule}">);
     
-    print qq (<tr><td colspan="8" bgcolor="#332211" align="left" class="subtitle">[ Alert E-mail ]</td></tr>);
+    print qq (<tr><td colspan="8" bgcolor="#332211" align="left" class="subtitle">[ $qblang[586] ]</td></tr>);
     
     #print qq (<tr><td class="body" valign="center" align="left" style="height: 50pxi; width: 150px">);
     #print qq (Type : </td>);
@@ -160,13 +163,13 @@ sub showSquidgen
     $FileList[1] =~ s/\/mnt\/qb\/conf\/auth\///g;
     $FileList[1] =~ s/\.message//g;
     print qq (<tr><td class="body" valign="center" align="left" style="height: 50pxi; width: 150px">);
-    print qq (Mail Title </td>);
+    print qq ($qblang[587] </td>);
     print qq (<td class="body"  valign="center" align="left" style="height: 50px; width: 150px">);
     print qq (<INPUT type="text" name="title" id="title" value="$FileList[1]">);
     print qq (</td>);
     
     print qq (<tr><td class="body" valign="center" align="left" style="height: 50pxi; width: 150px">);
-    print qq (Mail Message </td>);
+    print qq ($qblang[588] </td>);
     print qq (<td class="body"  valign="center" align="left" style="height: 50px; width: 150px">);
     
     print qq (<textarea class="qbtext" name="m_msg" id="m_msg" style="width:400;height:80">$data</textarea>);
@@ -193,7 +196,7 @@ sub showSquidgen
     print qq (<tr>);
     print qq (<td colspan=2 align="center">);
     print qq (<hr size="1">);
-    print qq (<input class="qb" type="button" align="center" name="apply" value="Apply" title="Apply All Parameters now !" onClick="savedata('MAIL')" style="width:80">);
+    print qq (<input class="qb" type="button" align="center" name="apply" value="$qblang[139]" title="Apply All Parameters now !" onClick="savedata('MAIL')" style="width:80">);
     print qq (</td></tr></table>);
     
 print << "SCRIPT1";

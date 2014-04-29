@@ -1,4 +1,7 @@
 #!/usr/bin/perl
+require ("/usr/local/apache/qb/language/qblanguage.cgi");
+@qblang = QBlanguage();
+
 use Data::Dumper;
 use CGI;
 
@@ -16,7 +19,7 @@ print qq(<div align="center">);
 
 #print qq(<form name="show_layer7_log" method="post" action="layer7_log.cgi">);
 print qq (<table cellspacing="0" border="0">);
-print qq (<tr><td class="bigtitle">Keyword );
+print qq (<tr><td class="bigtitle">$qblang[653] );
 print qq (</td></tr>);
 print qq (</table>);
 
@@ -35,7 +38,6 @@ my @all_layer7=("KEYFILTER");
 foreach my $Target_layer7 ( @all_layer7 )
 {
     my $all_layer7_log=`/usr/local/apache/qb/setuid/run grep -r $Target_layer7 /var/log/iptables_layer7.log | awk '{print \$1,\$2,\$3,\$6,\$9,\$10}'`;
-`/usr/local/apache/qb/setuid/run echo weburl >> /tmp/garytest`;
     my @layer7_log_array=split(/\n/,$all_layer7_log);
     
 

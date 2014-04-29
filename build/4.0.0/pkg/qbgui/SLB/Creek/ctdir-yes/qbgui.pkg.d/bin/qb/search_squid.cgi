@@ -7,8 +7,9 @@ use CGI;
 my $form = new CGI;
 my $title = $form->param('title');
 my $mytitle;
-if($title eq 'webfilter'){$mytitle = 'Web Filter';}
-if($title eq 'webcache'){$mytitle = 'Web Cache';}
+if($title eq 'webfilter'){$mytitle = @qblang[636];}
+#if($title eq 'webfilter'){$mytitle = 'Web Filter';}
+if($title eq 'webcache'){$mytitle = @qblang[637];}
 print "Content-type:text/html\n\n";
 #---------------- Just for form to show available items of subnets and services ------------------
 print qq (<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> );

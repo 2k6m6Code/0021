@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 require ("/usr/local/apache/qb/language/qblanguage.cgi");
+@qblang = QBlanguage();
 BEGIN { unshift (@INC,"/usr/local/apache/qb/perl_lib"); }
 
 use Data::Dumper;
@@ -21,12 +22,12 @@ print qq(<div align="center" style="width: 600px; margin: 12px auto 5px auto;">)
 #------- start to draw every form object to interact with users --------------------------------
 print qq(<form name="lantgaffic" method="post" action="lantraffic.cgi" style="width:600">);
 print qq (<table cellspacing="0" border="0">);
-print qq (<tr><td class="bigtitle">Authentication Status</td></tr></table>);
+print qq (<tr><td class="bigtitle">$qblang[590]</td></tr></table>);
 print qq (<div style="width:600">);
 print qq (<table width="100%" border="0"><tr>);
 print qq (<td class="body" align="left">);
 print qq (</select>);
-print qq (&nbsp&nbspAuto Refresh Per);
+print qq (&nbsp&nbsp $qblang[591]);
 print qq (<select name="refreshtime" id="refreshtime">);
 my @time=(30,50,70,90);
 foreach my $tm ( @time )
@@ -34,9 +35,9 @@ foreach my $tm ( @time )
     my $status = ( $action{refreshtime} eq $tm ) ? ( 'selected' ) : ( '' );
     print qq(<option value="$tm" $status>$tm</option>);
 }
-print qq (</select>seconds&nbsp&nbsp);
-print qq (<input type="button" value="Stop" class="qb" style="width:60" id="switch" onclick="Switch(this.value)">);
-print qq (&nbsp&nbsp Kick Out for: );
+print qq (</select>$qblang[592] &nbsp&nbsp);
+print qq (<input type="button" value="$qblang[350]" class="qb" style="width:60" id="switch" onclick="Switch(this.value)">);
+print qq (&nbsp&nbsp $qblang[593]: );
 print qq (<select id="kick_time" style="width:100px">);
 print qq (<option value="none">Now</option>);
 print qq (<option value="forever">Forever</option>);

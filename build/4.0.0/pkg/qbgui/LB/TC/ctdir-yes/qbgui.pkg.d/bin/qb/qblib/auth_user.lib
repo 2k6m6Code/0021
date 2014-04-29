@@ -11,7 +11,7 @@ sub showSchedule
     my %titleWidth=('Name'=>300, 'IP'=>300, 'Type'=>100);
     
     print qq (<table bgcolor="#336699" cellspacing="3" border="0" style="TABLE-LAYOUT: fixed" width="100%">);
-    print qq (<tr><td class="bigtitle">Authentication Group);
+    print qq (<tr><td class="bigtitle">$qblang[567]);
     print qq (<tr><td>);
     print qq (<table cellspacing="0" style="TABLE-LAYOUT: fixed" width="100%">);
     print qq (<tr>);
@@ -34,7 +34,7 @@ sub showSchedule
     # print qq (</tr></table>);
     # print qq (</div>);
     print qq (<div class="divframe" style="height:200; width:800">);
-    print qq (<table id="scheduleList" width="100%"  class="body" border="0"><thead><tr bgcolor="#332211"><th width="300" align="center">Name</th><th width="300" align="center">Type</th><th width="100" align="center">Edit</th><th width="100" align="center"><a href="javascript:delSchedule()"><img border="0" title="Delete Checked Schdule(s)" src="../image/del.gif"></a><input type="checkbox" onclick="setAllCheckBoxValue('schedule', this.checked)" title="select or deselect all items"></th></tr></thead>);
+    print qq (<table id="scheduleList" width="100%"  class="body" border="0"><thead><tr bgcolor="#332211"><th width="300" align="center">$qblang[568]</th><th width="300" align="center">$qblang[569]</th><th width="100" align="center">$qblang[570]</th><th width="100" align="center"><a href="javascript:delSchedule()"><img border="0" title="Delete Checked Schdule(s)" src="../image/del.gif"></a><input type="checkbox" onclick="setAllCheckBoxValue('schedule', this.checked)" title="select or deselect all items"></th></tr></thead>);
     my $lineCount=0;
     foreach my $item ( @$schlist )
     {

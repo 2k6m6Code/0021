@@ -1,4 +1,8 @@
 #!/usr/bin/perl
+
+require ("/usr/local/apache/qb/language/qblanguage.cgi");
+@qblang = QBlanguage();
+
 use Data::Dumper;
 use CGI;
 
@@ -16,7 +20,7 @@ print qq(<div align="center">);
 
 #print qq(<form name="show_layer7_log" method="post" action="layer7_log.cgi">);
 print qq (<table cellspacing="0" border="0">);
-print qq (<tr><td class="bigtitle">Application );
+print qq (<tr><td class="bigtitle">$qblang[654] );
 print qq (</td></tr>);
 print qq (</table>);
 

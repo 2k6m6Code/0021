@@ -224,7 +224,7 @@ sub editVS
     my @lvsvip=sort ip_sort keys %lvsviplist;
     if ( !$action{vip} ) { $action{vip}=$lvsvip[0]; }
 
-    print qq (<tr><td class="body" align="left">Virtual IP: </td>);
+    print qq (<tr><td class="body" align="left">$qblang[760]: </td>);
     print qq (<td align="left"><select class="qbopt" name="vip" style="width:150">);
     foreach my $vip ( @lvsvip ) 
     {   
@@ -245,7 +245,7 @@ sub editVS
     
     #=========================================================================================
     if ( !$action{service} ) { $action{service}=$services[0]; }
-    print qq (<tr><td class="body" valign="top" align="left">Services: </td>);
+    print qq (<tr><td class="body" valign="top" align="left">$qblang[761]: </td>);
     print qq (<td align="left">);
     print qq (<select class="qbopt" multiple size="7" name="service" style="width:150">\n);
     foreach my $item ( @services ) 
@@ -291,11 +291,11 @@ sub editVS
     $allrserver=~s/^;//g;
 
     print qq (<tr><td align="center">);
-    print qq (Real Server(s)<br>);
+    print qq ($qblang[762]<br>);
     print qq (<textarea class="qbtext" name="rservers" style="width:160;height:70">$allrserver</textarea>);
     print qq (</td></tr>);
 
-    print qq (<tr><td colspan="2" valign="top" align="left">Real Service:);
+    print qq (<tr><td colspan="2" valign="top" align="left">$qblang[763]:);
     print qq (<select class="qbopt" size="1" name="real_service" style="width:120">\n);
     print qq (<option value="">None</option>\n); 
     foreach my $item ( @services ) 
@@ -310,7 +310,7 @@ sub editVS
     print qq (</td>);
 
     print qq (<td class="body" align="right" valign="bottom">);
-    print qq (<input class="qb" type="button" value="Add" onClick="newvs(rservers)" style="width:160"><br>);
+    print qq (<input class="qb" type="button" value="$qblang[764]" onClick="newvs(rservers)" style="width:160"><br>);
     #print qq (<input class="qb" type="button" value="Advanced Setting" onClick="goToPolicyConfig()" style="width:160"><br>);
     #print qq (<input class="qb" type="button" value="Batch Add 1 to 1" onClick="batchAddOne2One()" style="width:60"><br>);
     print qq (<input type="hidden" vallue="" name="batcrtdata">);

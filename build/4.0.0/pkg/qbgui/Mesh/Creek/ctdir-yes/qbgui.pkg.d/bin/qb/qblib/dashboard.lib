@@ -226,7 +226,7 @@ sub showDashboard
     #--------------------------------------------------------------------
     print qq (<div class="divframe" style="width:380">); 
     print qq (<table bgcolor="#332211" width="380" border="0"><tr>);
-    print qq (<td width="100%"> User Flow Ranking </td>);
+    print qq (<td width="100%"> $qblang[839] </td>);
     print qq (</table>);
     print qq (</div>);
     print qq (<div style="width:380; height:40; background:#223344">);
@@ -269,7 +269,7 @@ sub showDashboard
     print qq (<td align="center" width="450" valign="center" height="120">);
     print qq (<div class="divframe" style="width:380">); 
     print qq (<table bgcolor="#332211" width="380" border="0"><tr>);
-    print qq (<td width="100%"> Security Status </td>);
+    print qq (<td width="100%"> $qblang[828] </td>);
     print qq (</table>);
     print qq (</div>);
     print qq (<div style="width:380; height:40; background:#223344">);
@@ -346,7 +346,7 @@ sub showDashboard
     print qq (<tr><td align="center" valign="center" width="450" height="150" >);
     print qq (<div class="divframe" style="width:380">); 
     print qq (<table bgcolor="#332211" width="380" border="0"><tr>);
-    print qq (<td width="100%"> Connections <a href="javascript:gotocgi('userflow.htm')" style="text-decoration:none" ><img src="image/link.gif" width="12" height="12" border="0" /></a></td>);
+    print qq (<td width="100%"> $qblang[843] <a href="javascript:gotocgi('userflow.htm')" style="text-decoration:none" ><img src="image/link.gif" width="12" height="12" border="0" /></a></td>);
     print qq (</table>);
     print qq (</div>);
     
@@ -532,7 +532,7 @@ sub showDashboard
     #--------------------------------------------------------------------
     print qq (<br><div class="divframe" style="width:380">); 
     print qq (<table bgcolor="#332211" width="380" border="0"><tr>);
-    print qq (<td width="100%"> Bandwidth Management <a href="javascript:gotocgi('lantraffic.cgi')" style="text-decoration:none" ><img src="image/link.gif" width="12" height="12" border="0" /></a></td>);
+    print qq (<td width="100%"> $qblang[857] <a href="javascript:gotocgi('lantraffic.cgi')" style="text-decoration:none" ><img src="image/link.gif" width="12" height="12" border="0" /></a></td>);
     print qq (</table>);
     print qq (</div>);
     print qq (<select name="interface" id="interface" style="width:220;display:none">);
@@ -562,7 +562,7 @@ sub showDashboard
     print qq (<td align="center" valign="top" width="450">);
     print qq (<div class="divframe" style="width:380">); 
     print qq (<table bgcolor="#332211" width="380" border="0"><tr>);
-    print qq (<td width="100%">LAN </td>);
+    print qq (<td width="100%">$qblang[848] </td>);
     print qq (<td class="body" width="20" align="right"><a href="javascript:gotocgi('zone.cgi?viewpoint=nat')" style="text-decoration:none" >);
     print qq (<img src="image/link.gif" width="12" height="12" border="0" /></a></td>);
     print qq (</table>);
@@ -594,7 +594,7 @@ sub showDashboard
     print qq (</table>);
     print qq (<div class="divframe" style="width:380">); 
     print qq (<table bgcolor="#332211" width="380" border="0"><tr>);
-    print qq (<td width="100%">Transparent </td>);
+    print qq (<td width="100%">$qblang[852] </td>);
     print qq (<td class="body" width="20" align="right"><a href="javascript:gotocgi('zone.cgi?viewpoint=dmz')" style="text-decoration:none" >);
     print qq (<img src="image/link.gif" width="12" height="12" border="0" /></a></td>);
     print qq (</table>);
@@ -631,7 +631,7 @@ sub showDashboard
     print qq (<td valign="top" align="center" width="450" >);
     print qq (<div class="divframe" style="width:380">); 
     print qq (<table bgcolor="#332211" width="380" border="0"><tr>);
-    print qq (<td width="100%">Physical Links Traffic </td>);
+    print qq (<td width="100%">$qblang[861] </td>);
     print qq (<td class="body" width="20" align="right">);#<a href="javascript:gotocgi('status/rttraffic.cgi')" style="text-decoration:none" >);
     #print qq (<img src="image/link.gif" width="12" height="12" border="0" /></a>);
 	print qq (</td>);
@@ -690,7 +690,7 @@ sub showDashboard
     print qq (<td align="center" valign="top" width="450">);
     print qq (<div class="divframe" style="width:380">); 
     print qq (<table bgcolor="#332211" width="380" border="0"><tr>);
-    print qq (<td width="100%">URL </td>);
+    print qq (<td width="100%">$qblang[865] </td>);
     print qq (<td class="body" width="20" align="right">);#<a href="javascript:gotocgi('zone.cgi?viewpoint=nat')" style="text-decoration:none" >);
     #print qq (<img src="image/link.gif" width="12" height="12" border="0" /></a>);
 	print qq (</td>);

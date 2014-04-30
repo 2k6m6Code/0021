@@ -23,7 +23,7 @@ print qq (<table cellspacing="0" cellpadding="0" width="100%" height="100%" bord
 print qq (<tr><td height="10">);
 if ( $action{showqos} eq '1' )
 {
-    print qq (<br><font class="bigtitle" align="center" >Application QoS<font> );
+    print qq (<br><font class="bigtitle" align="center" >$qblang[736]<font> );
 }
 else
 {

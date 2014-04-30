@@ -108,17 +108,40 @@ function creat_picture(data,name)
         type: 'line',width: '100%',height: '40',lineWidth: 1.5,spotRadius: 2});
 }
 
+function getcookie(name)
+{
+    var c=document.cookie.split("; ");
+    for (var i=0; i<c.length; i++)
+    {
+        var b=c[i].split("=");
+        if(name==b[0]) { return unescape(b[1]); }
+    }
+                              
+    return;
+}
+
 function creat_map(name,data,yy)
 {
 	var Today=new Date();
 	var xx=new Array();
 	xx=yy.split(/:/);
 	var title,content,unit='';
-	if(name == 'cpu'){title='CPU Usage'; content='CPU Usage'; unit='%';}
-	if(name == 'mem'){title='Memory Usage'; content='Memory Usage'; unit='M';}
-	if(name == 'cache'){title='Cache Usage'; content='Cache Usage'; unit='M';}
-	if(name == 'ram'){title='Ramdisk Usage'; content='Ramdisk Usage'; unit='M';}
-	if(name == 'session'){title='Active Sessions'; content='Active Sessions'; unit='Quantity';}
+	if ( getcookie('locale') == "zh_TW" )
+	{
+		 if(name == 'cpu'){title='CPU使用率'; content='CPU Usage'; unit='%';}
+	    else if(name == 'mem'){title='記憶體使用率'; content='Memory Usage'; unit='M';}
+	    else if(name == 'cache'){title='快取記憶體使用率'; content='Cache Usage'; unit='M';}
+	    else if(name == 'ram'){title='Ramdisk使用率'; content='Ramdisk Usage'; unit='M';}
+	    else if(name == 'session'){title='現行連線數目'; content='Active Sessions'; unit='Quantity';}
+	}
+	else
+	{
+		 if(name == 'cpu'){title='CPU Usage'; content='CPU Usage'; unit='%';}
+	    else if(name == 'mem'){title='Memory Usage'; content='Memory Usage'; unit='M';}
+	    else if(name == 'cache'){title='Cache Usage'; content='Cache Usage'; unit='M';}
+	    else if(name == 'ram'){title='Ramdisk Usage'; content='Ramdisk Usage'; unit='M';}
+	    else if(name == 'session'){title='Active Sessions'; content='Active Sessions'; unit='Quantity';}
+	}
         \$("#"+name).highcharts({
             chart: {
                 zoomType: 'x',

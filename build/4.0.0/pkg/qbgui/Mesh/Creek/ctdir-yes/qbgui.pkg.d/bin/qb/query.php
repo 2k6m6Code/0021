@@ -90,18 +90,18 @@ echo '</td></tr>';
 </select>
 </td></tr>
 <tr><td class="body" align="center">
-<a>Group By : </a><select id="flow_dst_1" >
+<span id="groupby">Group By</span> : <select id="flow_dst_1" >
 <option value="">IP</option>
 <option value=",srcport">Src Port</option>
 <option value=",dstport">Dst Port</option>
 </select>
-<a>IP Protocol : </a>
+<span id="ipprotocol">IP Protocol</span> :
 <select id="" >
 <option value="">ALL</option>
 <option value="">IPv4</option>
 <option value="">IPv6</option>
 </select>
-<a>Protocol : </a>
+<span id="protocol">Protocol : </span>
 <select id="proto" >
 <option value="all">ALL</option>
 <option value="ICMP">ICMP</option>
@@ -109,12 +109,12 @@ echo '</td></tr>';
 <option value="TCP">TCP</option>
 <option value="UDP">UDP</option>
 </select>
-<a>Order by </a>
+<span id="orderby">Order by </span>
 <select id="order" >
 <option value="-s record/bytes ">Bytes</option>
 <option value="-s record/flows ">Flows</option>
 </select>
-<a>Top </a>
+<span id="span-top">Top </span>
 <select id="top_1" >
 <option value="-n 10">10</option>
 <option value="-n 20">20</option>
@@ -277,6 +277,24 @@ if ( getcookie('locale') == "zh_TW" )
     $("#query").val("查詢") ;
     $("#output").val("儲存成CSV") ;
     $("#datetime").html("時間");
+    
+    $("#sourceip").html("來源位址");
+    $("#srcportkey").html("來源端口");
+    $("#destinationip").html("目的地位址");
+    
+    $("#dstportkey").html("目的地端口");
+    $("#flowdirection").html("流量方向") ;
+   
+    $("#groupby").html("群組依");
+    
+    $("#ipprotocol").html("IP協定");
+    $("#protocol").html("網路協定");
+
+    $("#orderby").html("依照順序");
+    $("#span-top").html("流量統計前");
+//    $("#").html();
+    
+    //alert ( $("#groupby").html() );
     
 }
 else

@@ -20,7 +20,7 @@ my $showTitle='';
 #elsif ( $action{viewpoint} eq 'nat' ) { $showTitle="Internal Zone"; }
 #elsif ( $action{viewpoint} eq 'lvs' ) { $showTitle="Server Mapping"; }
 
-if ( $action{viewpoint} eq 'nat' && $action{showqos} )    { $showTitle='Policy-based QoS'; }
+if ( $action{viewpoint} eq 'nat' && $action{showqos} )    { $showTitle=$qblang[714]; }
 elsif ( $action{viewpoint} eq 'nat' ) { $showTitle=$qblang[187]; }
 elsif ( $action{viewpoint} eq 'lvs' ) { $showTitle=$qblang[188]; }
 

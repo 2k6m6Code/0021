@@ -39,15 +39,27 @@ sub showPolicyTitle
     {
         print qq (<td align="center" style="width:$titleWidth{Enabled}">Enabled);
 #        print qq (<input type="checkbox" onClick="setAllCheckBoxValue('enabled_policy', this.checked);enabled_disabled_policy('SelectAll',this.status);">);
-print qq (<input type="button" class="qb" value="Apply" onclick="AlertApply();" title="Activate your setup for enable or disable.">);
+print qq (<input type="button" class="qb" value="$qblang[716]" onclick="AlertApply();" title="Activate your setup for enable or disable.">);
 	print qq (</td>);
     }
 #=cut
-    print qq (<td align="center" width="$titleWidth{'Source'}" ><a href="javascript:sortPolicy('BYSOURCE')" title="Sort by Source" border="0">Source</a></td>);
-    print qq (<td align="center" width="$titleWidth{'Destination'}" >Destination</td>);
-    my $title = ( $action{viewpoint} eq 'app' ) ? ( 'Application' ) : ( 'Service' );
+    print qq (<td align="center" width="$titleWidth{'Source'}" ><a href="javascript:sortPolicy('BYSOURCE')" title="Sort by Source" border="0">$qblang[737]</a></td>);
+    print qq (<td align="center" width="$titleWidth{'Destination'}" >$qblang[728]</td>);
+    my $title = ( $action{viewpoint} eq 'app' ) ? ( $qblang[511] ) : ( $qblang[698] );
     print qq (<td align="center" width="$titleWidth{'Service'}" ><a href="javascript:sortPolicy('BYSERVICE')" title="Sort by Service" border="0">$title</a></td>);
-    foreach my $title ( @titleList ) { print qq (<td  align="center" width="$titleWidth{$title}"><font color="#ffffff">$title</font></td>); }
+    foreach my $title ( @titleList ) 
+    { 
+    	my $show_title;
+    	if ( $title eq "Schedule" ) { $show_title = $qblang[668]; }
+    	elsif ( $title eq "Action" ) { $show_title = $qblang[669]; } 
+    	elsif ( $title eq "Status" ) { $show_title = $qblang[670]; } 
+    	elsif ( $title eq "Edit" ) { $show_title = $qblang[671]; } 
+    	elsif ( $title eq "Pool" ) { $show_title = $qblang[721]; } 
+    	elsif ( $title eq "NAT Status" ) { $show_title = $qblang[722]; } 
+    	elsif ( $title eq "QoS" ) { $show_title = $qblang[724]; } 
+    	
+    	print qq (<td  align="center" width="$titleWidth{$title}"><font color="#ffffff">$show_title</font></td>); 
+    }
     print qq (<td align="center" width="50" ><a href="javascript:delPolicy()"><image src="image/del.gif" title="Delete checked policies" border="0"></a>);
     print qq (<input type="checkbox" title="select or deselect all items" onClick="setAllCheckBoxValue('rule', this.checked)">);
     print qq (</td>);
@@ -697,7 +709,7 @@ sub show_iniroute
             my $addresslist=maintainHost( action=>'GETADDRESSLIST', hostname=>$displaysource);
             print qq (<option value="$sourceitem" title="$addresslist" $status>$displaysource</option>); 
         }
-        print qq (</select><br>Source</td>); 
+        print qq (</select><br>$qblang[696]</td>); 
     }
 
     #**************************************************************************************
@@ -743,7 +755,7 @@ sub show_iniroute
             my $status=( $action{source} eq $sourceitem ) ? ( 'selected' ) : ( '' ); 
             print qq (<option $status value="$sourceitem" >$sourceitem</option>);
         }
-        print qq (</select><br>Source</td>);
+        print qq (</select><br>$qblang[696]</td>);
     }
 =cut
     #****** judge if it is in advance mode *******************************  
@@ -767,7 +779,7 @@ sub show_iniroute
     print qq (<option value="edit">-- Edit --</option>);
     print qq (</select><br>);
     print qq (<input type="checkbox" name="advance" $status onClick="advance_action()">);
-    print qq (Destination);
+    print qq ($qblang[697]);
     print qq (</td>);
 =cut
     #*********************************************************************
@@ -792,7 +804,7 @@ sub show_iniroute
         print qq (<option $status value="$dest">$dest</option>);
     }
     print qq (</select><br>);
-    print qq (Destination);
+    print qq ($qblang[697]);
     print qq (</td>);
     #20101228 
     $action{advance} = ( $action{destination} eq 'system' ) ? ( '0' ) : ( '1' );
@@ -833,7 +845,7 @@ sub show_iniroute
             print qq (<option $status value="$serg->{sergroup}:s">$serg->{sergroup}(RPLY)</option>); 
         }
 	
-        print qq (</select><br><input type="button" class="qb" value="Service" title="Display detail Info. of selected Service" style="width:100" onmousedown="popUpServiceInfo()" onmouseout="hideServiceInfo()">);
+        print qq (</select><br><input type="button" class="qb" value="$qblang[698]" title="Display detail Info. of selected Service" style="width:100" onmousedown="popUpServiceInfo()" onmouseout="hideServiceInfo()">);
         print qq (</td>);
     }
     elsif ( $action{viewpoint}=~m/app/ ) 
@@ -892,7 +904,7 @@ sub show_iniroute
 		
 		#print qq (<option $status value="">---User_Definition---</option>);
 		print qq (<option $status value=""></option>);
-        print qq (</select><br><input type="button" class="qb" value="Application" title="Display detail Info. of selected Service" style="width:100" onmousedown="popUpServiceInfo()" onmouseout="hideServiceInfo()">);
+        print qq (</select><br><input type="button" class="qb" value="$qblang[739]" title="Display detail Info. of selected Service" style="width:100" onmousedown="popUpServiceInfo()" onmouseout="hideServiceInfo()">);
         print qq (</td>);
     }
     
@@ -985,7 +997,7 @@ sub init_class_show
     print qq (</select><br>);
     #print qq (<input type="button" name="ALLSCHEDULE" class="qb" value="A" title="Select All" onclick="allSchedule()"   style=" height:20 width:20">);
     #print qq (<input type="button" name="EXPANDSCHEDULE" class="qb" value="E" title="Expand Schedule" onclick="expandSchedule()"   style=" height:20 width:20">);
-    print qq (Schedule);
+    print qq ($qblang[700]);
     #print qq (<input type="button" name="SHRINKSCHEDULE" class="qb" value="C" title="Collapse Schedule" onclick="shrinkSchedule()" style="height:20 width:20">);
     #print qq (<input type="button" name="NONESCHEDULE" class="qb" value="N" title="Unselect All" onclick="noneSchedule()" style="height:20 width:20"><br>);
     print qq (</td>);
@@ -1088,10 +1100,10 @@ sub init_class_show
     }
 	}
     print qq (</select><br>);
-	if($action{viewpoint} eq 'app' && $action{showqos} eq ''){print qq (Action);}
+	if($action{viewpoint} eq 'app' && $action{showqos} eq ''){print qq ($qblang[669]);}
 	else
 	{
-    print qq (<input type="button" name="SHOWTABLEINFO" class="qb" value="Pool" title="Display detail Information of selected Routing Pool" onmousedown="popUpTableInfo()"  onmouseout="hideTableInfo()" style="width:100">);
+    print qq (<input type="button" name="SHOWTABLEINFO" class="qb" value="$qblang[749]" title="Display detail Information of selected Routing Pool" onmousedown="popUpTableInfo()"  onmouseout="hideTableInfo()" style="width:100">);
 	}
     print qq (</td>);
     
@@ -1208,7 +1220,7 @@ sub init_class_show
 	    	$usdf = $usdf+1;
 	    }
     	}
-    	print qq (</select><br>Qos</td>);
+    	print qq (</select><br>$qblang[724]</td>);
     }
 	else
 	{
@@ -1241,7 +1253,7 @@ sub init_class_show
 	
     	#print qq (Quota Setting:<br>);
 		#print qq (<input type="button" class="qb" value="showhide" onClick="showhide()" style="height:20 width:50"><br>);
-    	print qq (<input type="button" class="qb" value="Quota" onclick="quota_setting_window()" style="height:20 width:50">);
+    	print qq (<input type="button" class="qb" value="$qblang[733]" onclick="quota_setting_window()" style="height:20 width:50">);
 	print qq (<span id="show_quota" style="display:none;" >);
 	if($rn ne ''){print qq (<input type="hidden" id="rname" style="WIDTH:100px" value="$rn"/>);}
 	else{print qq (<input type="hidden" id="rname" style="WIDTH:100px" value=""/>);}
@@ -1499,8 +1511,8 @@ sub init_class_show
     print qq (</td>);
     #**************************************************************************************
     print qq (<td class="body" align="right" valign="top">);
-    print qq (<input type="button" class="qb" value="Add"    title="Add Policy"    onClick="updatePolicy('ADD')" style="height:20 width:25">);
-    print qq (<input type="button" class="qb" value="Update" title="Save Changes"  onClick="updatePolicy('UPDATE')" style="height:20 width:35">);
+    print qq (<input type="button" class="qb" value="$qblang[57]"    title="Add Policy"    onClick="updatePolicy('ADD')" style="height:20 width:25">);
+    print qq (<input type="button" class="qb" value="$qblang[58]" title="Save Changes"  onClick="updatePolicy('UPDATE')" style="height:20 width:35">);
     print qq (</td>);
        
     if ( $action{viewpoint} ne "lvs" ) { print qq (<br>); }

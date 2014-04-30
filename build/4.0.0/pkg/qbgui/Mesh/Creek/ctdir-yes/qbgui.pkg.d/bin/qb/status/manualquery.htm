@@ -267,11 +267,12 @@ function writeConsole(content) {
 <table border="0" class="body" >
 
 <tr>
-<td></td><td>Year</td><td>Month</td><td>Date</td><td>Hour</td><td>Minute</td>
+<td></td><td><span id="spanyear">Year</span></td><td><span id="spanmonth">Month</span></td>
+<td><span id="spandate">Date</span></td><td><span id="spanhour">Hour</span></td><td><span id="spanminute">Minute</span></td>
 </tr>
 
 <tr>
-<td>From</td>
+<td><span id="spanfrom">From</span></td>
 <td><select name="from_yy" class="qbopt" style="padding: inherit;"></select></td>
 <td><select name="from_mm" class="qbopt" style="padding: inherit;"></select></td>
 <td><select name="from_dd" class="qbopt" style="padding: inherit;"></select></td>
@@ -280,14 +281,15 @@ function writeConsole(content) {
 </tr>
 
 <tr>
-<td>To</td>
+<td><span id="spanto">To</span></td>
 <td><select name="to_yy" class="qbopt" style="padding: inherit;"></select></td>
 <td><select name="to_mm" class="qbopt" style="padding: inherit;"></select></td>
 <td><select name="to_dd" class="qbopt" style="padding: inherit;"></select></td>
 <td><select name="to_hh" class="qbopt" style="padding: inherit;"></select></td>
 <td><select name="to_min" class="qbopt" style="padding: inherit;"></select></td>
 </tr>
-<tr><td colspan="6" align="right"><button class="qb" style="width:100" onclick="pmaster.setTime(from_yy.value,from_mm.value,from_dd.value,from_hh.value,from_min.value);this.form.submit();">Query</button></td></tr>
+<tr><td colspan="6" align="right">
+<button class="qb" style="width:100" id="button-query" onclick="pmaster.setTime(from_yy.value,from_mm.value,from_dd.value,from_hh.value,from_min.value);this.form.submit();" value="">Query</button></td></tr>
 </table>
 <input type="hidden" name="action" value="query">
 </form>
@@ -332,5 +334,28 @@ fquery.from_mm.value = fquery.to_mm.value = today.getMonth();
 fquery.from_dd.value = fquery.to_dd.value = today.getDate();
 fquery.from_hh.value = fquery.to_hh.value = today.getHours();
 fquery.from_min.value = fquery.to_min.value = 5*parseInt(today.getMinutes()/5);
+
+function getcookie(name)
+{
+    var c=document.cookie.split("; ");
+    for (var i=0; i<c.length; i++)
+    {
+         var b=c[i].split("=");
+         if(name==b[0]) { return unescape(b[1]); }
+    }
+                              
+         return;
+}
+if ( getcookie('locale') == "zh_TW" )
+{
+    $("#spanyear").html("年");
+    $("#spanmonth").html("月");
+    $("#spandate").html("日");
+    $("#spanhour").html("時");
+    $("#spanminute").html("分");
+    $("#spanfrom").html("起始時間");
+    $("#spanto").html("結束時間");
+    $("#button-query").html("查詢");
+}
 
 </script>
